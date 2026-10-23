@@ -11,14 +11,15 @@ type Lookup = {
   bookings: { id: string; starts_at: string; ends_at: string; location: string | null; status: string; check_in_at: string | null }[];
   next_match: { id: string; match_code: string; stage: string; start_time: string; color: string } | null;
 };
-type Inspection = { size?: boolean; weight?: boolean; voltage?: boolean; arm?: boolean; notes?: string };
+type Inspection = { size?: boolean; voltage?: boolean; arm?: boolean; start?: boolean; safety?: boolean; notes?: string };
 
 // Mục kiểm tra kỹ thuật theo thể lệ — sửa ở đây nếu BTC đổi thông số
 const CHECKS: { key: keyof Inspection; label: string }[] = [
-  { key: "size", label: "Kích thước ≤ 200 × 200 × 200 mm" },
-  { key: "weight", label: "Khối lượng ≤ 2 kg" },
-  { key: "voltage", label: "Điện áp nguồn ≤ 12.6 V (3S), pin cố định chắc chắn" },
-  { key: "arm", label: "Cơ cấu lật an toàn, không vật sắc nhọn / phóng vật" },
+  { key: "size", label: "Kích thước ≤ 300 × 250 × 200 mm (dung sai +10 mm), không giới hạn khối lượng" },
+  { key: "voltage", label: "Nguồn DC ≤ 12.6 V, pin cố định chắc chắn — cấm điện AC / > 14.8 V" },
+  { key: "arm", label: "Cơ cấu gắp có đệm mềm, không vật sắc nhọn, không phóng vật" },
+  { key: "start", label: "Chế độ tự hành Chặng 1 khởi động bằng đúng 1 nút; tay điều khiển 2.4 GHz" },
+  { key: "safety", label: "Không thiết bị gây nhiễu, không keo / chất lỏng / vũ khí" },
 ];
 
 const TZ = "Asia/Ho_Chi_Minh";

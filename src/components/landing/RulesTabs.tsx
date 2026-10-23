@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Cpu, Flag, Route } from "lucide-react";
+import { Boxes, Cpu, Crown, Route } from "lucide-react";
 import { ROBOT_SPECS } from "@/lib/site";
 
 const TABS = [
-  { id: "stage1", label: "Chặng 1 · Dò line", icon: Route },
-  { id: "stage2", label: "Chặng 2 · Domination", icon: Flag },
+  { id: "stage1", label: "Chặng 1 · Thích nghi", icon: Route },
+  { id: "stage2", label: "Chặng 2 · Tích lũy", icon: Boxes },
+  { id: "stage3", label: "Chặng 3 · Bản lĩnh", icon: Crown },
   { id: "specs", label: "Quy chuẩn robot", icon: Cpu },
 ] as const;
 
@@ -32,7 +33,7 @@ export default function RulesTabs() {
         <p className="section-kicker">
           <span className="h-px w-8 bg-mech-red" /> Thể lệ thi đấu
         </p>
-        <h2 className="section-title mt-3">Hai chặng – Một hành trình kỹ sư</h2>
+        <h2 className="section-title mt-3">Ba chặng – 180 giây – Một hành trình kỹ sư</h2>
 
         <div role="tablist" className="mt-10 flex flex-wrap gap-2">
           {TABS.map((t) => (
@@ -54,41 +55,54 @@ export default function RulesTabs() {
         <div id="rules-panel" role="tabpanel" className="mt-8 grid gap-10 lg:grid-cols-2">
           {tab === "stage1" && (
             <div>
-              <h3 className="font-display text-3xl uppercase text-navy">Thích nghi – Dò line tốc độ</h3>
+              <h3 className="font-display text-3xl uppercase text-navy">Thích nghi – Dò line tự hành</h3>
               <p className="mt-4 text-slate-600">
-                Sân 2400 × 650 mm chia đôi độc lập cho Đội Đỏ và Đội Xanh. Line đen rộng 25 mm trên nền trắng, phù
-                hợp thanh cảm biến hồng ngoại 4–8 mắt (TCRT5000, QTR-8A) hoặc camera.
+                Mỗi đội một làn line riêng rộng 90 cm dọc hai mép sa bàn. Robot xuất phát từ ô 30 × 30 cm, bám line đen
+                rộng 25 mm qua đoạn thẳng 180 cm và các khúc gấp 45°, rồi thoát qua cổng 55 cm vào khu thi đấu chung.
               </p>
               <ul className="mt-6 space-y-3 text-slate-700">
-                <li>
-                  <strong>Phần 1 – Cơ bản:</strong> đoạn thẳng tăng tốc, cua chuyển làn 180° (R = 162,5 mm), qua
-                  vạch Check Point màu cam.
-                </li>
-                <li>
-                  <strong>Phần 2 – Nâng cao:</strong> S-Curve ziczac 500 mm (biên độ ±70 mm) và ngã tư giao cắt
-                  vuông góc.
-                </li>
-                <li>
-                  <strong>Về đích:</strong> hai vạch đích tách xa nhau 440 mm, mở cổng tiến vào Chặng 2.
-                </li>
+                <li><strong>Tự hành 100%:</strong> chỉ một nút khởi động, không được dùng tay điều khiển.</li>
+                <li><strong>Xuất phát sớm:</strong> lần 1 nhắc nhở, từ lần 2 trừ 10 điểm.</li>
+                <li><strong>Thời gian về đích</strong> được ghi lại để xét phụ khi hòa điểm.</li>
               </ul>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <Fact k="Hoàn thành chặng" v="+20đ" />
+                <Fact k="Cổng thoát" v="55 cm" />
+              </div>
             </div>
           )}
 
           {tab === "stage2" && (
             <div>
-              <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Chiếm lĩnh cứ điểm</h3>
+              <h3 className="font-display text-3xl uppercase text-navy">Tích lũy – Thu gom khối</h3>
               <p className="mt-4 text-slate-600">
-                Sân chung 2400 × 1150 mm, hai đội đối kháng trực diện. Robot lật các cứ điểm sát mặt đất sang màu
-                đội mình.
+                Được dùng remote 2,4 GHz. Robot gắp các khối 6 cm màu đội mình (3 khối/đội) và Khối Vàng 8 cm trên dốc
+                trung tâm, đưa về Ô tập kết 25 × 25 cm. Khối được tính khi ít nhất 50% đáy nằm trong ô.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Fact k="Cứ điểm thường" v="8 × 10đ" />
-                <Fact k="Lõi Vàng trung tâm" v="30đ" />
+                <Fact k="Khối thường" v="+15đ × 3" />
+                <Fact k="Khối Vàng" v="+40đ" />
+              </div>
+              <div className="mt-4 rounded-lg border-l-4 border-mech-red bg-white p-4 text-sm text-slate-700">
+                Gắp từ 2 khối trở lên cùng lúc: <b>−10đ</b> và không tính các khối đó. Xâm phạm Ô tập kết đối thủ: <b>−20đ</b>.
+              </div>
+            </div>
+          )}
+
+          {tab === "stage3" && (
+            <div>
+              <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Chiếm cứ điểm</h3>
+              <p className="mt-4 text-slate-600">
+                Vượt cổng sang Chặng 3 (+10đ), robot lật 4 Cứ điểm góc và Master Point trên tháp trung tâm sang màu đội
+                mình. Điểm tính theo trạng thái cứ điểm tại giây 03:00 (nghiêng dưới 45°).
+              </p>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <Fact k="Cứ điểm góc" v="4 × 20đ" />
+                <Fact k="Master Point" v="+50đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-gold bg-white p-4 text-slate-700">
-                <strong className="text-navy">Knock-out &ldquo;Bản lĩnh Kỹ sư&rdquo;:</strong> chiếm từ 6/9 cứ điểm
-                (bắt buộc có Lõi Vàng) và giữ vững 15 giây liên tục là thắng ngay.
+                <strong className="text-navy">KNOCK-OUT:</strong> giữ Master Point và ít nhất 3/4 cứ điểm góc liên tục
+                10 giây là thắng ngay.
               </div>
             </div>
           )}
@@ -97,7 +111,8 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Quy chuẩn kỹ thuật robot</h3>
               <p className="mt-4 text-slate-600">
-                Robot được kiểm định tại bàn kỹ thuật (quét QR đội) trước mỗi trận đấu.
+                Robot được kiểm định tại bàn kỹ thuật (quét QR đội) trước mỗi trận. Cấm vũ khí, thiết bị gây nhiễu,
+                keo dính, chất lỏng; cơ cấu gắp phải có đệm mềm.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 {ROBOT_SPECS.map((s) => (
@@ -109,15 +124,15 @@ export default function RulesTabs() {
 
           <figure className="overflow-hidden rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
             <Image
-              src="/images/map_option1_domination.png"
-              alt="Sơ đồ sa bàn 2D: Chặng 1 dò line phía dưới, Chặng 2 ma trận 9 cứ điểm phía trên"
-              width={3118}
-              height={2380}
+              src="/images/sa-ban-2026.png"
+              alt="Sơ đồ sa bàn 4800 × 4800 mm: hai làn dò line hai bên, Chặng 2 thu gom khối phía dưới, Chặng 3 cứ điểm và Master Tower phía trên"
+              width={3270}
+              height={3163}
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="h-auto w-full rounded-md"
             />
             <figcaption className="mt-2 flex items-center justify-between px-1 text-xs text-slate-500">
-              <span>Sơ đồ sa bàn 2400 × 1800 mm</span>
+              <span>Sơ đồ sa bàn 4800 × 4800 mm</span>
               <Link href="/rules" className="font-semibold text-navy-600 hover:underline">
                 Thể lệ chi tiết →
               </Link>

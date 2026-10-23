@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Flag, Loader2, MonitorPlay, Pause, Play, RotateCcw, Timer, Wrench } from "lucide-react";
+import { ArrowLeft, Coins, Crown, Flag, Loader2, MonitorPlay, Pause, Play, RotateCcw, Wrench } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { evLabel, fmtClock, useMatchLive, type Color } from "@/lib/match";
+import { countEv, evLabel, fmtClock, POINT_CELL, useMatchLive, type Color } from "@/lib/match";
 import { MATCH_STATUS } from "@/lib/site";
 
-// Trọng tài chính: điều khiển đồng hồ, timeout kỹ thuật, chỉnh điểm thủ công, kết thúc trận
+// Trọng tài chính: điều khiển đồng hồ, KNOCK-OUT, xử thắng, chỉnh điểm thủ công, kết thúc trận (thể lệ 2026: không có timeout kỹ thuật)
 export default function Controller({ matchId, canReset }: { matchId: string; canReset: boolean }) {
-  const { data, missing, remaining, timeoutLeft, refresh } = useMatchLive(matchId);
+  const { data, missing, remaining, refresh } = useMatchLive(matchId);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [adj, setAdj] = useState<{ color: Color; delta: number; notes: string }>({ color: "RED", delta: 0, notes: "" });
@@ -31,6 +31,12 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
   const p = { p_match: matchId };
   const big = "flex h-16 items-center justify-center gap-2 rounded-xl text-base font-bold transition active:scale-95 disabled:opacity-40";
   const spin = (k: string) => busy === k && <Loader2 className="h-5 w-5 animate-spin" />;
+  const name = (c: Color) => (c === "RED" ? `Đỏ (${data.red?.team_name ?? "—"})` : `Xanh (${data.blue?.team_name ?? "—"})`);
+  // KNOCK-OUT: giữ Master Point + ≥ 3/4 cứ điểm góc trong 10 giây (trọng tài chính xác nhận)
+  const koReady = (c: Color) =>
+    data.points.some((pt) => pt.golden && pt.owner === c) && data.points.filter((pt) => !pt.golden && pt.owner === c).length >= 3;
+  const warn = { RED: countEv(data.events, "RED", "WARNING"), BLUE: countEv(data.events, "BLUE", "WARNING") };
+  const retry = { RED: countEv(data.events, "RED", "RETRY"), BLUE: countEv(data.events, "BLUE", "RETRY") };
 
   return (
     <div className="min-h-screen bg-slate-950 pb-12 text-white">
@@ -45,17 +51,16 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
       <main className="mx-auto max-w-4xl space-y-5 px-4 pt-5">
         <section className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 rounded-2xl bg-white/5 p-5">
           <div className="text-left">
-            <p className="text-xs font-bold uppercase text-team-red">Đỏ · {data.fouls.RED} lỗi</p>
+            <p className="text-xs font-bold uppercase text-team-red">Đỏ · {data.fouls.RED} lỗi · {retry.RED}/3 retry · {warn.RED}/3 cảnh cáo</p>
             <p className="truncate font-display text-xl uppercase">{data.red?.team_name ?? "—"}</p>
             <p className="font-display text-6xl tabular-nums text-team-red">{m.red_score}</p>
           </div>
           <div className="text-center">
             <p className="text-xs font-bold uppercase text-white/50">{MATCH_STATUS[m.status] ?? m.status}</p>
             <p className={`font-display text-6xl tabular-nums ${remaining <= 30 && m.status === "RUNNING" ? "text-mech-red" : ""}`}>{fmtClock(remaining)}</p>
-            {timeoutLeft > 0 && <p className="mt-1 text-sm font-bold text-mech-gold">Timeout {m.timeout_team === "RED" ? "Đỏ" : "Xanh"}: {fmtClock(timeoutLeft)}</p>}
           </div>
           <div className="text-right">
-            <p className="text-xs font-bold uppercase text-team-blue">Xanh · {data.fouls.BLUE} lỗi</p>
+            <p className="text-xs font-bold uppercase text-team-blue">Xanh · {data.fouls.BLUE} lỗi · {retry.BLUE}/3 retry · {warn.BLUE}/3 cảnh cáo</p>
             <p className="truncate font-display text-xl uppercase">{data.blue?.team_name ?? "—"}</p>
             <p className="font-display text-6xl tabular-nums text-team-blue">{m.blue_score}</p>
           </div>
@@ -71,16 +76,16 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
         <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {m.status === "SCHEDULED" && <button onClick={() => rpc("ready", "head_set_ready", p)} disabled={busy !== null} className={`${big} col-span-2 bg-navy-600 md:col-span-4`}>{spin("ready")} Gọi đội vào sân (Sẵn sàng)</button>}
           {m.status === "READY" && <button onClick={() => rpc("start", "head_start", p)} disabled={busy !== null} className={`${big} col-span-2 bg-emerald-600 md:col-span-4`}>{spin("start") || <Play className="h-5 w-5" />} Bắt đầu trận</button>}
-          {m.status === "RUNNING" && <button onClick={() => rpc("pause", "head_pause", p)} disabled={busy !== null} className={`${big} col-span-2 bg-mech-gold text-navy`}>{spin("pause") || <Pause className="h-5 w-5" />} Tạm dừng</button>}
+          {m.status === "RUNNING" && <button onClick={() => rpc("pause", "head_pause", p)} disabled={busy !== null} className={`${big} col-span-2 bg-mech-gold text-navy`}>{spin("pause") || <Pause className="h-5 w-5" />} Dừng khẩn cấp</button>}
           {m.status === "PAUSED" && <button onClick={() => rpc("resume", "head_resume", p)} disabled={busy !== null} className={`${big} col-span-2 bg-emerald-600`}>{spin("resume") || <Play className="h-5 w-5" />} Tiếp tục</button>}
           {(m.status === "RUNNING" || m.status === "PAUSED") && (
             <>
-              <button onClick={() => rpc("toR", "head_timeout", { ...p, p_color: "RED" }, "Cho đội Đỏ dùng timeout kỹ thuật 5 phút?")} disabled={busy !== null || m.red_timeout_used} className={`${big} bg-team-red`}>
-                {spin("toR") || <Timer className="h-5 w-5" />} Timeout Đỏ{m.red_timeout_used && " (đã dùng)"}
-              </button>
-              <button onClick={() => rpc("toB", "head_timeout", { ...p, p_color: "BLUE" }, "Cho đội Xanh dùng timeout kỹ thuật 5 phút?")} disabled={busy !== null || m.blue_timeout_used} className={`${big} bg-team-blue`}>
-                {spin("toB") || <Timer className="h-5 w-5" />} Timeout Xanh{m.blue_timeout_used && " (đã dùng)"}
-              </button>
+              {(["RED", "BLUE"] as Color[]).map((c) => (
+                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận KNOCK-OUT: phe ${name(c)} giữ Master Point + ≥ 3 cứ điểm góc đủ 10 giây? Trận kết thúc ngay.`)}
+                  disabled={busy !== null || !koReady(c)} className={`${big} ${c === "RED" ? "bg-team-red" : "bg-team-blue"}`}>
+                  {spin(`ko${c}`) || <Crown className="h-5 w-5" />} KNOCK-OUT {c === "RED" ? "Đỏ" : "Xanh"}
+                </button>
+              ))}
               <button onClick={() => rpc("finish", "head_finish", p, `Kết thúc trận? Tỉ số ${m.red_score}–${m.blue_score}. Các đội có thời hạn khiếu nại sau khi kết thúc.`)} disabled={busy !== null} className={`${big} col-span-2 bg-white text-navy md:col-span-4`}>
                 {spin("finish") || <Flag className="h-5 w-5" />} Kết thúc trận
               </button>
@@ -88,9 +93,21 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
           )}
           {m.status === "FINISHED" && (
             <p className="col-span-2 rounded-xl bg-white/5 p-4 text-center md:col-span-4">
-              Trận đã kết thúc · {m.winner ? <>Thắng: <b className={m.winner === "RED" ? "text-team-red" : "text-team-blue"}>{m.winner === "RED" ? data.red?.team_name : data.blue?.team_name}</b></> : "Hòa"}
+              Trận đã kết thúc · {m.winner ? <>Thắng: <b className={m.winner === "RED" ? "text-team-red" : "text-team-blue"}>{m.winner === "RED" ? data.red?.team_name : data.blue?.team_name}</b></> : "Hòa sau mọi chỉ số phụ"}
             </p>
           )}
+          {m.status === "FINISHED" && !m.winner && (["RED", "BLUE"] as Color[]).map((c) => (
+            <button key={c} onClick={() => rpc(`coin${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "COIN_TOSS" }, `Ghi nhận phe ${name(c)} thắng tung đồng xu?`)}
+              disabled={busy !== null} className={`${big} col-span-1 md:col-span-2 ${c === "RED" ? "bg-team-red" : "bg-team-blue"}`}>
+              {spin(`coin${c}`) || <Coins className="h-5 w-5" />} {c === "RED" ? "Đỏ" : "Xanh"} thắng đồng xu
+            </button>
+          ))}
+          {m.status !== "SCHEDULED" && m.status !== "READY" && (["RED", "BLUE"] as Color[]).filter((c) => warn[c === "RED" ? "BLUE" : "RED"] >= 3 && m.winner !== c).map((c) => (
+            <button key={`ff${c}`} onClick={() => rpc(`ff${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "FORFEIT" }, `Đối thủ đã nhận 3 cảnh cáo. Xử phe ${name(c)} thắng?`)}
+              disabled={busy !== null} className={`${big} col-span-2 bg-mech-gold text-navy md:col-span-4`}>
+              {spin(`ff${c}`)} Xử thắng cho {c === "RED" ? "Đỏ" : "Xanh"} (đối thủ 3 cảnh cáo)
+            </button>
+          ))}
         </section>
 
         <section className="rounded-2xl bg-white/5 p-5">
@@ -112,9 +129,9 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
         <section className="grid gap-5 md:grid-cols-[auto_1fr]">
           <div>
             <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Cứ điểm</h2>
-            <div className="grid w-48 grid-cols-3 gap-1.5">
+            <div className="grid w-48 grid-cols-3 grid-rows-3 gap-1.5">
               {data.points.map((pt) => (
-                <span key={pt.index} className={`flex aspect-square items-center justify-center rounded-lg text-sm font-bold ${pt.owner === "RED" ? "bg-team-red" : pt.owner === "BLUE" ? "bg-team-blue" : "bg-white/10"} ${pt.golden ? "ring-2 ring-mech-gold" : ""}`}>
+                <span key={pt.index} className={`flex aspect-square items-center justify-center rounded-lg text-sm font-bold ${POINT_CELL[pt.index] ?? ""} ${pt.owner === "RED" ? "bg-team-red" : pt.owner === "BLUE" ? "bg-team-blue" : "bg-white/10"} ${pt.golden ? "ring-2 ring-mech-gold" : ""}`}>
                   {pt.golden ? "★" : pt.index}
                 </span>
               ))}

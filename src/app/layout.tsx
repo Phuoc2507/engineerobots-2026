@@ -16,7 +16,7 @@ const sans = Be_Vietnam_Pro({
 export const metadata: Metadata = {
   title: "ENGINEEROBOTS 2026 – Cuộc thi Robot Tân sinh viên Khoa Cơ khí HCMUTE",
   description:
-    "Cuộc thi chế tạo robot dành cho tân sinh viên K26 Khoa Cơ khí HCMUTE: Chặng 1 dò line tốc độ, Chặng 2 chiếm lĩnh cứ điểm Domination.",
+    "Cuộc thi chế tạo robot dành cho tân sinh viên K26 Khoa Cơ khí HCMUTE: Chặng 1 dò line tự hành, Chặng 2 thu gom khối, Chặng 3 chiếm cứ điểm Master Tower.",
 };
 
 export default function RootLayout({

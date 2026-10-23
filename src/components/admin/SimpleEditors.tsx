@@ -16,8 +16,8 @@ export function RulesEditor({ rules }: { rules: Rule[] }) {
   return (
     <section className={card}>
       <p className="text-sm text-slate-600">
-        Điểm Chặng 2 (chiếm ô, Lõi Vàng, thống trị) được tính tự động từ trạng thái 9 cứ điểm. Sửa ở đây áp dụng cho các
-        sự kiện ghi <b>sau</b> khi lưu; điểm Chặng 2 của trận đang diễn ra được tính lại ở lần lật ô kế tiếp.
+        Điểm Chặng 3 (4 cứ điểm góc + Master Point) được tính tự động từ trạng thái cứ điểm. Sửa ở đây áp dụng cho các
+        sự kiện ghi <b>sau</b> khi lưu; điểm cứ điểm của trận đang diễn ra được tính lại ở lần lật kế tiếp.
       </p>
       <ErrorBox error={error} />
       <ul className="mt-4 divide-y divide-slate-100 rounded-lg ring-1 ring-slate-200">
@@ -119,7 +119,7 @@ export function SettingsEditor({ votingOpen, appealMinutes, votes, emailReady }:
             </button>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-ice p-4">
-            <span><b className="text-navy">Hạn khiếu nại sau trận</b><span className="block text-sm text-slate-500">Thể lệ: 5 phút kể từ khi trọng tài chính kết thúc trận.</span></span>
+            <span><b className="text-navy">Hạn khiếu nại sau trận</b><span className="block text-sm text-slate-500">Thể lệ: 3 phút kể từ khi trọng tài chính kết thúc trận.</span></span>
             <span className="flex items-center gap-2">
               <input type="number" min={1} max={60} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} aria-label="Số phút" className={`${input} w-20 text-right`} /> phút
               <button onClick={() => call("appeal", "admin_set_setting", { p_key: "appeal_window_minutes", p_value: minutes })} disabled={busy !== null || minutes === appealMinutes} className={btnPrimary}>Lưu</button>

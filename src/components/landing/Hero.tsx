@@ -29,13 +29,14 @@ export default function Hero() {
           </h1>
           <p className="mt-6 max-w-xl text-lg text-white/80">
             Chủ đề <strong className="text-white">&ldquo;{SITE.theme}&rdquo;</strong>. Thiết kế, chế tạo và lập
-            trình robot vượt <strong className="text-white">Chặng 1 dò line tốc độ</strong>, rồi đối kháng trực
-            diện tranh <strong className="text-white">9 cứ điểm Domination</strong>.
+            trình robot tự hành <strong className="text-white">dò line</strong>, thu gom{" "}
+            <strong className="text-white">Khối Vàng</strong> rồi đối kháng trực diện chiếm{" "}
+            <strong className="text-white">Master Tower</strong> trong 180 giây.
           </p>
 
           <ul className="mt-6 flex flex-wrap gap-2 text-sm font-semibold">
             {[
-              { icon: Users, t: "Đội 3–5 người" },
+              { icon: Users, t: "Đội tối đa 5 người" },
               { icon: BadgeCheck, t: "Chỉ dành cho K26" },
               { icon: Wallet, t: "Miễn phí 100%" },
             ].map((c) => (

@@ -2,13 +2,13 @@ import Image from "next/image";
 import { OrganizerLogos } from "@/components/brand/Logos";
 import Link from "next/link";
 import { ArrowRight, Box, CalendarClock, ChevronDown, Flag, Mail, MapPin, MessageCircle, Phone, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
-import { CONTACT, FAQ, JOIN_STEPS, NAV_LINKS, SITE, TIMELINE } from "@/lib/site";
+import { CONTACT, FAQ, JOIN_STEPS, NAV_LINKS, PRIZES, SITE, TIMELINE, WORKSHOPS } from "@/lib/site";
 
 export function Intro() {
   const stats = [
     { icon: Trophy, value: "32–64", label: "Đội thi dự kiến" },
-    { icon: Users, value: "3–5", label: "Thành viên / đội" },
-    { icon: Flag, value: "2", label: "Chặng thi đấu" },
+    { icon: Users, value: "≤ 5", label: "Thành viên / đội" },
+    { icon: Flag, value: "3", label: "Chặng thi đấu" },
     { icon: Wallet, value: "0đ", label: "Lệ phí tham dự" },
   ];
   return (
@@ -70,17 +70,10 @@ export function Intro() {
 }
 
 export function ArenaShowcase() {
-  const mechanisms = [
-    {
-      src: "/images/ground_flip_mechanism.gif",
-      title: "Phương án A · Tấm lật bản lề",
-      desc: "Robot gắn mũi vát 30° sát sàn, đẩy nhẹ là tấm lật úp sang màu đội mình.",
-    },
-    {
-      src: "/images/rocker_plate_mechanism.gif",
-      title: "Phương án B · Bàn đạp bập bênh",
-      desc: "Bàn đạp cao 12 mm có nam châm – chỉ cần cán bánh xe qua là đổi màu.",
-    },
+  const zones = [
+    { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 90 cm dọc hai mép, line đen 25 mm, đoạn thẳng 180 cm và các khúc gấp 45°, cổng thoát 55 cm." },
+    { tag: "Chặng 2", title: "Khu thu gom khối", desc: "6 khối 6 cm hai màu, dốc trung tâm 40 × 40 cm cao 8 cm mang Khối Vàng, Ô tập kết 25 × 25 cm." },
+    { tag: "Chặng 3", title: "Cứ điểm & Master Tower", desc: "4 cứ điểm góc 20 × 20 cm và tháp Master 70 × 70 cm cao 10 cm với Master Point trên đỉnh." },
   ];
   return (
     <section id="sa-ban-3d" className="bg-navy py-20 text-white md:py-28">
@@ -90,25 +83,57 @@ export function ArenaShowcase() {
             <p className="section-kicker !text-mech-gold">
               <span className="h-px w-8 bg-mech-gold" /> Sa bàn thi đấu
             </p>
-            <h2 className="section-title mt-3 !text-white">Cơ chế lật cứ điểm sát mặt đất</h2>
+            <h2 className="section-title mt-3 !text-white">Sa bàn 4,8 × 4,8 m</h2>
             <p className="mt-4 max-w-2xl text-white/75">
-              BTC đang chốt một trong hai phương án dưới đây. Khám phá sa bàn 3D tương tác với các điểm ghim kích
-              thước và mô phỏng xe chạy thử.
+              Một sa bàn chung, ba vùng thi đấu nối tiếp nhau. Xoay, phóng to mô hình 3D để xem kích thước từng chi tiết.
             </p>
           </div>
           <Link href="/arena-3d" className="btn-primary shrink-0">
             <Box className="h-5 w-5" /> Khám phá sa bàn 3D
           </Link>
         </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {mechanisms.map((m) => (
-            <figure key={m.src} className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
-              <Image src={m.src} alt={m.title} width={1000} height={600} unoptimized className="h-auto w-full" />
-              <figcaption className="p-5">
-                <div className="font-display text-xl uppercase tracking-wide">{m.title}</div>
-                <p className="mt-1 text-sm text-white/75">{m.desc}</p>
-              </figcaption>
-            </figure>
+        <div className="mt-12 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
+          <Image src="/images/sa-ban-3d.png" alt="Ảnh dựng 3D sa bàn ENGINEEROBOTS 2026" width={1600} height={1000}
+            sizes="(min-width: 1024px) 60vw, 100vw" className="h-auto w-full rounded-xl border border-white/10" />
+          <ul className="space-y-4">
+            {zones.map((z) => (
+              <li key={z.tag} className="rounded-xl border border-white/10 bg-white/5 p-5">
+                <span className="text-xs font-bold uppercase tracking-widest text-mech-gold">{z.tag}</span>
+                <div className="mt-1 font-display text-xl uppercase tracking-wide">{z.title}</div>
+                <p className="mt-1 text-sm text-white/75">{z.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function Prizes() {
+  return (
+    <section id="giai-thuong" className="bg-ice py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <p className="section-kicker">
+          <span className="h-px w-8 bg-mech-red" /> Giải thưởng & hỗ trợ
+        </p>
+        <h2 className="section-title mt-3">Tổng giải thưởng 4.500.000đ</h2>
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {PRIZES.map((p, i) => (
+            <li key={p.rank} className={`rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>
+              <div className={`text-xs font-bold uppercase tracking-widest ${i === 0 ? "text-mech-gold" : "text-mech-red"}`}>{p.rank}</div>
+              <div className={`mt-2 font-display text-3xl ${i === 0 ? "" : "text-navy"}`}>{p.reward}</div>
+              <p className={`mt-1 text-sm ${i === 0 ? "text-white/75" : "text-slate-500"}`}>{p.extra}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 text-sm text-slate-500">Mọi thành viên tham gia nhận Giấy chứng nhận và điểm cộng hoạt động theo quy định của Khoa.</p>
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
+          {WORKSHOPS.map((w) => (
+            <div key={w.title} className="rounded-xl border-l-4 border-fmes bg-white p-5 shadow-sm">
+              <div className="font-display text-lg uppercase text-navy">{w.title}</div>
+              <p className="mt-1 text-sm text-slate-600">{w.desc}</p>
+            </div>
           ))}
         </div>
       </div>
@@ -178,7 +203,7 @@ export function Leaderboard() {
           <div className="flex-1">
             <div className="font-display text-2xl uppercase text-navy">Bảng điểm trực tiếp</div>
             <p className="mt-1 text-slate-600">
-              Mở khi giải khởi tranh – điểm số và trạng thái 9 cứ điểm của từng trận cập nhật theo thời gian thực.
+              Mở khi giải khởi tranh – điểm số và trạng thái 5 cứ điểm của từng trận cập nhật theo thời gian thực.
             </p>
           </div>
           <Link

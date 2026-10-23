@@ -4,12 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Loader2, Undo2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { evLabel, fmtClock, useMatchLive, type Color } from "@/lib/match";
+import { countEv, evLabel, fmtClock, POINT_CELL, POINT_NAMES, useMatchLive, type Color } from "@/lib/match";
 import { MATCH_STATUS } from "@/lib/site";
 
-export type PadRule = { rule_key: string; rule_name: string; score_value: number };
+export type PadRule = { rule_key: string; rule_name: string; score_value: number; max_per_match: number | null };
 
-// Bảng chấm cho trọng tài biên: nút luật + lưới 3x3 cứ điểm (ô giữa = Lõi Vàng)
+// Bảng chấm cho trọng tài biên: nút luật + sơ đồ 4 cứ điểm góc và Master Point (Chặng 3)
 export default function ScoringPad({ matchId, side, rules }: { matchId: string; side: Color; rules: PadRule[] }) {
   const { data, missing, remaining, refresh } = useMatchLive(matchId);
   const [busy, setBusy] = useState<string | null>(null);
@@ -38,7 +38,11 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
   const oppScore = red ? m.blue_score : m.red_score;
   const myEvents = data.events.filter((e) => e.team_color === side && e.event_type !== "FLIP").slice(0, 8);
   const fouls = rules.filter((r) => r.score_value < 0);
-  const plus = rules.filter((r) => r.score_value >= 0);
+  const plus = rules.filter((r) => r.score_value > 0);
+  const marks = rules.filter((r) => r.score_value === 0);
+  const used = (r: PadRule) => countEv(data.events, side, r.rule_key);
+  const full = (r: PadRule) => r.max_per_match != null && used(r) >= r.max_per_match;
+  const tally = (r: PadRule) => (r.max_per_match != null ? ` (${used(r)}/${r.max_per_match})` : "");
 
   return (
     <div className="min-h-screen bg-slate-950 pb-10 text-white">
@@ -66,9 +70,9 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
         {flash && <p role="status" className="rounded-lg bg-emerald-500/20 p-3 text-sm font-bold text-emerald-300">{flash}</p>}
 
         <section>
-          <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Cứ điểm · chạm để lật về phe {red ? "Đỏ" : "Xanh"} (chạm lại để trả về trung lập)</h2>
-          <div className="grid grid-cols-3 gap-2">
-            {data.points.length === 0 && <p className="col-span-3 rounded-lg bg-white/5 p-4 text-center text-sm text-white/50">Lưới cứ điểm sẽ xuất hiện khi trận bắt đầu.</p>}
+          <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Chặng 3 · chạm để lật cứ điểm về phe {red ? "Đỏ" : "Xanh"} (chạm lại để trả về trung lập)</h2>
+          <div className="grid grid-cols-3 grid-rows-3 gap-2">
+            {data.points.length === 0 && <p className="col-span-3 row-span-3 rounded-lg bg-white/5 p-4 text-center text-sm text-white/50">Sơ đồ cứ điểm sẽ xuất hiện khi trận bắt đầu.</p>}
             {data.points.map((p) => {
               const tone = p.owner === "RED" ? "bg-team-red" : p.owner === "BLUE" ? "bg-team-blue" : "bg-white/10";
               const next = p.owner === side ? "NEUTRAL" : side;
@@ -76,10 +80,10 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
                 <button
                   key={p.index} disabled={!live || busy !== null}
                   onClick={() => rpc(`p${p.index}`, "ref_flip_point", { p_match: matchId, p_index: p.index, p_color: next })}
-                  className={`relative aspect-square rounded-xl text-lg font-bold transition active:scale-95 disabled:opacity-60 ${tone} ${p.golden ? "ring-4 ring-mech-gold" : ""}`}
-                  aria-label={`Ô ${p.index}${p.golden ? " (Lõi Vàng)" : ""}: ${p.owner ?? "trung lập"}`}
+                  className={`relative aspect-square rounded-xl text-sm font-bold transition active:scale-95 disabled:opacity-60 ${POINT_CELL[p.index] ?? ""} ${tone} ${p.golden ? "ring-4 ring-mech-gold" : ""}`}
+                  aria-label={`${POINT_NAMES[p.index] ?? `Ô ${p.index}`}: ${p.owner ?? "trung lập"}`}
                 >
-                  {busy === `p${p.index}` ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : p.golden ? "★" : p.index}
+                  {busy === `p${p.index}` ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : <>{p.golden ? <span className="block text-2xl">★</span> : <span className="block text-2xl">{p.index}</span>}<span className="text-[11px] opacity-80">{p.golden ? "Master · 50đ" : "Góc · 20đ"}</span></>}
                 </button>
               );
             })}
@@ -90,9 +94,19 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
           <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Ghi điểm</h2>
           <div className="grid grid-cols-2 gap-2">
             {plus.map((r) => (
-              <button key={r.rule_key} disabled={!live || busy !== null} onClick={() => rpc(r.rule_key, "ref_add_event", { p_match: matchId, p_color: side, p_rule_key: r.rule_key }, `+${r.score_value} ${r.rule_name}`)}
+              <button key={r.rule_key} disabled={!live || busy !== null || full(r)} onClick={() => rpc(r.rule_key, "ref_add_event", { p_match: matchId, p_color: side, p_rule_key: r.rule_key }, `+${r.score_value} ${r.rule_name}`)}
                 className="min-h-[72px] rounded-xl bg-emerald-600 px-3 py-2 text-left text-sm font-bold transition active:scale-95 disabled:opacity-40">
-                <span className="block font-display text-2xl">+{r.score_value}</span>{r.rule_name}
+                <span className="block font-display text-2xl">+{r.score_value}</span>{r.rule_name}{tally(r)}
+              </button>
+            ))}
+          </div>
+          <h2 className="mb-2 mt-4 text-xs font-bold uppercase tracking-wider text-white/50">Retry / cảnh cáo (0 điểm, tối đa 3 lần)</h2>
+          <div className="grid grid-cols-2 gap-2">
+            {marks.map((r) => (
+              <button key={r.rule_key} disabled={!live || busy !== null || full(r)}
+                onClick={() => { if (r.rule_key !== "WARNING" || window.confirm("Ghi cảnh cáo hành vi? Đủ 3 cảnh cáo sẽ bị xử thua.")) rpc(r.rule_key, "ref_add_event", { p_match: matchId, p_color: side, p_rule_key: r.rule_key }, r.rule_name); }}
+                className={`min-h-[60px] rounded-xl px-3 py-2 text-left text-sm font-bold transition active:scale-95 disabled:opacity-40 ${r.rule_key === "WARNING" ? "bg-mech-gold text-navy" : "bg-white/15"}`}>
+                <span className="block font-display text-2xl">{used(r)}/{r.max_per_match ?? "∞"}</span>{r.rule_name}
               </button>
             ))}
           </div>

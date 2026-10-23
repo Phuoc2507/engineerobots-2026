@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { beep, evLabel, fmtClock, useMatchLive } from "@/lib/match";
+import { beep, evLabel, fmtClock, POINT_CELL, useMatchLive } from "@/lib/match";
 import { MATCH_STATUS, SITE } from "@/lib/site";
 
 // Bảng tỉ số trực tiếp: "stage" = màn hình LED/máy chiếu, "obs" = lớp phủ nền trong suốt cho livestream
 export default function StageBoard({ matchId, variant = "stage" }: { matchId: string | null; variant?: "stage" | "obs" }) {
-  const { data, missing, remaining, timeoutLeft } = useMatchLive(matchId);
+  const { data, missing, remaining } = useMatchLive(matchId);
   const [sound, setSound] = useState(false);
   const lastBeep = useRef(-1);
 
@@ -39,7 +39,7 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
           </div>
           <div className="flex min-w-[150px] flex-col items-center justify-center bg-navy px-5 py-2">
             <span className={`font-display text-4xl tabular-nums ${urgent ? "text-mech-red" : ""}`}>{fmtClock(remaining)}</span>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-white/70">{m.match_code} · {timeoutLeft > 0 ? `Timeout ${fmtClock(timeoutLeft)}` : MATCH_STATUS[m.status]}</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-white/70">{m.match_code} · {MATCH_STATUS[m.status]}</span>
           </div>
           <div className="flex min-w-[260px] items-center gap-4 bg-team-blue px-5 py-3">
             <span className="font-display text-5xl tabular-nums">{m.blue_score}</span>
@@ -68,9 +68,9 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
             <p className="mt-2 text-xl font-bold uppercase tracking-widest text-white/80">{MATCH_STATUS[m.status] ?? m.status}</p>
           </div>
           {data.points.length > 0 && (
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 grid-rows-3 gap-2">
               {data.points.map((p) => (
-                <span key={p.index} className={`flex h-20 w-20 items-center justify-center rounded-xl text-2xl font-bold transition-colors duration-500 ${p.owner === "RED" ? "bg-team-red" : p.owner === "BLUE" ? "bg-team-blue" : "bg-white/10"} ${p.golden ? "ring-4 ring-mech-gold" : ""}`}>
+                <span key={p.index} className={`${POINT_CELL[p.index] ?? ""} flex h-20 w-20 items-center justify-center rounded-xl text-2xl font-bold transition-colors duration-500 ${p.owner === "RED" ? "bg-team-red" : p.owner === "BLUE" ? "bg-team-blue" : "bg-white/10"} ${p.golden ? "ring-4 ring-mech-gold" : ""}`}>
                   {p.golden ? "★" : ""}
                 </span>
               ))}
@@ -81,11 +81,7 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
       </main>
 
       <footer className="px-8 pb-6">
-        {timeoutLeft > 0 ? (
-          <p className="rounded-xl bg-mech-gold py-4 text-center font-display text-3xl uppercase text-navy">
-            Timeout kỹ thuật · đội {m.timeout_team === "RED" ? "Đỏ" : "Xanh"} · {fmtClock(timeoutLeft)}
-          </p>
-        ) : m.status === "FINISHED" ? (
+        {m.status === "FINISHED" ? (
           <p className="rounded-xl bg-white py-4 text-center font-display text-3xl uppercase text-navy">
             {m.winner ? `Chiến thắng: ${m.winner === "RED" ? data.red?.team_name : data.blue?.team_name}` : "Hòa"}
           </p>

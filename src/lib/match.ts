@@ -68,8 +68,20 @@ export function useMatchLive(matchId: string | null) {
   return { data, missing, remaining, timeoutLeft, refresh };
 }
 
+// Cứ điểm Chặng 3: 1 góc trên-trái, 2 góc trên-phải, 3 góc dưới-trái, 4 góc dưới-phải, 5 Master Point
+export const POINT_NAMES: Record<number, string> = { 1: "Góc trên-trái", 2: "Góc trên-phải", 3: "Góc dưới-trái", 4: "Góc dưới-phải", 5: "Master Point" };
+// Vị trí ô trong lưới 3×3 khi vẽ sơ đồ (góc ở 4 góc, Master ở giữa)
+export const POINT_CELL: Record<number, string> = { 1: "col-start-1 row-start-1", 2: "col-start-3 row-start-1", 3: "col-start-1 row-start-3", 4: "col-start-3 row-start-3", 5: "col-start-2 row-start-2" };
+
+const SPECIAL: Record<string, string> = {
+  ADJUST: "Chỉnh điểm (trọng tài chính)", KNOCKOUT: "KNOCK-OUT – thắng ngay", COIN_TOSS: "Thắng tung đồng xu", FORFEIT: "Xử thắng (đối thủ bị loại)",
+};
+
 export const evLabel = (e: LiveEvent) =>
-  e.event_type === "FLIP" ? `Lật ô ${e.target_point_index}` : e.event_type === "ADJUST" ? "Chỉnh điểm (trọng tài chính)" : e.rule_name ?? e.event_type;
+  e.event_type === "FLIP" ? `Lật ${POINT_NAMES[e.target_point_index ?? 0] ?? `ô ${e.target_point_index}`}` : SPECIAL[e.event_type] ?? e.rule_name ?? e.event_type;
+
+export const countEv = (events: LiveEvent[], color: Color, type: string) =>
+  events.filter((e) => e.team_color === color && e.event_type === type).length;
 
 export const fmtClock = (s: number) => {
   const n = Math.ceil(Math.max(0, s));
