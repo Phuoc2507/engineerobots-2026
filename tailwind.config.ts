@@ -9,10 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Nhận diện HCMUTE – Mục 3, Phân hệ 1 của đặc tả
-        navy: { DEFAULT: "#0A2540", 600: "#004B93", 900: "#061827" },
-        mech: { red: "#D32F2F", gold: "#FFB800" },
-        ice: "#F4F7FB",
+        // Nhận diện Khoa Cơ khí (FME) – lấy từ logo khoa và CLB FMES
+        // navy-600 = xanh chữ/viền logo FME; mech.red = ngọn đuốc; fmes = xanh CLB FMES
+        navy: { DEFAULT: "#06305E", 600: "#0070B8", 900: "#031D3A" },
+        mech: { red: "#D7262F", gold: "#FFC20E" },
+        fmes: "#20A8E0",
+        ice: "#F2F7FC",
         team: { red: "#E53935", blue: "#1E88E5" },
       },
       fontFamily: {

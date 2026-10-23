@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Bot, Gavel, GraduationCap, LogIn, Menu, X } from "lucide-react";
+import { ArrowRight, Gavel, GraduationCap, LogIn, Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/site";
+import { BrandMark } from "@/components/brand/Logos";
 
 const LOGIN_OPTIONS = [
   { href: "/team/dashboard", icon: GraduationCap, title: "Sinh viên K26", hint: "Email @student.hcmute.edu.vn", tone: "text-navy-600" },
@@ -61,16 +62,8 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2 text-white">
-          <span className="grid h-9 w-9 place-items-center rounded-md bg-mech-red">
-            <Bot className="h-5 w-5" />
-          </span>
-          <span className="leading-tight">
-            <span className="block font-display text-lg tracking-wider">ENGINEEROBOTS</span>
-            <span className="block text-[10px] font-semibold uppercase tracking-[0.25em] text-mech-gold">
-              Khoa Cơ khí · FMES
-            </span>
-          </span>
+        <Link href="/" className="text-white" aria-label="ENGINEEROBOTS 2026 – Trang chủ">
+          <BrandMark />
         </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">

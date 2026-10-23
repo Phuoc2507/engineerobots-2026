@@ -177,7 +177,7 @@ export default async function TeamDashboard() {
             <h2 className="flex items-center gap-2 font-display text-xl uppercase tracking-wide text-navy"><QrCode className="h-5 w-5 text-mech-red" /> Thẻ đội</h2>
             {team.status === "APPROVED" && team.qr_code_token ? (
               <div className="mt-4 rounded-lg bg-white p-3 ring-1 ring-slate-200">
-                <QRCode value={team.qr_code_token} size={176} fgColor="#0A2540" />
+                <QRCode value={team.qr_code_token} size={176} fgColor="#06305E" />
               </div>
             ) : (
               <div className="mt-4 grid h-[200px] w-[200px] place-items-center rounded-lg bg-ice text-center text-xs text-slate-500">
