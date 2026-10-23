@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import QRCode from "react-qr-code";
-import { AlertTriangle, ArrowRight, CheckCircle2, Circle, Clock, Crown, Gavel, Lock, MailCheck, QrCode, Swords } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle2, Circle, Clock, Crown, Heart, Lock, MailCheck, QrCode, Swords } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { SITE, STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
 import TeamManager, { CopyInvite } from "@/components/team/TeamManager";
 import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBooking";
+import TeamAppeals, { type AppealMatch, type MyAppeal } from "@/components/team/TeamAppeals";
 import Link from "next/link";
 
 export const metadata: Metadata = { title: "Đội của tôi · ENGINEEROBOTS 2026" };
@@ -22,6 +23,7 @@ const ROLE_LABEL: Record<string, string> = { LEADER: "Đội trưởng", PILOT: 
 
 type MemberRow = { student_id: string; full_name: string; email: string; phone: string | null; role: string; joined_at: string | null };
 type TeamRow = {
+  id: string;
   team_name: string;
   robot_name: string | null;
   slogan: string | null;
@@ -44,10 +46,14 @@ export default async function TeamDashboard() {
   if (!user || !email.endsWith(`@${STUDENT_DOMAIN}`)) redirect("/register");
 
   // Đánh dấu "đã xác nhận" cho thành viên đăng nhập lần đầu, rồi đọc đội qua RLS
+  // (lọc theo đội của chính mình — staff có thể đọc mọi đội qua RLS)
   await supabase.rpc("claim_membership");
+  const { data: ids } = await supabase.rpc("my_team_ids");
   const { data } = await supabase
     .from("teams")
-    .select("team_name, robot_name, slogan, major, status, review_note, qr_code_token, leader_email, created_at, updated_at, team_members(student_id, full_name, email, phone, role, joined_at)")
+    .select("id, team_name, robot_name, slogan, major, status, review_note, qr_code_token, leader_email, created_at, updated_at, team_members(student_id, full_name, email, phone, role, joined_at)")
+    .in("id", ((ids ?? []) as string[]).length ? (ids as string[]) : ["00000000-0000-0000-0000-000000000000"])
+    .limit(1)
     .maybeSingle();
   const team = data as TeamRow | null;
   if (!team) redirect("/register");
@@ -55,6 +61,26 @@ export default async function TeamDashboard() {
   const approved = team.status === "APPROVED";
   const { data: slotData } = approved ? await supabase.rpc("list_practice_slots") : { data: null };
   const slots = (slotData ?? []) as PracticeSlot[];
+
+  // Trận đã kết thúc của đội + khiếu nại đã gửi
+  type FinishedRow = { id: string; match_code: string | null; stage: string; finished_at: string | null; red_team_id: string; red_score: number; blue_score: number };
+  const [{ data: fin }, { data: apData }, { data: win }, { data: sched }] = approved
+    ? await Promise.all([
+        supabase.from("matches").select("id, match_code, stage, finished_at, red_team_id, red_score, blue_score")
+          .eq("status", "FINISHED").or(`red_team_id.eq.${team.id},blue_team_id.eq.${team.id}`).order("finished_at", { ascending: false }).limit(10),
+        supabase.from("match_appeals").select("match_id, reason, status, resolution_notes, created_at").eq("team_id", team.id),
+        supabase.from("app_settings").select("value").eq("key", "appeal_window_minutes").maybeSingle(),
+        supabase.rpc("get_schedule"),
+      ])
+    : [{ data: null }, { data: null }, { data: null }, { data: null }];
+  const names = new Map(((sched ?? []) as { id: string; red_team: string | null; blue_team: string | null }[]).map((r) => [r.id, r]));
+  const appealMatches: AppealMatch[] = ((fin ?? []) as FinishedRow[]).map((m) => {
+    const red = m.red_team_id === team.id;
+    const n = names.get(m.id);
+    return { id: m.id, match_code: m.match_code, stage: m.stage, finished_at: m.finished_at, my_color: red ? "RED" : "BLUE",
+      my_score: red ? m.red_score : m.blue_score, opp_score: red ? m.blue_score : m.red_score, opponent: (red ? n?.blue_team : n?.red_team) ?? null };
+  });
+  const windowMinutes = Number((win as { value: unknown } | null)?.value ?? 5) || 5;
 
   const members = [...team.team_members].sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
   const me = members.find((m) => m.email.toLowerCase() === email);
@@ -200,21 +226,19 @@ export default async function TeamDashboard() {
               </span>
               <ArrowRight className="h-4 w-4 text-slate-400" />
             </Link>
-            {[
-              { icon: Gavel, title: "Khiếu nại 5 phút", hint: "Mở ngay sau mỗi trận của đội" },
-            ].map((f) => (
-              <div key={f.title} className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                <f.icon className="h-6 w-6 shrink-0 text-slate-300" />
-                <span>
-                  <span className="block font-semibold text-navy">{f.title}</span>
-                  <span className="block text-xs text-slate-500">{f.hint} · <i>sắp mở</i></span>
-                </span>
-              </div>
-            ))}
+            <Link href="/vote" className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:ring-navy-600">
+              <Heart className="h-6 w-6 shrink-0 text-mech-gold" />
+              <span className="flex-1">
+                <span className="block font-semibold text-navy">Bình chọn khán giả</span>
+                <span className="block text-xs text-slate-500">Rủ bạn bè bình chọn cho đội khi BTC mở cổng</span>
+              </span>
+              <ArrowRight className="h-4 w-4 text-slate-400" />
+            </Link>
           </div>
         </section>
 
         <PracticeBooking slots={slots} approved={approved} />
+        {approved && <TeamAppeals matches={appealMatches} appeals={(apData ?? []) as MyAppeal[]} windowMinutes={windowMinutes} />}
       </TeamManager>
     </PortalShell>
   );

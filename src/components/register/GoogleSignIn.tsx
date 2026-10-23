@@ -5,7 +5,8 @@ import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { STUDENT_DOMAIN } from "@/lib/site";
 
-export default function GoogleSignIn() {
+// staff: không ép domain trường (BTC/trọng tài có thể dùng Gmail cá nhân đã được cấp quyền)
+export default function GoogleSignIn({ next = "/register", staff = false }: { next?: string; staff?: boolean }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -15,9 +16,9 @@ export default function GoogleSignIn() {
     const { error } = await createClient().auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=/register`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
         // hd: Google chỉ gợi ý tài khoản thuộc domain trường; server vẫn kiểm tra lại ở callback + RPC
-        queryParams: { hd: STUDENT_DOMAIN, prompt: "select_account" },
+        queryParams: staff ? { prompt: "select_account" } : { hd: STUDENT_DOMAIN, prompt: "select_account" },
       },
     });
     if (error) {

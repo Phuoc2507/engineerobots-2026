@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { OrganizerLogos } from "@/components/brand/Logos";
 import Link from "next/link";
-import { ArrowRight, Box, CalendarClock, ChevronDown, Flag, Mail, Radio, Trophy, Users, Wallet } from "lucide-react";
-import { FAQ, JOIN_STEPS, NAV_LINKS, SITE, TIMELINE } from "@/lib/site";
+import { ArrowRight, Box, CalendarClock, ChevronDown, Flag, Mail, MapPin, MessageCircle, Phone, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
+import { CONTACT, FAQ, JOIN_STEPS, NAV_LINKS, SITE, TIMELINE } from "@/lib/site";
 
 export function Intro() {
   const stats = [
@@ -258,7 +258,8 @@ export function Footer() {
               </li>
             ))}
             <li><Link href="/rules" className="hover:text-mech-gold">Thể lệ chi tiết</Link></li>
-            <li><Link href="/lich-thi" className="hover:text-mech-gold">Lịch thi đấu</Link></li>
+            <li><Link href="/lich-thi" className="hover:text-mech-gold">Lịch thi & bảng xếp hạng</Link></li>
+            <li><Link href="/vote" className="hover:text-mech-gold">Bình chọn khán giả</Link></li>
           </ul>
         </nav>
         <div className="text-sm">
@@ -269,10 +270,15 @@ export function Footer() {
         </div>
         <div className="text-sm">
           <div className="font-bold uppercase tracking-wider text-white">Liên hệ</div>
-          {/* TODO(BTC): bổ sung email / fanpage chính thức */}
-          <p className="mt-2 inline-flex items-center gap-2">
-            <Mail className="h-4 w-4" /> Đang cập nhật
-          </p>
+          {/* Điền thông tin trong CONTACT (src/lib/site.ts) — mục trống sẽ tự ẩn */}
+          <ul className="mt-2 space-y-1.5">
+            {CONTACT.email && <li><a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Mail className="h-4 w-4 shrink-0" /> {CONTACT.email}</a></li>}
+            {CONTACT.phone && <li><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Phone className="h-4 w-4 shrink-0" /> {CONTACT.phone}</a></li>}
+            {CONTACT.fanpage && <li><a href={CONTACT.fanpage} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><ThumbsUp className="h-4 w-4 shrink-0" /> Fanpage</a></li>}
+            {CONTACT.zaloGroup && <li><a href={CONTACT.zaloGroup} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><MessageCircle className="h-4 w-4 shrink-0" /> Nhóm Zalo đội trưởng</a></li>}
+            {CONTACT.address && <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0" /> {CONTACT.address}</li>}
+            {!CONTACT.email && !CONTACT.phone && !CONTACT.fanpage && <li className="inline-flex items-center gap-2"><Mail className="h-4 w-4" /> Kênh liên hệ đang cập nhật</li>}
+          </ul>
         </div>
       </div>
       <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/10 px-4 pt-8 md:flex-row md:items-center md:justify-between md:px-6">

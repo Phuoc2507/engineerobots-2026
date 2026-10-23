@@ -35,9 +35,10 @@ export function AccountBar({ email }: { email: string }) {
   );
 }
 
-export function SignOutButton({ compact }: { compact?: boolean }) {
+export function SignOutButton({ compact, to }: { compact?: boolean; to?: string }) {
   return (
     <form action="/auth/signout" method="post">
+      {to && <input type="hidden" name="to" value={to} />}
       <button className={`inline-flex items-center gap-1.5 rounded-md font-semibold transition ${
         compact ? "h-9 px-2 text-sm text-slate-500 hover:text-mech-red" : "h-11 border border-slate-300 px-4 text-navy hover:border-mech-red hover:text-mech-red"
       }`}>

@@ -49,9 +49,18 @@ function Side({ team, robot, score, color, won, show }: { team: string | null; r
   );
 }
 
+type StandingRow = {
+  stage: string; team_id: string; team_name: string; robot_name: string | null;
+  played: number; won: number; drawn: number; lost: number; points: number;
+  golden_cores: number; fouls: number; score_for: number; score_against: number;
+};
+
 export default async function SchedulePage() {
-  const { data } = await createClient().rpc("get_schedule");
+  const supabase = createClient();
+  const [{ data }, { data: st }] = await Promise.all([supabase.rpc("get_schedule"), supabase.rpc("get_standings")]);
   const matches = (data ?? []) as MatchRow[];
+  const standings = ((st ?? []) as StandingRow[]).filter((r) => r.played > 0);
+  const standingStages = Array.from(new Set(standings.map((r) => r.stage)));
   const stages = Array.from(new Set(matches.map((m) => m.stage)));
 
   return (
@@ -115,6 +124,45 @@ export default async function SchedulePage() {
           </div>
         )}
       </section>
+
+      {standings.length > 0 && (
+        <section className="mt-6 rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7">
+          <h2 className="flex items-center gap-2 font-display text-xl uppercase tracking-wide text-navy">
+            <Trophy className="h-5 w-5 text-mech-gold" /> Bảng xếp hạng
+          </h2>
+          <p className="mt-1 text-xs text-slate-500">Thắng 3 · Hòa 1 · Thua 0. Bằng điểm xét số Lõi Vàng, ít lỗi hơn, rồi hiệu số.</p>
+          {standingStages.map((stage) => (
+            <div key={stage} className="mt-5">
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-mech-red">{stage}</h3>
+              <div className="mt-2 overflow-x-auto rounded-lg ring-1 ring-slate-200">
+                <table className="w-full min-w-[560px] text-sm">
+                  <thead className="bg-ice text-xs uppercase text-slate-500">
+                    <tr>
+                      <th className="px-3 py-2 text-left">#</th><th className="px-3 py-2 text-left">Đội</th>
+                      <th className="px-2 py-2">Trận</th><th className="px-2 py-2">T-H-B</th><th className="px-2 py-2">Lõi vàng</th>
+                      <th className="px-2 py-2">Hiệu số</th><th className="px-2 py-2">Lỗi</th><th className="px-3 py-2 text-right">Điểm</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {standings.filter((r) => r.stage === stage).map((r, i) => (
+                      <tr key={r.team_id} className={i === 0 ? "bg-mech-gold/10" : ""}>
+                        <td className="px-3 py-2 font-bold text-navy">{i + 1}</td>
+                        <td className="px-3 py-2"><b className="text-navy">{r.team_name}</b>{r.robot_name && <span className="block text-xs text-slate-500">{r.robot_name}</span>}</td>
+                        <td className="px-2 py-2 text-center">{r.played}</td>
+                        <td className="px-2 py-2 text-center">{r.won}-{r.drawn}-{r.lost}</td>
+                        <td className="px-2 py-2 text-center">{r.golden_cores}</td>
+                        <td className="px-2 py-2 text-center">{r.score_for - r.score_against > 0 ? "+" : ""}{r.score_for - r.score_against}</td>
+                        <td className="px-2 py-2 text-center">{r.fouls}</td>
+                        <td className="px-3 py-2 text-right font-display text-lg text-navy">{r.points}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
     </PortalShell>
   );
 }

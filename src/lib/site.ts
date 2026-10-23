@@ -64,3 +64,25 @@ export const FAQ = [
 
 export const STUDENT_DOMAIN = "student.hcmute.edu.vn";
 export const MAJORS = ["Cơ điện tử", "Chế tạo máy", "Kỹ thuật Ô tô", "Robot & Trí tuệ nhân tạo", "Tự động hóa", "Khác (Khoa Cơ khí)"];
+
+// TODO(BTC): điền thông tin liên hệ thật — hiện ở footer, trang đăng nhập BTC và email gửi đội
+export const CONTACT = {
+  email: "", // vd: engineerobots@hcmute.edu.vn
+  phone: "", // vd: 0901 234 567 (Trưởng BTC)
+  fanpage: "", // vd: https://facebook.com/...
+  zaloGroup: "", // link nhóm Zalo các đội trưởng
+  address: "Khoa Cơ khí – HCMUTE, 1 Võ Văn Ngân, Thủ Đức, TP.HCM",
+};
+
+export const STAFF_ROLES: Record<string, string> = { BTC: "Ban tổ chức", HEAD_REFEREE: "Trọng tài chính", REFEREE: "Trọng tài" };
+
+// Hạng mục bình chọn khán giả (khớp CHECK trong cast_vote)
+export const VOTE_CATEGORIES = [
+  { key: "FAN_FAVORITE", label: "Đội được yêu thích nhất" },
+  { key: "MOST_CREATIVE_ROBOT", label: "Robot sáng tạo nhất" },
+  { key: "BEST_DESIGN", label: "Thiết kế đẹp nhất" },
+];
+
+export const MATCH_STATUS: Record<string, string> = {
+  SCHEDULED: "Sắp đấu", READY: "Chuẩn bị", RUNNING: "Đang đấu", PAUSED: "Tạm dừng", FINISHED: "Kết thúc",
+};
