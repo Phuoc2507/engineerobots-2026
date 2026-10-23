@@ -158,6 +158,9 @@ export function Timeline() {
             );
           })}
         </ol>
+        <Link href="/lich-thi" className="mt-8 inline-flex items-center gap-2 font-bold text-navy-600 hover:text-mech-red">
+          Xem lịch thi đấu chi tiết <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
     </section>
   );
@@ -255,6 +258,7 @@ export function Footer() {
               </li>
             ))}
             <li><Link href="/rules" className="hover:text-mech-gold">Thể lệ chi tiết</Link></li>
+            <li><Link href="/lich-thi" className="hover:text-mech-gold">Lịch thi đấu</Link></li>
           </ul>
         </nav>
         <div className="text-sm">

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import QRCode from "react-qr-code";
-import { AlertTriangle, CalendarClock, CheckCircle2, Circle, Clock, Crown, Gavel, Lock, MailCheck, QrCode, Swords } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle2, Circle, Clock, Crown, Gavel, Lock, MailCheck, QrCode, Swords } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { SITE, STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
 import TeamManager, { CopyInvite } from "@/components/team/TeamManager";
+import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBooking";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "Đội của tôi · ENGINEEROBOTS 2026" };
 
@@ -49,6 +51,10 @@ export default async function TeamDashboard() {
     .maybeSingle();
   const team = data as TeamRow | null;
   if (!team) redirect("/register");
+
+  const approved = team.status === "APPROVED";
+  const { data: slotData } = approved ? await supabase.rpc("list_practice_slots") : { data: null };
+  const slots = (slotData ?? []) as PracticeSlot[];
 
   const members = [...team.team_members].sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
   const me = members.find((m) => m.email.toLowerCase() === email);
@@ -185,10 +191,16 @@ export default async function TeamDashboard() {
               </div>
             )}
           </div>
-          <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-1">
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-1">
+            <Link href="/lich-thi" className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:ring-navy-600">
+              <Swords className="h-6 w-6 shrink-0 text-mech-red" />
+              <span className="flex-1">
+                <span className="block font-semibold text-navy">Lịch thi đấu</span>
+                <span className="block text-xs text-slate-500">Các mốc của giải và lịch trận sau khi bốc thăm</span>
+              </span>
+              <ArrowRight className="h-4 w-4 text-slate-400" />
+            </Link>
             {[
-              { icon: Swords, title: "Lịch thi đấu riêng", hint: "Có sau khi bốc thăm chia bảng" },
-              { icon: CalendarClock, title: "Đặt lịch thử sa bàn", hint: "Slot 15 phút · tối đa 2 slot/tuần" },
               { icon: Gavel, title: "Khiếu nại 5 phút", hint: "Mở ngay sau mỗi trận của đội" },
             ].map((f) => (
               <div key={f.title} className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
@@ -201,6 +213,8 @@ export default async function TeamDashboard() {
             ))}
           </div>
         </section>
+
+        <PracticeBooking slots={slots} approved={approved} />
       </TeamManager>
     </PortalShell>
   );
