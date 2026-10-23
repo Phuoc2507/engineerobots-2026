@@ -271,7 +271,8 @@ export function Footer() {
         </div>
       </div>
       <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 px-4 pt-6 text-xs md:px-6">
-        © 2026 {SITE.name} · {SITE.faculty}
+        © 2026 {SITE.name} · {SITE.faculty} ·{" "}
+        <Link href="/privacy" className="hover:text-mech-gold">Chính sách quyền riêng tư</Link>
       </div>
     </footer>
   );
