@@ -1,6 +1,7 @@
-import Image from "next/image";
 import { OrganizerLogos } from "@/components/brand/Logos";
 import Link from "next/link";
+import ArenaVideo from "@/components/landing/ArenaVideo";
+import Reveal from "@/components/landing/Reveal";
 import { ArrowRight, Box, CalendarClock, ChevronDown, Flag, Mail, MapPin, MessageCircle, Phone, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
 import { CONTACT, FAQ, JOIN_STEPS, NAV_LINKS, PRIZES, SITE, TIMELINE, WORKSHOPS } from "@/lib/site";
 
@@ -93,14 +94,24 @@ export function ArenaShowcase() {
           </Link>
         </div>
         <div className="mt-12 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
-          <Image src="/images/sa-ban-3d.png" alt="Ảnh dựng 3D sa bàn ENGINEEROBOTS 2026" width={1600} height={1000}
-            sizes="(min-width: 1024px) 60vw, 100vw" className="h-auto w-full rounded-xl border border-white/10" />
+          <Reveal>
+            <div className="relative overflow-hidden rounded-xl border border-white/10 shadow-2xl shadow-black/30">
+              <ArenaVideo />
+              <span className="pointer-events-none absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-navy-900/70 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest backdrop-blur">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-mech-red" /> Mô phỏng trận đấu
+              </span>
+            </div>
+          </Reveal>
           <ul className="space-y-4">
-            {zones.map((z) => (
-              <li key={z.tag} className="rounded-xl border border-white/10 bg-white/5 p-5">
-                <span className="text-xs font-bold uppercase tracking-widest text-mech-gold">{z.tag}</span>
-                <div className="mt-1 font-display text-xl uppercase tracking-wide">{z.title}</div>
-                <p className="mt-1 text-sm text-white/75">{z.desc}</p>
+            {zones.map((z, i) => (
+              <li key={z.tag}>
+                <Reveal delay={120 * (i + 1)}>
+                  <div className="rounded-xl border border-white/10 bg-white/5 p-5 transition hover:-translate-y-0.5 hover:border-mech-gold/50 hover:bg-white/10">
+                    <span className="text-xs font-bold uppercase tracking-widest text-mech-gold">{z.tag}</span>
+                    <div className="mt-1 font-display text-xl uppercase tracking-wide">{z.title}</div>
+                    <p className="mt-1 text-sm text-white/75">{z.desc}</p>
+                  </div>
+                </Reveal>
               </li>
             ))}
           </ul>
