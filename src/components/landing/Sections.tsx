@@ -22,8 +22,8 @@ export function Intro() {
             </p>
             <h2 className="section-title mt-3">Sân chơi đầu tiên của kỹ sư K26</h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-600">
-              ENGINEEROBOTS là cuộc thi học thuật thường niên dành cho tân sinh viên Khoa Cơ khí – Cơ điện tử, Chế
-              tạo máy, Ô tô, Robot &amp; AI, Tự động hóa. Chỉ với kiến thức cơ khí và lập trình cơ bản, các đội sẽ tự
+              ENGINEEROBOTS là cuộc thi học thuật thường niên do Khoa Cơ khí tổ chức, dành cho tân sinh viên
+              khóa 2026 hệ chính quy toàn trường HCM-UTE. Chỉ với kiến thức cơ khí và lập trình cơ bản, các đội sẽ tự
               tay đi từ ý tưởng đến một robot thi đấu thực thụ.
             </p>
             <p className="mt-4 text-slate-600">
@@ -72,9 +72,9 @@ export function Intro() {
 
 export function ArenaShowcase() {
   const zones = [
-    { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 90 cm dọc hai mép, line đen 25 mm, đoạn thẳng 180 cm và các khúc gấp 45°, cổng thoát 55 cm." },
-    { tag: "Chặng 2", title: "Khu thu gom khối", desc: "6 khối 6 cm hai màu, dốc trung tâm 40 × 40 cm cao 8 cm mang Khối Vàng, Ô tập kết 25 × 25 cm." },
-    { tag: "Chặng 3", title: "Cứ điểm & Master Tower", desc: "4 cứ điểm góc 20 × 20 cm và tháp Master 70 × 70 cm cao 10 cm với Master Point trên đỉnh." },
+    { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 90 cm dọc hai mép, line đen 20 mm: Đường Danh vọng thẳng 180 cm tới Checkpoint, Đường Thách thức ziczac 45°, vạch đích chữ T." },
+    { tag: "Chặng 2", title: "Cấu kiện & Bục Cơ hội", desc: "6 Cấu kiện Kiến thức 6 cm hai màu, Bục Cơ hội 40 × 40 cm cao 5 cm mang khối Cơ hội vàng 8 cm, Trạm thành tựu 25 × 25 cm." },
+    { tag: "Chặng 3", title: "Cầu Bản lĩnh & Vinh quang", desc: "Cầu gỗ 40 × 30 cm, 4 cứ điểm Năng động, Sáng tạo, Hội nhập, Bền vững và Bục Vinh quang 70 × 70 cm cao 5 cm." },
   ];
   return (
     <section id="sa-ban-3d" className="bg-navy py-20 text-white md:py-28">

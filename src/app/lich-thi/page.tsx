@@ -130,7 +130,7 @@ export default async function SchedulePage() {
           <h2 className="flex items-center gap-2 font-display text-xl uppercase tracking-wide text-navy">
             <Trophy className="h-5 w-5 text-mech-gold" /> Bảng xếp hạng
           </h2>
-          <p className="mt-1 text-xs text-slate-500">Thắng 3 · Hòa 1 · Thua 0. Top 2 mỗi bảng đi tiếp. Bằng điểm xét hiệu số, tổng điểm ghi được, số Khối Vàng, rồi ít lỗi hơn.</p>
+          <p className="mt-1 text-xs text-slate-500">Thống kê theo trận đã kết thúc (Thắng 3 · Hòa 1 · Thua 0). Vòng loại xếp hạng theo thời gian, top 16 vào Vòng Chung kết xếp hạng loại trực tiếp.</p>
           {standingStages.map((stage) => (
             <div key={stage} className="mt-5">
               <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-mech-red">{stage}</h3>
@@ -139,7 +139,7 @@ export default async function SchedulePage() {
                   <thead className="bg-ice text-xs uppercase text-slate-500">
                     <tr>
                       <th className="px-3 py-2 text-left">#</th><th className="px-3 py-2 text-left">Đội</th>
-                      <th className="px-2 py-2">Trận</th><th className="px-2 py-2">T-H-B</th><th className="px-2 py-2">Khối vàng</th>
+                      <th className="px-2 py-2">Trận</th><th className="px-2 py-2">T-H-B</th><th className="px-2 py-2">Cơ hội vàng</th>
                       <th className="px-2 py-2">Hiệu số</th><th className="px-2 py-2">Lỗi</th><th className="px-3 py-2 text-right">Điểm</th>
                     </tr>
                   </thead>

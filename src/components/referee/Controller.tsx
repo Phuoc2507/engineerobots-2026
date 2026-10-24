@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { countEv, evLabel, fmtClock, POINT_CELL, useMatchLive, type Color } from "@/lib/match";
 import { MATCH_STATUS } from "@/lib/site";
 
-// Trọng tài chính: điều khiển đồng hồ, KNOCK-OUT, xử thắng, chỉnh điểm thủ công, kết thúc trận (thể lệ 2026: không có timeout kỹ thuật)
+// Trọng tài chính: điều khiển đồng hồ, Chiến thắng tuyệt đối, xử thắng, chỉnh điểm thủ công, kết thúc trận (thể lệ 2026: không có timeout kỹ thuật)
 export default function Controller({ matchId, canReset }: { matchId: string; canReset: boolean }) {
   const { data, missing, remaining, refresh } = useMatchLive(matchId);
   const [busy, setBusy] = useState<string | null>(null);
@@ -32,7 +32,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
   const big = "flex h-16 items-center justify-center gap-2 rounded-xl text-base font-bold transition active:scale-95 disabled:opacity-40";
   const spin = (k: string) => busy === k && <Loader2 className="h-5 w-5 animate-spin" />;
   const name = (c: Color) => (c === "RED" ? `Đỏ (${data.red?.team_name ?? "—"})` : `Xanh (${data.blue?.team_name ?? "—"})`);
-  // KNOCK-OUT: giữ Master Point + ≥ 3/4 cứ điểm góc trong 10 giây (trọng tài chính xác nhận)
+  // Chiến thắng tuyệt đối: giữ Cứ điểm Vinh quang + ≥ 3/4 cứ điểm góc → kết thúc ngay (trọng tài chính xác nhận)
   const koReady = (c: Color) =>
     data.points.some((pt) => pt.golden && pt.owner === c) && data.points.filter((pt) => !pt.golden && pt.owner === c).length >= 3;
   const warn = { RED: countEv(data.events, "RED", "WARNING"), BLUE: countEv(data.events, "BLUE", "WARNING") };
@@ -51,7 +51,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
       <main className="mx-auto max-w-4xl space-y-5 px-4 pt-5">
         <section className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 rounded-2xl bg-white/5 p-5">
           <div className="text-left">
-            <p className="text-xs font-bold uppercase text-team-red">Đỏ · {data.fouls.RED} lỗi · {retry.RED}/3 retry · {warn.RED}/3 cảnh cáo</p>
+            <p className="text-xs font-bold uppercase text-team-red">Đỏ · {data.fouls.RED} lỗi · {retry.RED}/3 retry · {warn.RED}/2 cảnh cáo</p>
             <p className="truncate font-display text-xl uppercase">{data.red?.team_name ?? "—"}</p>
             <p className="font-display text-6xl tabular-nums text-team-red">{m.red_score}</p>
           </div>
@@ -60,7 +60,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
             <p className={`font-display text-6xl tabular-nums ${remaining <= 30 && m.status === "RUNNING" ? "text-mech-red" : ""}`}>{fmtClock(remaining)}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs font-bold uppercase text-team-blue">Xanh · {data.fouls.BLUE} lỗi · {retry.BLUE}/3 retry · {warn.BLUE}/3 cảnh cáo</p>
+            <p className="text-xs font-bold uppercase text-team-blue">Xanh · {data.fouls.BLUE} lỗi · {retry.BLUE}/3 retry · {warn.BLUE}/2 cảnh cáo</p>
             <p className="truncate font-display text-xl uppercase">{data.blue?.team_name ?? "—"}</p>
             <p className="font-display text-6xl tabular-nums text-team-blue">{m.blue_score}</p>
           </div>
@@ -81,9 +81,9 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
           {(m.status === "RUNNING" || m.status === "PAUSED") && (
             <>
               {(["RED", "BLUE"] as Color[]).map((c) => (
-                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận KNOCK-OUT: phe ${name(c)} giữ Master Point + ≥ 3 cứ điểm góc đủ 10 giây? Trận kết thúc ngay.`)}
+                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận CHIẾN THẮNG TUYỆT ĐỐI: phe ${name(c)} giữ Cứ điểm Vinh quang + ≥ 3 cứ điểm góc? Trận kết thúc ngay.`)}
                   disabled={busy !== null || !koReady(c)} className={`${big} ${c === "RED" ? "bg-team-red" : "bg-team-blue"}`}>
-                  {spin(`ko${c}`) || <Crown className="h-5 w-5" />} KNOCK-OUT {c === "RED" ? "Đỏ" : "Xanh"}
+                  {spin(`ko${c}`) || <Crown className="h-5 w-5" />} Thắng tuyệt đối {c === "RED" ? "Đỏ" : "Xanh"}
                 </button>
               ))}
               <button onClick={() => rpc("finish", "head_finish", p, `Kết thúc trận? Tỉ số ${m.red_score}–${m.blue_score}. Các đội có thời hạn khiếu nại sau khi kết thúc.`)} disabled={busy !== null} className={`${big} col-span-2 bg-white text-navy md:col-span-4`}>
@@ -103,9 +103,9 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
             </button>
           ))}
           {m.status !== "SCHEDULED" && m.status !== "READY" && (["RED", "BLUE"] as Color[]).filter((c) => warn[c === "RED" ? "BLUE" : "RED"] >= 3 && m.winner !== c).map((c) => (
-            <button key={`ff${c}`} onClick={() => rpc(`ff${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "FORFEIT" }, `Đối thủ đã nhận 3 cảnh cáo. Xử phe ${name(c)} thắng?`)}
+            <button key={`ff${c}`} onClick={() => rpc(`ff${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "FORFEIT" }, `Đối thủ tái phạm sau cảnh cáo / bị truất quyền. Xử phe ${name(c)} thắng?`)}
               disabled={busy !== null} className={`${big} col-span-2 bg-mech-gold text-navy md:col-span-4`}>
-              {spin(`ff${c}`)} Xử thắng cho {c === "RED" ? "Đỏ" : "Xanh"} (đối thủ 3 cảnh cáo)
+              {spin(`ff${c}`)} Xử thắng cho {c === "RED" ? "Đỏ" : "Xanh"} (đối thủ bị truất quyền)
             </button>
           ))}
         </section>

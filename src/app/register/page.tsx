@@ -30,7 +30,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
   const closed = Date.now() > new Date(SITE.registrationDeadline).getTime();
 
   return (
-    <PortalShell title="Đăng ký đội thi" subtitle="Đội 3–5 sinh viên K26 Khoa Cơ khí. Đội trưởng đăng nhập bằng email trường và khai báo cho cả đội.">
+    <PortalShell title="Đăng ký đội thi" subtitle="Đội tối đa 5 tân sinh viên K26 HCM-UTE. Đội trưởng đăng nhập bằng email trường và khai báo cho cả đội.">
       {error && (
         <div role="alert" className="mb-6 flex items-start gap-3 rounded-lg border border-mech-red/30 bg-red-50 p-4 text-sm text-mech-red">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" /> {error}

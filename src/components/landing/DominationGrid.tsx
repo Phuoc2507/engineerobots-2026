@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 type Owner = "NEUTRAL" | "RED" | "BLUE";
 
-// Thứ tự: 1 góc trên-trái, 2 góc trên-phải, 3 góc dưới-trái, 4 góc dưới-phải, 5 Master
+// Thứ tự: 1 Năng động, 2 Sáng tạo, 3 Hội nhập, 4 Bền vững, 5 Cứ điểm Vinh quang
 const INITIAL: Owner[] = ["RED", "BLUE", "NEUTRAL", "BLUE", "NEUTRAL"];
 
 const COLOR: Record<Owner, string> = {
@@ -14,8 +14,9 @@ const COLOR: Record<Owner, string> = {
 };
 
 const POS = ["left-0 top-0", "right-0 top-0", "left-0 bottom-0", "right-0 bottom-0"];
+const NAMES = ["Năng động", "Sáng tạo", "Hội nhập", "Bền vững"];
 
-// Chặng 3: 4 cứ điểm góc + Master Tower – tự lật ngẫu nhiên để minh họa thế trận
+// Chặng 3: 4 cứ điểm góc + Cứ điểm Vinh quang – tự lật ngẫu nhiên để minh họa thế trận
 export default function DominationGrid() {
   const [cells, setCells] = useState<Owner[]>(INITIAL);
 
@@ -31,7 +32,11 @@ export default function DominationGrid() {
     return () => clearInterval(id);
   }, []);
 
-  const score = (team: Owner) => cells.reduce((s, c, i) => s + (c === team ? (i === 4 ? 50 : 20) : 0), 0);
+  // Vinh quang chỉ tính khi đội giữ ít nhất 1 cứ điểm góc
+  const score = (team: Owner) => {
+    const corners = cells.slice(0, 4).filter((c) => c === team).length;
+    return corners * 20 + (cells[4] === team && corners > 0 ? 50 : 0);
+  };
 
   return (
     <div className="relative mx-auto w-full max-w-sm">
@@ -50,18 +55,18 @@ export default function DominationGrid() {
         <div className="relative h-full w-full">
           {POS.map((pos, i) => (
             <div key={i} className={`absolute grid h-[26%] w-[26%] place-items-center rounded-lg border-2 transition-all duration-500 ${pos} ${COLOR[cells[i]]}`}>
-              <span className="font-display text-xl text-white/90">{i + 1}</span>
+              <span className="px-1 text-center text-[10px] font-bold uppercase leading-tight text-white/90 sm:text-xs">{NAMES[i]}</span>
             </div>
           ))}
           <div className="absolute left-1/2 top-1/2 grid h-[40%] w-[40%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg border-2 border-mech-gold/70 bg-navy-900">
             <div className={`grid h-[60%] w-[60%] place-items-center rounded-md border-2 transition-all duration-500 ${COLOR[cells[4]]}`}>
-              <span className="font-display text-sm text-white">MASTER</span>
+              <span className="font-display text-sm text-white">★</span>
             </div>
-            <span className="absolute -top-2 rounded bg-mech-gold px-1.5 text-[9px] font-bold uppercase tracking-wider text-navy">Master Tower</span>
+            <span className="absolute -top-2 rounded bg-mech-gold px-1.5 text-[9px] font-bold uppercase tracking-wider text-navy">Vinh quang</span>
           </div>
         </div>
       </div>
-      <p className="mt-3 text-center text-xs text-white/70">Mô phỏng minh họa · Cứ điểm góc 20đ · Master Point 50đ</p>
+      <p className="mt-3 text-center text-xs text-white/70">Mô phỏng minh họa · Cứ điểm góc 20đ · Vinh quang 50đ</p>
     </div>
   );
 }

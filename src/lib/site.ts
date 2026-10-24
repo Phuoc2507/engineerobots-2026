@@ -19,18 +19,18 @@ export const NAV_LINKS = [
 ];
 
 export const JOIN_STEPS = [
-  { title: "Lập đội tối đa 5 người", desc: "Tân sinh viên K26 Khoa Cơ khí, khác ngành vẫn được ghép chung. Mỗi đội có 1 đội trưởng." },
+  { title: "Lập đội tối đa 5 người", desc: "Tân sinh viên khóa 2026 hệ chính quy HCM-UTE. Mỗi đội bắt buộc có 1 đội trưởng; mỗi bạn chỉ thuộc 1 đội." },
   { title: "Đăng ký bằng email trường", desc: "Đội trưởng đăng nhập Google @student.hcmute.edu.vn và điền MSSV các thành viên." },
-  { title: "Workshop & chạy thử", desc: "Tham gia 3 workshop kỹ thuật, đặt lịch Open Field Test trên sa bàn thật 4,8 × 4,8 m." },
+  { title: "Workshop & chạy thử", desc: "Dự 2 buổi tập huấn kỹ thuật (mỗi đội ít nhất 1 bạn), đặt lịch chạy thử trên sa bàn thật 4,8 × 4,8 m." },
 ];
 
 // status: done | current | upcoming
 export const TIMELINE = [
   { title: "Mở cổng đăng ký", date: "Tháng 10/2026", desc: "Đăng ký đội tối đa 5 thành viên K26 bằng email trường.", status: "current" },
-  { title: "Chuỗi 3 Workshop kỹ thuật", date: "Dự kiến", desc: "CAD & gia công khung, mạch driver – cảm biến, thuật toán PID & điều khiển không dây.", status: "upcoming" },
+  { title: "2 buổi tập huấn kỹ thuật", date: "Dự kiến 8:00", desc: "Buổi 1 cơ khí & điện tử cơ bản, Buổi 2 lập trình PID & điều khiển không dây.", status: "upcoming" },
   { title: "Open Field Test", date: "Trước 2 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đặt slot qua hệ thống.", status: "upcoming" },
-  { title: "Vòng bảng", date: "Dự kiến", desc: "Bảng 3–4 đội đấu vòng tròn, chọn 2 đội đầu bảng đi tiếp.", status: "upcoming" },
-  { title: "Loại trực tiếp & Chung kết", date: "Dự kiến", desc: "Tứ kết, bán kết loại trực tiếp; chung kết Bo3. Trao giải & bình chọn khán giả.", status: "upcoming" },
+  { title: "Vòng loại", date: "Dự kiến", desc: "Xếp hạng theo thời gian: hoàn thành Chặng 1 và 2 cấu kiện Kiến thức. Top 16 đi tiếp.", status: "upcoming" },
+  { title: "Chung kết xếp hạng", date: "Dự kiến", desc: "16 đội đối kháng 1 vs 1 loại trực tiếp; trận chung kết Bo3. Trao giải & bình chọn khán giả.", status: "upcoming" },
 ] as const;
 
 export const ROBOT_SPECS = [
@@ -39,7 +39,7 @@ export const ROBOT_SPECS = [
   { label: "Nguồn DC", value: "≤ 12,6 V" },
   { label: "Khối lượng", value: "Không giới hạn" },
   { label: "Chặng 1", value: "100% tự hành" },
-  { label: "Chặng 2–3", value: "Remote 2,4 GHz" },
+  { label: "Chặng 2–3", value: "Điều khiển từ xa" },
 ];
 
 export const FAQ = [
@@ -53,7 +53,7 @@ export const FAQ = [
   },
   {
     q: "Đội có thể ghép sinh viên khác ngành không?",
-    a: "Có, miễn là tất cả thành viên đều là sinh viên K26 thuộc Khoa Cơ khí (Cơ điện tử, Chế tạo máy, Ô tô, Robot & AI, Tự động hóa…).",
+    a: "Có. Thể lệ 26/TB-BTC chỉ yêu cầu tất cả thành viên là tân sinh viên khóa 2026 hệ chính quy của HCM-UTE, không giới hạn ngành hay khoa.",
   },
   {
     q: "Linh kiện lấy ở đâu? Có được dùng linh kiện tự mua không?",
@@ -65,7 +65,7 @@ export const FAQ = [
   },
   {
     q: "Robot có được điều khiển từ xa không?",
-    a: "Chặng 1 bắt buộc tự hành 100%, chỉ có một nút khởi động. Từ Chặng 2 được dùng tay điều khiển không dây 2,4 GHz. Cấm thiết bị gây nhiễu sóng.",
+    a: "Chặng 1 bắt buộc tự hành 100%, chỉ ấn nút khởi động một lần. Sau khi hoàn thành Chặng 1 được điều khiển từ xa (RF, Bluetooth, Wifi, gamepad không dây…). Cấm thiết bị gây nhiễu sóng.",
   },
 ];
 
@@ -77,14 +77,14 @@ export const PRIZES = [
   { rank: "Được yêu thích nhất", reward: "500.000đ", extra: "Bình chọn qua Fanpage" },
 ];
 
+// TODO(BTC): điền ngày 2 buổi tập huấn (thể lệ để trống "ngày … tháng … năm 2026")
 export const WORKSHOPS = [
-  { title: "Workshop 1 · Cơ khí", desc: "Thiết kế khung vỏ 3D CAD, cắt laser mica/nhôm, in 3D FDM; chọn động cơ DC giảm tốc và bánh xe." },
-  { title: "Workshop 2 · Điện tử", desc: "Mạch driver H-Bridge L298N/TB6612, cảm biến dò line hồng ngoại, Arduino/ESP32." },
-  { title: "Workshop 3 · Lập trình", desc: "Thuật toán dò line PID thích nghi và điều khiển không dây an toàn." },
+  { title: "Buổi 1 · Cơ khí & Điện tử cơ bản", desc: "8:00, ngày BTC thông báo sau. Nền tảng thiết kế cơ khí, điện tử cơ bản, cách dùng cảm biến dò line; hỏi đáp kỹ thuật và thể lệ." },
+  { title: "Buổi 2 · Lập trình", desc: "8:00, ngày BTC thông báo sau. Điều khiển động cơ, thuật toán dò line PID, tích hợp điều khiển không dây; hỏi đáp trực tiếp." },
 ];
 
 export const STUDENT_DOMAIN = "student.hcmute.edu.vn";
-export const MAJORS = ["Cơ điện tử", "Chế tạo máy", "Kỹ thuật Ô tô", "Robot & Trí tuệ nhân tạo", "Tự động hóa", "Khác (Khoa Cơ khí)"];
+export const MAJORS = ["Cơ điện tử", "Chế tạo máy", "Kỹ thuật Ô tô", "Robot & Trí tuệ nhân tạo", "Tự động hóa", "Ngành khác"];
 
 // TODO(BTC): điền thông tin liên hệ thật — hiện ở footer, trang đăng nhập BTC và email gửi đội
 export const CONTACT = {

@@ -9,7 +9,7 @@ import { MATCH_STATUS } from "@/lib/site";
 
 export type PadRule = { rule_key: string; rule_name: string; score_value: number; max_per_match: number | null };
 
-// Bảng chấm cho trọng tài biên: nút luật + sơ đồ 4 cứ điểm góc và Master Point (Chặng 3)
+// Bảng chấm cho trọng tài biên: nút luật + sơ đồ 4 cứ điểm góc và Cứ điểm Vinh quang (Chặng 3)
 export default function ScoringPad({ matchId, side, rules }: { matchId: string; side: Color; rules: PadRule[] }) {
   const { data, missing, remaining, refresh } = useMatchLive(matchId);
   const [busy, setBusy] = useState<string | null>(null);
@@ -83,7 +83,7 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
                   className={`relative aspect-square rounded-xl text-sm font-bold transition active:scale-95 disabled:opacity-60 ${POINT_CELL[p.index] ?? ""} ${tone} ${p.golden ? "ring-4 ring-mech-gold" : ""}`}
                   aria-label={`${POINT_NAMES[p.index] ?? `Ô ${p.index}`}: ${p.owner ?? "trung lập"}`}
                 >
-                  {busy === `p${p.index}` ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : <>{p.golden ? <span className="block text-2xl">★</span> : <span className="block text-2xl">{p.index}</span>}<span className="text-[11px] opacity-80">{p.golden ? "Master · 50đ" : "Góc · 20đ"}</span></>}
+                  {busy === `p${p.index}` ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : <>{p.golden ? <span className="block text-2xl">★</span> : <span className="block text-2xl">{p.index}</span>}<span className="text-[11px] opacity-80">{p.golden ? "Vinh quang · 50đ" : `${POINT_NAMES[p.index] ?? "Góc"} · 20đ`}</span></>}
                 </button>
               );
             })}
@@ -100,11 +100,11 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
               </button>
             ))}
           </div>
-          <h2 className="mb-2 mt-4 text-xs font-bold uppercase tracking-wider text-white/50">Retry / cảnh cáo (0 điểm, tối đa 3 lần)</h2>
+          <h2 className="mb-2 mt-4 text-xs font-bold uppercase tracking-wider text-white/50">Retry (tối đa 3) / cảnh cáo (tái phạm → truất quyền)</h2>
           <div className="grid grid-cols-2 gap-2">
             {marks.map((r) => (
               <button key={r.rule_key} disabled={!live || busy !== null || full(r)}
-                onClick={() => { if (r.rule_key !== "WARNING" || window.confirm("Ghi cảnh cáo hành vi? Đủ 3 cảnh cáo sẽ bị xử thua.")) rpc(r.rule_key, "ref_add_event", { p_match: matchId, p_color: side, p_rule_key: r.rule_key }, r.rule_name); }}
+                onClick={() => { if (r.rule_key !== "WARNING" || window.confirm("Ghi cảnh cáo hành vi? Tái phạm sau 1 cảnh cáo sẽ bị truất quyền thi đấu.")) rpc(r.rule_key, "ref_add_event", { p_match: matchId, p_color: side, p_rule_key: r.rule_key }, r.rule_name); }}
                 className={`min-h-[60px] rounded-xl px-3 py-2 text-left text-sm font-bold transition active:scale-95 disabled:opacity-40 ${r.rule_key === "WARNING" ? "bg-mech-gold text-navy" : "bg-white/15"}`}>
                 <span className="block font-display text-2xl">{used(r)}/{r.max_per_match ?? "∞"}</span>{r.rule_name}
               </button>

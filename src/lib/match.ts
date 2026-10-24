@@ -68,13 +68,13 @@ export function useMatchLive(matchId: string | null) {
   return { data, missing, remaining, timeoutLeft, refresh };
 }
 
-// Cứ điểm Chặng 3: 1 góc trên-trái, 2 góc trên-phải, 3 góc dưới-trái, 4 góc dưới-phải, 5 Master Point
-export const POINT_NAMES: Record<number, string> = { 1: "Góc trên-trái", 2: "Góc trên-phải", 3: "Góc dưới-trái", 4: "Góc dưới-phải", 5: "Master Point" };
-// Vị trí ô trong lưới 3×3 khi vẽ sơ đồ (góc ở 4 góc, Master ở giữa)
+// Cứ điểm Chặng 3 (thể lệ 3.3–3.7): 1 Năng động (trên-trái), 2 Sáng tạo (trên-phải), 3 Hội nhập (dưới-trái), 4 Bền vững (dưới-phải), 5 Vinh quang
+export const POINT_NAMES: Record<number, string> = { 1: "Năng động", 2: "Sáng tạo", 3: "Hội nhập", 4: "Bền vững", 5: "Cứ điểm Vinh quang" };
+// Vị trí ô trong lưới 3×3 khi vẽ sơ đồ (góc ở 4 góc, Vinh quang ở giữa)
 export const POINT_CELL: Record<number, string> = { 1: "col-start-1 row-start-1", 2: "col-start-3 row-start-1", 3: "col-start-1 row-start-3", 4: "col-start-3 row-start-3", 5: "col-start-2 row-start-2" };
 
 const SPECIAL: Record<string, string> = {
-  ADJUST: "Chỉnh điểm (trọng tài chính)", KNOCKOUT: "KNOCK-OUT – thắng ngay", COIN_TOSS: "Thắng tung đồng xu", FORFEIT: "Xử thắng (đối thủ bị loại)",
+  ADJUST: "Chỉnh điểm (trọng tài chính)", KNOCKOUT: "Chiến thắng tuyệt đối", COIN_TOSS: "Thắng tung đồng xu", FORFEIT: "Xử thắng (đối thủ bị loại)",
 };
 
 export const evLabel = (e: LiveEvent) =>

@@ -12,7 +12,7 @@ export type AdminMatch = {
 };
 
 const TZ = "Asia/Ho_Chi_Minh";
-const STAGES = ["Vòng bảng", "Tứ kết", "Bán kết", "Tranh hạng ba", "Chung kết", "Giao hữu"];
+const STAGES = ["Vòng loại", "Vòng 1/8", "Tứ kết", "Bán kết", "Tranh hạng ba", "Chung kết", "Giao hữu"];
 const STATUS: Record<string, string> = { SCHEDULED: "Sắp đấu", READY: "Chuẩn bị", RUNNING: "Đang đấu", PAUSED: "Tạm dừng", FINISHED: "Kết thúc" };
 // datetime-local ↔ ISO theo giờ Việt Nam (không phụ thuộc múi giờ máy BTC)
 const toLocal = (s: string | null) => (s ? new Date(s).toLocaleString("sv-SE", { timeZone: TZ }).replace(" ", "T").slice(0, 16) : "");
@@ -20,7 +20,7 @@ const fromLocal = (v: string) => (v ? `${v}:00+07:00` : null);
 const fmt = (s: string | null) => (s ? new Date(s).toLocaleString("vi-VN", { timeZone: TZ, weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "Chưa xếp giờ");
 
 type Form = { id: string | null; code: string; stage: string; red: string; blue: string; start: string; duration: number };
-const EMPTY: Form = { id: null, code: "", stage: "Vòng bảng", red: "", blue: "", start: "", duration: 180 };
+const EMPTY: Form = { id: null, code: "", stage: "Vòng loại", red: "", blue: "", start: "", duration: 180 };
 
 export default function MatchManager({ matches, teams }: { matches: AdminMatch[]; teams: TeamOption[] }) {
   const { busy, error, call } = useRpc();

@@ -16,8 +16,8 @@ export default function Arena3DPage() {
         <ArenaViewer />
         <ul className="mt-4 grid gap-2 px-1 text-sm text-slate-600 sm:grid-cols-3">
           <li><b className="text-team-red">Chặng 1</b> · 2 làn dò line hai bên biên</li>
-          <li><b className="text-navy">Chặng 2</b> · 6 khối cấu kiện + bục dốc Khối Vàng</li>
-          <li><b className="text-team-blue">Chặng 3</b> · 4 cứ điểm góc + Master Tower</li>
+          <li><b className="text-navy">Chặng 2</b> · 6 Cấu kiện Kiến thức + Bục Cơ hội</li>
+          <li><b className="text-team-blue">Chặng 3</b> · Cầu Bản lĩnh, 4 cứ điểm + Bục Vinh quang</li>
         </ul>
         <p className="mt-3 px-1 text-sm">
           <Link href="/rules#sa-ban" className="font-semibold text-navy-600 underline">Xem thông số chi tiết trong thể lệ</Link>
@@ -28,7 +28,7 @@ export default function Arena3DPage() {
       <div className="mt-6 rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
         <h2 className="px-1 font-display text-xl uppercase tracking-wide text-navy">Video mô phỏng một lượt thi</h2>
         <p className="mt-1 px-1 text-sm text-slate-600">
-          Robot đỏ và xanh dò line Chặng 1, gắp khối cùng màu về Ô tập kết rồi lật cứ điểm góc ở Chặng 3. Chỉ minh hoạ, không phải chiến thuật bắt buộc.
+          Robot đỏ và xanh dò line Chặng 1, đưa Cấu kiện Kiến thức về Trạm thành tựu, vượt Cầu Bản lĩnh rồi lật cứ điểm ở Chặng 3. Chỉ minh hoạ, không phải chiến thuật bắt buộc.
         </p>
         <div className="mt-3 overflow-hidden rounded-lg">
           <ArenaVideo />
