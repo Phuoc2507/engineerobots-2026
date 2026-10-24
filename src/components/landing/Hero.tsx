@@ -16,7 +16,7 @@ export default function Hero() {
           <div className="mb-7 inline-flex items-center gap-4 rounded-full bg-white/5 py-1.5 pl-1.5 pr-5 ring-1 ring-white/10">
             <OrganizerLogos size={40} className="!gap-2" />
             <span className="hidden text-[11px] font-semibold uppercase leading-tight tracking-[0.2em] text-white/70 sm:block">
-              Khoa Cơ khí<br />&amp; CLB NCKH FMES
+              Khoa Cơ khí<br />&amp; FMES Club
             </span>
           </div>
           <p className="section-kicker !text-mech-gold">

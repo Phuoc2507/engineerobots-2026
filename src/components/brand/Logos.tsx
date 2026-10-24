@@ -7,7 +7,7 @@ export const ORGANIZERS = [
 ] as const;
 
 // Dấu nhận diện dùng ở thanh điều hướng: logo Khoa + tên giải
-export function BrandMark({ subtitle = "Khoa Cơ khí · FMES" }: { subtitle?: string }) {
+export function BrandMark({ subtitle = "Khoa Cơ khí" }: { subtitle?: string }) {
   return (
     <span className="flex items-center gap-2.5">
       <Image src="/brand/fme.png" alt="Logo Khoa Cơ khí" width={40} height={40} priority
