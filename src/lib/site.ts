@@ -4,7 +4,7 @@ export const SITE = {
   name: "ENGINEEROBOTS 2026",
   theme: "Hành trình Kỹ sư Cơ khí",
   faculty: "Khoa Cơ khí – HCM-UTE",
-  organizer: "Đoàn – Hội Khoa Cơ khí & CLB Robot Cơ khí (FMES)",
+  organizer: "Đoàn – Hội Khoa Cơ khí & CLB NCKH CK (FMES)",
   // TODO(BTC): chốt hạn đóng cổng đăng ký
   registrationDeadline: "2026-11-15T23:59:59+07:00",
 };

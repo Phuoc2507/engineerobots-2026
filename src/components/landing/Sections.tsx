@@ -238,7 +238,7 @@ export function Faq() {
             <span className="h-px w-8 bg-mech-red" /> Hỏi đáp
           </p>
           <h2 className="section-title mt-3">Câu hỏi thường gặp</h2>
-          <p className="mt-4 text-slate-600">Chưa thấy câu trả lời? Liên hệ BTC qua fanpage CLB Robot Cơ khí (FMES).</p>
+          <p className="mt-4 text-slate-600">Chưa thấy câu trả lời? Liên hệ BTC qua fanpage CLB NCKH CK (FMES).</p>
         </div>
         <div className="space-y-3">
           {FAQ.map((f) => (
