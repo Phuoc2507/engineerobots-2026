@@ -31,11 +31,15 @@ const HOTSPOTS = [
   { id: "start", pos: "0.45m 0.03m -4.65m", label: "Khu xuất phát", tone: "bg-team-red" },
   { id: "checkpoint", pos: "0.45m 0.03m -2.7m", label: "Checkpoint", tone: "bg-slate-900" },
   { id: "gate", pos: "2.4m 0.03m -0.55m", label: "Cổng vào Chặng 2", tone: "bg-cyan-500" },
-  { id: "drop", pos: "1.125m 0.03m -0.725m", label: "Trạm thành tựu", tone: "bg-team-red" },
+  { id: "drop", pos: "1.47m 0.03m -1.37m", label: "Trạm kiến thức", tone: "bg-team-red" },
   { id: "gold", pos: "2.4m 0.15m -1.4m", label: "Cơ hội vàng", tone: "bg-mech-gold" },
-  { id: "bridge", pos: "2.4m 0.12m -2.4m", label: "Cầu Bản lĩnh", tone: "bg-amber-700" },
-  { id: "corner", pos: "1.4m 0.05m -2.9m", label: "Cứ điểm Hội nhập", tone: "bg-team-blue" },
-  { id: "tower", pos: "2.4m 0.09m -3.6m", label: "Cứ điểm Vinh quang", tone: "bg-navy-600" },
+  { id: "bridge", pos: "2.4m 0.12m -2.43m", label: "Cầu Bản lĩnh", tone: "bg-amber-700" },
+  { id: "terrain", pos: "1.45m 0.03m -3.02m", label: "Địa hình", tone: "bg-slate-600" },
+  { id: "lab", pos: "1.45m 0.08m -3.58m", label: "Trạm thực nghiệm", tone: "bg-orange-500" },
+  { id: "kientri", pos: "1.45m 0.15m -4.05m", label: "Dốc Kiên trì", tone: "bg-team-blue" },
+  { id: "guard", pos: "1.45m 0.27m -4.62m", label: "Ô bảo vệ", tone: "bg-cyan-500" },
+  { id: "thanghoa", pos: "1.87m 0.4m -4.52m", label: "Dốc Thăng hoa", tone: "bg-team-blue" },
+  { id: "lamp", pos: "2.4m 0.56m -4.52m", label: "Đèn Vinh quang", tone: "bg-navy-600" },
 ] as const;
 
 export default function ArenaViewer() {
