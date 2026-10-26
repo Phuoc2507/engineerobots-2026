@@ -36,10 +36,10 @@ const HOTSPOTS = [
   { id: "bridge", pos: "2.4m 0.12m -2.43m", label: "Cầu Bản lĩnh", tone: "bg-amber-700" },
   { id: "terrain", pos: "1.45m 0.03m -3.02m", label: "Địa hình", tone: "bg-slate-600" },
   { id: "lab", pos: "1.45m 0.08m -3.58m", label: "Trạm thực nghiệm", tone: "bg-orange-500" },
-  { id: "kientri", pos: "1.45m 0.15m -4.05m", label: "Dốc Kiên trì", tone: "bg-team-blue" },
-  { id: "guard", pos: "1.45m 0.27m -4.62m", label: "Ô bảo vệ", tone: "bg-cyan-500" },
-  { id: "thanghoa", pos: "1.87m 0.4m -4.52m", label: "Dốc Thăng hoa", tone: "bg-team-blue" },
-  { id: "lamp", pos: "2.4m 0.56m -4.52m", label: "Đèn Vinh quang", tone: "bg-navy-600" },
+  { id: "kientri", pos: "1.275m 0.07m -3.98m", label: "Dốc Kiên trì", tone: "bg-team-blue" },
+  { id: "guard", pos: "1.11m 0.12m -4.74m", label: "Ô bảo vệ", tone: "bg-cyan-500" },
+  { id: "thanghoa", pos: "1.775m 0.17m -4.525m", label: "Dốc Thăng hoa", tone: "bg-team-blue" },
+  { id: "lamp", pos: "2.4m 0.25m -4.52m", label: "Đèn Vinh quang", tone: "bg-navy-600" },
 ] as const;
 
 export default function ArenaViewer() {
