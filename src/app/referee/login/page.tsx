@@ -7,7 +7,7 @@ import { CONTACT } from "@/lib/site";
 import GoogleSignIn from "@/components/register/GoogleSignIn";
 import PortalShell, { SignOutButton } from "@/components/register/PortalShell";
 
-export const metadata: Metadata = { title: "Đăng nhập BTC / Trọng tài · ENGINEEROBOTS 2026" };
+export const metadata: Metadata = { title: "Đăng nhập BTC / Trọng tài · ENGINEERING PATH 2026" };
 
 export default async function StaffLogin({ searchParams }: { searchParams: { error?: string } }) {
   const staff = await getStaff();

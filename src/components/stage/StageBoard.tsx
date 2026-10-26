@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { beep, evLabel, fmtClock, POINT_CELL, useMatchLive } from "@/lib/match";
+import { beep, countEv, evLabel, fmtClock, STAGE3_STEPS, useMatchLive } from "@/lib/match";
 import { MATCH_STATUS, SITE } from "@/lib/site";
 
 // Bảng tỉ số trực tiếp: "stage" = màn hình LED/máy chiếu, "obs" = lớp phủ nền trong suốt cho livestream
@@ -67,15 +67,17 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
             <p className="font-display text-[9rem] leading-none tabular-nums">{fmtClock(remaining)}</p>
             <p className="mt-2 text-xl font-bold uppercase tracking-widest text-white/80">{MATCH_STATUS[m.status] ?? m.status}</p>
           </div>
-          {data.points.length > 0 && (
-            <div className="grid grid-cols-3 grid-rows-3 gap-2">
-              {data.points.map((p) => (
-                <span key={p.index} className={`${POINT_CELL[p.index] ?? ""} flex h-20 w-20 items-center justify-center rounded-xl text-2xl font-bold transition-colors duration-500 ${p.owner === "RED" ? "bg-team-red" : p.owner === "BLUE" ? "bg-team-blue" : "bg-white/10"} ${p.golden ? "ring-4 ring-mech-gold" : ""}`}>
-                  {p.golden ? "★" : ""}
-                </span>
-              ))}
-            </div>
-          )}
+          <div className="grid gap-2">
+            {(["RED", "BLUE"] as const).map((c) => (
+              <div key={c} className="grid grid-cols-4 gap-2">
+                {STAGE3_STEPS.map((st) => (
+                  <span key={st.key} className={`flex h-14 w-24 items-center justify-center rounded-xl text-base font-bold uppercase transition-colors duration-500 ${countEv(data.events, c, st.key) > 0 ? (st.key === "STAGE3_LAMP" ? "bg-mech-gold text-navy" : c === "RED" ? "bg-team-red" : "bg-team-blue") : "bg-white/10 text-white/40"}`}>
+                    {st.short}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
         <Side name={data.blue?.team_name} robot={data.blue?.robot_name} score={m.blue_score} fouls={data.fouls.BLUE} tone="bg-team-blue" win={m.status === "FINISHED" && m.winner === "BLUE"} />
       </main>

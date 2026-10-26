@@ -1,7 +1,7 @@
 // Cấu hình nội dung Landing Page. Các mốc thời gian là DỰ KIẾN — chỉnh tại đây khi BTC chốt.
 
 export const SITE = {
-  name: "ENGINEEROBOTS 2026",
+  name: "ENGINEERING PATH 2026",
   theme: "Hành trình Kỹ sư Cơ khí",
   faculty: "Khoa Cơ khí – HCM-UTE",
   organizer: "Đoàn – Hội Khoa Cơ khí & CLB NCKH CK (FMES)",
@@ -53,7 +53,7 @@ export const FAQ = [
   },
   {
     q: "Đội có thể ghép sinh viên khác ngành không?",
-    a: "Có. Thể lệ 26/TB-BTC chỉ yêu cầu tất cả thành viên là tân sinh viên khóa 2026 hệ chính quy của HCM-UTE, không giới hạn ngành hay khoa.",
+    a: "Có. Thể lệ chỉ yêu cầu tất cả thành viên là tân sinh viên khóa 2026 hệ chính quy của HCM-UTE, không giới hạn ngành hay khoa.",
   },
   {
     q: "Linh kiện lấy ở đâu? Có được dùng linh kiện tự mua không?",

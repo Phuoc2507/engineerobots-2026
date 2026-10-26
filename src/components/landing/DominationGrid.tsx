@@ -2,71 +2,74 @@
 
 import { useEffect, useState } from "react";
 
-type Owner = "NEUTRAL" | "RED" | "BLUE";
+type Team = "RED" | "BLUE";
 
-// Thứ tự: 1 Năng động, 2 Sáng tạo, 3 Hội nhập, 4 Bền vững, 5 Cứ điểm Vinh quang
-const INITIAL: Owner[] = ["RED", "BLUE", "NEUTRAL", "BLUE", "NEUTRAL"];
+// Lộ trình Chặng 3 theo thể lệ ENGINEERING PATH 2026, mỗi đội trên nửa sân riêng
+const STEPS = [
+  { name: "Cầu Bản lĩnh", pts: 10 },
+  { name: "Địa hình", pts: 20 },
+  { name: "Bảo vệ Đồ án", pts: 25 },
+  { name: "Đèn Vinh Quang", pts: 40 },
+];
 
-const COLOR: Record<Owner, string> = {
-  NEUTRAL: "bg-white/10 border-white/20",
-  RED: "bg-team-red border-red-300/60 shadow-[0_0_24px_rgba(229,57,53,0.55)]",
-  BLUE: "bg-team-blue border-sky-300/60 shadow-[0_0_24px_rgba(30,136,229,0.55)]",
+const TONE: Record<Team, { on: string; text: string; label: string }> = {
+  RED: { on: "bg-team-red border-red-300/60 shadow-[0_0_20px_rgba(229,57,53,0.55)]", text: "text-red-300", label: "ĐỘI ĐỎ" },
+  BLUE: { on: "bg-team-blue border-sky-300/60 shadow-[0_0_20px_rgba(30,136,229,0.55)]", text: "text-sky-300", label: "ĐỘI XANH" },
 };
 
-const POS = ["left-0 top-0", "right-0 top-0", "left-0 bottom-0", "right-0 bottom-0"];
-const NAMES = ["Năng động", "Sáng tạo", "Hội nhập", "Bền vững"];
-
-// Chặng 3: 4 cứ điểm góc + Cứ điểm Vinh quang – tự lật ngẫu nhiên để minh họa thế trận
+// Mô phỏng hai đội tiến dần qua các nhiệm vụ; ai nhấn đèn trước thắng tuyệt đối rồi chạy lại
 export default function DominationGrid() {
-  const [cells, setCells] = useState<Owner[]>(INITIAL);
+  const [done, setDone] = useState<Record<Team, number>>({ RED: 0, BLUE: 0 });
+  const winner: Team | null = done.RED === STEPS.length ? "RED" : done.BLUE === STEPS.length ? "BLUE" : null;
 
   useEffect(() => {
     const id = setInterval(() => {
-      setCells((prev) => {
-        const next = [...prev];
-        const i = Math.floor(Math.random() * 5);
-        next[i] = next[i] === "RED" ? "BLUE" : "RED";
-        return next;
+      setDone((prev) => {
+        if (prev.RED === STEPS.length || prev.BLUE === STEPS.length) return { RED: 0, BLUE: 0 };
+        const t: Team = Math.random() < 0.5 ? "RED" : "BLUE";
+        return { ...prev, [t]: prev[t] + 1 };
       });
-    }, 1400);
+    }, 1300);
     return () => clearInterval(id);
   }, []);
 
-  // Vinh quang chỉ tính khi đội giữ ít nhất 1 cứ điểm góc
-  const score = (team: Owner) => {
-    const corners = cells.slice(0, 4).filter((c) => c === team).length;
-    return corners * 20 + (cells[4] === team && corners > 0 ? 50 : 0);
-  };
+  const score = (t: Team) => STEPS.slice(0, done[t]).reduce((s, x) => s + x.pts, 0);
 
   return (
     <div className="relative mx-auto w-full max-w-sm">
       <div className="mb-4 flex items-end justify-between font-display text-white">
-        <div>
-          <div className="text-xs tracking-widest text-red-300">ĐỘI ĐỎ</div>
-          <div className="text-4xl tabular-nums">{score("RED")}</div>
-        </div>
-        <div className="pb-1 text-xs tracking-[0.3em] text-white/70">CHẶNG 3 · BẢN LĨNH</div>
-        <div className="text-right">
-          <div className="text-xs tracking-widest text-sky-300">ĐỘI XANH</div>
-          <div className="text-4xl tabular-nums">{score("BLUE")}</div>
-        </div>
-      </div>
-      <div className="relative aspect-square rounded-xl border border-white/10 bg-navy-900/60 p-4 backdrop-blur">
-        <div className="relative h-full w-full">
-          {POS.map((pos, i) => (
-            <div key={i} className={`absolute grid h-[26%] w-[26%] place-items-center rounded-lg border-2 transition-all duration-500 ${pos} ${COLOR[cells[i]]}`}>
-              <span className="px-1 text-center text-[10px] font-bold uppercase leading-tight text-white/90 sm:text-xs">{NAMES[i]}</span>
-            </div>
-          ))}
-          <div className="absolute left-1/2 top-1/2 grid h-[40%] w-[40%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg border-2 border-mech-gold/70 bg-navy-900">
-            <div className={`grid h-[60%] w-[60%] place-items-center rounded-md border-2 transition-all duration-500 ${COLOR[cells[4]]}`}>
-              <span className="font-display text-sm text-white">★</span>
-            </div>
-            <span className="absolute -top-2 rounded bg-mech-gold px-1.5 text-[9px] font-bold uppercase tracking-wider text-navy">Vinh quang</span>
+        {(["RED", "BLUE"] as Team[]).map((t) => (
+          <div key={t} className={t === "BLUE" ? "order-3 text-right" : ""}>
+            <div className={`text-xs tracking-widest ${TONE[t].text}`}>{TONE[t].label}</div>
+            <div className="text-4xl tabular-nums">{score(t)}</div>
           </div>
-        </div>
+        ))}
+        <div className="order-2 pb-1 text-xs tracking-[0.3em] text-white/70">CHẶNG 3 · BẢN LĨNH</div>
       </div>
-      <p className="mt-3 text-center text-xs text-white/70">Mô phỏng minh họa · Cứ điểm góc 20đ · Vinh quang 50đ</p>
+      <div className="relative grid grid-cols-2 gap-3 rounded-xl border border-white/10 bg-navy-900/60 p-4 backdrop-blur">
+        <div className="pointer-events-none absolute inset-y-4 left-1/2 w-px bg-white/20" aria-hidden />
+        {(["RED", "BLUE"] as Team[]).map((t) => (
+          <ol key={t} className="flex flex-col-reverse gap-2">
+            {STEPS.map((s, i) => {
+              const on = i < done[t];
+              const lamp = i === STEPS.length - 1;
+              return (
+                <li key={s.name}
+                  className={`flex items-center justify-between rounded-lg border-2 px-2.5 py-2 text-[11px] font-bold uppercase leading-tight text-white/90 transition-all duration-500 sm:text-xs ${on ? (lamp ? "border-mech-gold bg-mech-gold text-navy shadow-[0_0_24px_rgba(255,193,7,0.7)]" : TONE[t].on) : "border-white/20 bg-white/10"}`}>
+                  <span>{s.name}</span>
+                  <span className="tabular-nums opacity-80">+{s.pts}</span>
+                </li>
+              );
+            })}
+          </ol>
+        ))}
+        {winner && (
+          <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 rounded-lg bg-mech-gold px-3 py-2 text-center font-display text-sm uppercase tracking-wider text-navy shadow-lg">
+            {TONE[winner].label} · Chiến thắng tuyệt đối
+          </div>
+        )}
+      </div>
+      <p className="mt-3 text-center text-xs text-white/70">Mô phỏng minh họa · Cầu 10đ · Địa hình 20đ · Đồ án 25đ · Đèn 40đ</p>
     </div>
   );
 }

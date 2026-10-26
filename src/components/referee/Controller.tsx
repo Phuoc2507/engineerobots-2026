@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Coins, Crown, Flag, Loader2, MonitorPlay, Pause, Play, RotateCcw, Wrench } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { countEv, evLabel, fmtClock, POINT_CELL, useMatchLive, type Color } from "@/lib/match";
+import { countEv, evLabel, fmtClock, STAGE3_STEPS, useMatchLive, type Color } from "@/lib/match";
 import { MATCH_STATUS } from "@/lib/site";
 
 // Trọng tài chính: điều khiển đồng hồ, Chiến thắng tuyệt đối, xử thắng, chỉnh điểm thủ công, kết thúc trận (thể lệ 2026: không có timeout kỹ thuật)
@@ -32,9 +32,8 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
   const big = "flex h-16 items-center justify-center gap-2 rounded-xl text-base font-bold transition active:scale-95 disabled:opacity-40";
   const spin = (k: string) => busy === k && <Loader2 className="h-5 w-5 animate-spin" />;
   const name = (c: Color) => (c === "RED" ? `Đỏ (${data.red?.team_name ?? "—"})` : `Xanh (${data.blue?.team_name ?? "—"})`);
-  // Chiến thắng tuyệt đối: giữ Cứ điểm Vinh quang + ≥ 3/4 cứ điểm góc → kết thúc ngay (trọng tài chính xác nhận)
-  const koReady = (c: Color) =>
-    data.points.some((pt) => pt.golden && pt.owner === c) && data.points.filter((pt) => !pt.golden && pt.owner === c).length >= 3;
+  // Chiến thắng tuyệt đối: Đồ án đã vào Ô Bảo vệ và nhấn sáng Đèn Vinh Quang trước → kết thúc ngay (trọng tài chính xác nhận)
+  const koReady = (c: Color) => countEv(data.events, c, "STAGE3_PROJECT") > 0 && countEv(data.events, c, "STAGE3_LAMP") > 0;
   const warn = { RED: countEv(data.events, "RED", "WARNING"), BLUE: countEv(data.events, "BLUE", "WARNING") };
   const retry = { RED: countEv(data.events, "RED", "RETRY"), BLUE: countEv(data.events, "BLUE", "RETRY") };
 
@@ -81,7 +80,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
           {(m.status === "RUNNING" || m.status === "PAUSED") && (
             <>
               {(["RED", "BLUE"] as Color[]).map((c) => (
-                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận CHIẾN THẮNG TUYỆT ĐỐI: phe ${name(c)} giữ Cứ điểm Vinh quang + ≥ 3 cứ điểm góc? Trận kết thúc ngay.`)}
+                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận CHIẾN THẮNG TUYỆT ĐỐI: phe ${name(c)} đã đặt Đồ án và nhấn sáng Đèn Vinh Quang trước? Trận kết thúc ngay.`)}
                   disabled={busy !== null || !koReady(c)} className={`${big} ${c === "RED" ? "bg-team-red" : "bg-team-blue"}`}>
                   {spin(`ko${c}`) || <Crown className="h-5 w-5" />} Thắng tuyệt đối {c === "RED" ? "Đỏ" : "Xanh"}
                 </button>
@@ -128,14 +127,17 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
 
         <section className="grid gap-5 md:grid-cols-[auto_1fr]">
           <div>
-            <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Cứ điểm</h2>
-            <div className="grid w-48 grid-cols-3 grid-rows-3 gap-1.5">
-              {data.points.map((pt) => (
-                <span key={pt.index} className={`flex aspect-square items-center justify-center rounded-lg text-sm font-bold ${POINT_CELL[pt.index] ?? ""} ${pt.owner === "RED" ? "bg-team-red" : pt.owner === "BLUE" ? "bg-team-blue" : "bg-white/10"} ${pt.golden ? "ring-2 ring-mech-gold" : ""}`}>
-                  {pt.golden ? "★" : pt.index}
-                </span>
+            <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Tiến độ Chặng 3</h2>
+            <div className="grid w-56 gap-1.5">
+              {(["RED", "BLUE"] as Color[]).map((c) => (
+                <div key={c} className="grid grid-cols-4 gap-1">
+                  {STAGE3_STEPS.map((st) => (
+                    <span key={st.key} className={`rounded-md px-1 py-2 text-center text-[11px] font-bold ${countEv(data.events, c, st.key) > 0 ? (c === "RED" ? "bg-team-red" : "bg-team-blue") : "bg-white/10 text-white/50"}`}>
+                      {st.short}
+                    </span>
+                  ))}
+                </div>
               ))}
-              {data.points.length === 0 && <span className="col-span-3 text-xs text-white/40">Tạo khi bắt đầu trận</span>}
             </div>
           </div>
           <div>

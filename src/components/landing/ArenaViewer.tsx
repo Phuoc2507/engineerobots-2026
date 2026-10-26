@@ -5,7 +5,7 @@ import Script from "next/script";
 import { Pause, Play, RotateCcw } from "lucide-react";
 
 // Trình xem GLB dùng web component <model-viewer> (tải từ CDN, ghim phiên bản).
-// GLB xuất từ Blender có sẵn 1 animation: 2 robot chạy line, gắp khối, lật cứ điểm.
+// GLB xuất từ Blender có sẵn 1 animation: 2 robot chạy line, tranh khối, leo Bục Vinh Quang bật đèn.
 // Toạ độ hotspot theo glTF (Y hướng lên): Blender (x, y, z) -> (x, z, -y), đơn vị m.
 
 type ModelViewerEl = HTMLElement & {
@@ -128,7 +128,7 @@ export default function ArenaViewer() {
           {
             ref,
             src: "/models/sa-ban-2026.glb",
-            alt: "Mô hình 3D sa bàn ENGINEEROBOTS 2026 với hai robot mô phỏng",
+            alt: "Mô hình 3D sa bàn ENGINEERING PATH 2026 với hai robot mô phỏng",
             autoplay: true,
             "camera-controls": true,
             "auto-rotate": true,

@@ -4,12 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Loader2, Undo2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { countEv, evLabel, fmtClock, POINT_CELL, POINT_NAMES, useMatchLive, type Color } from "@/lib/match";
+import { countEv, evLabel, fmtClock, useMatchLive, type Color } from "@/lib/match";
 import { MATCH_STATUS } from "@/lib/site";
 
 export type PadRule = { rule_key: string; rule_name: string; score_value: number; max_per_match: number | null };
 
-// Bảng chấm cho trọng tài biên: nút luật + sơ đồ 4 cứ điểm góc và Cứ điểm Vinh quang (Chặng 3)
+// Bảng chấm cho trọng tài biên: nút luật cộng điểm, đánh dấu và lỗi của một phe
 export default function ScoringPad({ matchId, side, rules }: { matchId: string; side: Color; rules: PadRule[] }) {
   const { data, missing, remaining, refresh } = useMatchLive(matchId);
   const [busy, setBusy] = useState<string | null>(null);
@@ -68,27 +68,6 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
         {!live && <p className="rounded-lg bg-mech-gold/20 p-3 text-sm text-mech-gold">Trận chưa bắt đầu hoặc đã kết thúc — các nút chấm đang khóa.</p>}
         {error && <p role="alert" className="rounded-lg bg-mech-red/20 p-3 text-sm text-red-200">{error}</p>}
         {flash && <p role="status" className="rounded-lg bg-emerald-500/20 p-3 text-sm font-bold text-emerald-300">{flash}</p>}
-
-        <section>
-          <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Chặng 3 · chạm để lật cứ điểm về phe {red ? "Đỏ" : "Xanh"} (chạm lại để trả về trung lập)</h2>
-          <div className="grid grid-cols-3 grid-rows-3 gap-2">
-            {data.points.length === 0 && <p className="col-span-3 row-span-3 rounded-lg bg-white/5 p-4 text-center text-sm text-white/50">Sơ đồ cứ điểm sẽ xuất hiện khi trận bắt đầu.</p>}
-            {data.points.map((p) => {
-              const tone = p.owner === "RED" ? "bg-team-red" : p.owner === "BLUE" ? "bg-team-blue" : "bg-white/10";
-              const next = p.owner === side ? "NEUTRAL" : side;
-              return (
-                <button
-                  key={p.index} disabled={!live || busy !== null}
-                  onClick={() => rpc(`p${p.index}`, "ref_flip_point", { p_match: matchId, p_index: p.index, p_color: next })}
-                  className={`relative aspect-square rounded-xl text-sm font-bold transition active:scale-95 disabled:opacity-60 ${POINT_CELL[p.index] ?? ""} ${tone} ${p.golden ? "ring-4 ring-mech-gold" : ""}`}
-                  aria-label={`${POINT_NAMES[p.index] ?? `Ô ${p.index}`}: ${p.owner ?? "trung lập"}`}
-                >
-                  {busy === `p${p.index}` ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : <>{p.golden ? <span className="block text-2xl">★</span> : <span className="block text-2xl">{p.index}</span>}<span className="text-[11px] opacity-80">{p.golden ? "Vinh quang · 50đ" : `${POINT_NAMES[p.index] ?? "Góc"} · 20đ`}</span></>}
-                </button>
-              );
-            })}
-          </div>
-        </section>
 
         <section>
           <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Ghi điểm</h2>

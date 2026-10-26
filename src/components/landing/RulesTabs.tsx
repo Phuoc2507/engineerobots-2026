@@ -58,11 +58,11 @@ export default function RulesTabs() {
               <h3 className="font-display text-3xl uppercase text-navy">Thích nghi – Dò line tự hành</h3>
               <p className="mt-4 text-slate-600">
                 Mỗi đội một làn line riêng rộng 90 cm dọc hai mép sa bàn. Robot xuất phát từ khu 30 × 25 cm, bám line đen
-                rộng 20 mm qua Đường Danh vọng thẳng 180 cm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° về vạch chữ T.
+                rộng 20 mm qua Đường Danh vọng thẳng 180 cm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 215 cm về vạch chữ T.
               </p>
               <ul className="mt-6 space-y-3 text-slate-700">
                 <li><strong>Tự hành 100%:</strong> chỉ ấn nút khởi động một lần, không được điều khiển.</li>
-                <li><strong>Mất line / đâm rào chắn:</strong> −5đ mỗi lần. Xuất phát sớm: −5đ.</li>
+                <li><strong>Mất line / chạm rào chắn:</strong> −5đ mỗi lần. Xuất phát sớm: −5đ.</li>
                 <li><strong>Thời gian về đích</strong> được ghi lại để xét phụ khi hòa điểm.</li>
               </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
@@ -74,36 +74,40 @@ export default function RulesTabs() {
 
           {tab === "stage2" && (
             <div>
-              <h3 className="font-display text-3xl uppercase text-navy">Tích lũy – Cấu kiện tri thức</h3>
+              <h3 className="font-display text-3xl uppercase text-navy">Tích lũy – Tranh chấp cấu kiện</h3>
               <p className="mt-4 text-slate-600">
-                Được điều khiển từ xa. Robot đưa 3 Cấu kiện Kiến thức 6 cm màu đội mình về Trạm thành tựu 25 × 25 cm; khối
-                tính khi nằm trọn trong trạm lúc hết giờ. Ở Vòng Chung kết, có ≥ 2 khối mới được lấy Cấu kiện Cơ hội vàng
-                8 cm trên Bục Cơ hội, và phải xong Cơ hội vàng mới sang Chặng 3.
+                Được điều khiển từ xa. Robot đưa Cấu kiện Kiến thức 6 cm màu đội mình về Trạm thành tựu 30 × 30 cm. Có ≥ 2 khối
+                trong trạm thì được <b>tích lũy liên ngành</b>: thu cả khối của đối phương còn trên sân. Khối ngoài trạm được
+                tranh chấp, tì đè; khối nằm trọn trong trạm là bất khả xâm phạm. Ở Vòng Chung kết, Cơ hội vàng 8 cm trên Bục
+                Cơ hội mở tranh chấp ngay từ đầu. Cần ≥ 2 cấu kiện bất kỳ trong trạm để sang Chặng 3.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Fact k="Kiến thức" v="+15đ × 3" />
+                <Fact k="Kiến thức" v="+15đ / khối" />
                 <Fact k="Cơ hội vàng" v="+25đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-red bg-white p-4 text-sm text-slate-700">
-                Cố ý ngăn đối phương ghi điểm: <b>−10đ</b>/lần. Can thiệp Trạm thành tựu đối thủ: <b>−20đ</b>.
+                Đâm húc phá hoại / khóa chết đối phương quá 5 giây: <b>−10đ</b>/lần. Tác động cấu kiện trong trạm đối thủ: <b>−20đ</b>.
               </div>
             </div>
           )}
 
           {tab === "stage3" && (
             <div>
-              <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Chiếm cứ điểm</h3>
+              <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Bảo vệ Đồ án</h3>
               <p className="mt-4 text-slate-600">
-                Vượt Cầu Bản lĩnh (+10đ), robot lật 4 cứ điểm Năng động, Sáng tạo, Hội nhập, Bền vững và Cứ điểm Vinh quang
-                trên bục trung tâm sang màu đội mình. Điểm chốt lúc hết giờ (nghiêng dưới 45°).
+                Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Địa hình 5 thanh gờ, lấy Khối Đồ án 7 cm ở Trạm Thực
+                nghiệm, leo Dốc Kiên trì đặt khối vào Ô Bảo vệ trên Đài 25 cm, rồi leo Dốc Thăng hoa lên Đỉnh 50 cm nhấn
+                sáng Đèn Vinh Quang. Lấn sang sân đối phương: −15đ và Retry.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Fact k="Cứ điểm góc" v="4 × 20đ" />
-                <Fact k="Cứ điểm Vinh quang" v="+50đ" />
+                <Fact k="Cầu Bản lĩnh" v="+10đ" />
+                <Fact k="Địa hình" v="+20đ" />
+                <Fact k="Bảo vệ Đồ án" v="+25đ" />
+                <Fact k="Đèn Vinh Quang" v="+40đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-gold bg-white p-4 text-slate-700">
-                <strong className="text-navy">CHIẾN THẮNG TUYỆT ĐỐI:</strong> giữ Cứ điểm Vinh quang và ít nhất 3/4 cứ điểm
-                góc là trận kết thúc ngay.
+                <strong className="text-navy">CHIẾN THẮNG TUYỆT ĐỐI:</strong> đội nhấn sáng Đèn Vinh Quang trước tiên (đã
+                đặt Đồ án vào ô) là trận kết thúc ngay.
               </div>
             </div>
           )}
@@ -113,7 +117,7 @@ export default function RulesTabs() {
               <h3 className="font-display text-3xl uppercase text-navy">Quy chuẩn kỹ thuật robot</h3>
               <p className="mt-4 text-slate-600">
                 Robot được kiểm định tại bàn kỹ thuật (quét QR đội) trước mỗi trận. Cấm vũ khí, thiết bị gây nhiễu,
-                chất lỏng; cơ cấu gắp phải có đệm mềm.
+                chất lỏng; cơ cấu đẩy, gắp, nhấn nút phải có đệm mềm.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 {ROBOT_SPECS.map((s) => (
@@ -126,7 +130,7 @@ export default function RulesTabs() {
           <figure className="overflow-hidden rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
             <Image
               src="/images/sa-ban-2026.png"
-              alt="Sơ đồ sa bàn 4800 × 4800 mm: hai làn dò line hai bên, Chặng 2 cấu kiện và Bục Cơ hội phía dưới, Chặng 3 Cầu Bản lĩnh, cứ điểm và Bục Vinh quang phía trên"
+              alt="Sơ đồ sa bàn 4800 × 4800 mm: hai làn dò line hai bên, Chặng 2 cấu kiện và Bục Cơ hội phía dưới, Chặng 3 Cầu Bản lĩnh, Địa hình và Bục Vinh Quang phía trên"
               width={1319}
               height={1866}
               sizes="(min-width: 1024px) 50vw, 100vw"

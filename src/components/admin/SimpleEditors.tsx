@@ -16,8 +16,8 @@ export function RulesEditor({ rules }: { rules: Rule[] }) {
   return (
     <section className={card}>
       <p className="text-sm text-slate-600">
-        Điểm Chặng 3 (4 cứ điểm góc + Cứ điểm Vinh quang) được tính tự động từ trạng thái cứ điểm. Sửa ở đây áp dụng cho các
-        sự kiện ghi <b>sau</b> khi lưu; điểm cứ điểm của trận đang diễn ra được tính lại ở lần lật kế tiếp.
+        Mọi điểm (kể cả Chặng 3: Cầu, Địa hình, Đồ án, Đèn Vinh Quang) do trọng tài ghi bằng nút luật. Sửa ở đây áp dụng cho các
+        sự kiện ghi <b>sau</b> khi lưu.
       </p>
       <ErrorBox error={error} />
       <ul className="mt-4 divide-y divide-slate-100 rounded-lg ring-1 ring-slate-200">

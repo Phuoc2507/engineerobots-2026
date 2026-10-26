@@ -68,10 +68,16 @@ export function useMatchLive(matchId: string | null) {
   return { data, missing, remaining, timeoutLeft, refresh };
 }
 
-// Cứ điểm Chặng 3 (thể lệ 3.3–3.7): 1 Năng động (trên-trái), 2 Sáng tạo (trên-phải), 3 Hội nhập (dưới-trái), 4 Bền vững (dưới-phải), 5 Vinh quang
-export const POINT_NAMES: Record<number, string> = { 1: "Năng động", 2: "Sáng tạo", 3: "Hội nhập", 4: "Bền vững", 5: "Cứ điểm Vinh quang" };
-// Vị trí ô trong lưới 3×3 khi vẽ sơ đồ (góc ở 4 góc, Vinh quang ở giữa)
-export const POINT_CELL: Record<number, string> = { 1: "col-start-1 row-start-1", 2: "col-start-3 row-start-1", 3: "col-start-1 row-start-3", 4: "col-start-3 row-start-3", 5: "col-start-2 row-start-2" };
+// Tên cứ điểm của thể lệ cũ (24/10) — chỉ để hiển thị sự kiện FLIP trong dữ liệu trận cũ
+const POINT_NAMES: Record<number, string> = { 1: "Năng động", 2: "Sáng tạo", 3: "Hội nhập", 4: "Bền vững", 5: "Cứ điểm Vinh quang" };
+
+// Lộ trình Chặng 3 (ENGINEERING PATH 2026): mỗi bước là 1 rule_key trọng tài ghi
+export const STAGE3_STEPS = [
+  { key: "STAGE3_BRIDGE", short: "Cầu" },
+  { key: "STAGE3_TERRAIN", short: "Địa hình" },
+  { key: "STAGE3_PROJECT", short: "Đồ án" },
+  { key: "STAGE3_LAMP", short: "Đèn" },
+] as const;
 
 const SPECIAL: Record<string, string> = {
   ADJUST: "Chỉnh điểm (trọng tài chính)", KNOCKOUT: "Chiến thắng tuyệt đối", COIN_TOSS: "Thắng tung đồng xu", FORFEIT: "Xử thắng (đối thủ bị loại)",

@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { SITE, TIMELINE } from "@/lib/site";
 import PortalShell from "@/components/register/PortalShell";
 
-export const metadata: Metadata = { title: "Lịch thi · ENGINEEROBOTS 2026" };
+export const metadata: Metadata = { title: "Lịch thi · ENGINEERING PATH 2026" };
 
 type MatchRow = {
   id: string;
