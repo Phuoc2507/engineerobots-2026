@@ -28,7 +28,7 @@ const VIEWS = [
 ] as const;
 
 const HOTSPOTS = [
-  { id: "start", pos: "0.45m 0.03m -4.65m", label: "Khu xuất phát", tone: "bg-team-red" },
+  { id: "start", pos: "0.45m 0.03m -4.65m", label: "Trạm khởi hành", tone: "bg-team-red" },
   { id: "checkpoint", pos: "0.45m 0.03m -2.7m", label: "Checkpoint", tone: "bg-slate-900" },
   { id: "gate", pos: "2.4m 0.03m -0.55m", label: "Cổng vào Chặng 2", tone: "bg-cyan-500" },
   { id: "drop", pos: "1.47m 0.03m -1.37m", label: "Trạm kiến thức", tone: "bg-team-red" },
@@ -128,7 +128,7 @@ export default function ArenaViewer() {
           {
             ref,
             src: "/models/sa-ban-2026.glb",
-            alt: "Mô hình 3D sa bàn ENGINEERING PATH 2026 với hai robot mô phỏng",
+            alt: "Mô hình 3D sa bàn ENGINEEROBOTS 2026 với hai robot mô phỏng",
             autoplay: true,
             "camera-controls": true,
             "auto-rotate": true,

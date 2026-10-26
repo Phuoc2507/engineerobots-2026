@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 import PortalShell from "@/components/register/PortalShell";
 import VoteBoard, { type PublicTeam } from "@/components/vote/VoteBoard";
 
-export const metadata: Metadata = { title: "Bình chọn · ENGINEERING PATH 2026" };
+export const metadata: Metadata = { title: "Bình chọn · ENGINEEROBOTS 2026" };
 export const dynamic = "force-dynamic";
 
 export default async function VotePage() {

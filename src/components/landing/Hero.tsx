@@ -24,7 +24,7 @@ export default function Hero() {
             {SITE.faculty} · Tân sinh viên K26
           </p>
           <h1 className="mt-5 font-display uppercase leading-[0.9] tracking-wide">
-            <span className="block text-5xl sm:text-6xl md:text-7xl">Engineering Path</span>
+            <span className="block text-6xl sm:text-7xl md:text-8xl">Engineerobots</span>
             <span className="block text-7xl text-mech-gold sm:text-8xl md:text-9xl">2026</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-white/80">

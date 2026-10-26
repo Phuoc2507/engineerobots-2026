@@ -11,7 +11,7 @@ import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBo
 import TeamAppeals, { type AppealMatch, type MyAppeal } from "@/components/team/TeamAppeals";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Đội của tôi · ENGINEERING PATH 2026" };
+export const metadata: Metadata = { title: "Đội của tôi · ENGINEEROBOTS 2026" };
 
 const STATUS: Record<string, { label: string; tone: string }> = {
   PENDING: { label: "Chờ BTC duyệt", tone: "bg-mech-gold/15 text-amber-700" },

@@ -13,7 +13,7 @@ export function BrandMark({ subtitle = "Khoa Cơ khí" }: { subtitle?: string })
       <Image src="/brand/fme.png" alt="Logo Khoa Cơ khí" width={40} height={40} priority
         className="h-10 w-10 shrink-0 rounded-full ring-2 ring-white/80" />
       <span className="leading-tight">
-        <span className="block font-display text-lg tracking-wider">ENGINEERING PATH</span>
+        <span className="block font-display text-lg tracking-wider">ENGINEEROBOTS</span>
         <span className="block text-[10px] font-semibold uppercase tracking-[0.25em] text-mech-gold">{subtitle}</span>
       </span>
     </span>

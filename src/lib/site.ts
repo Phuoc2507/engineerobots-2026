@@ -1,7 +1,7 @@
 // Cấu hình nội dung Landing Page. Các mốc thời gian là DỰ KIẾN — chỉnh tại đây khi BTC chốt.
 
 export const SITE = {
-  name: "ENGINEERING PATH 2026",
+  name: "ENGINEEROBOTS 2026",
   theme: "Hành trình Kỹ sư Cơ khí",
   faculty: "Khoa Cơ khí – HCM-UTE",
   organizer: "Đoàn – Hội Khoa Cơ khí & CLB NCKH CK (FMES)",
@@ -34,10 +34,10 @@ export const TIMELINE = [
 ] as const;
 
 export const ROBOT_SPECS = [
-  { label: "Kích thước xuất phát", value: "≤ 300 × 250 × 200 mm" },
+  { label: "Kích thước (gồm càng đẩy)", value: "≤ 300 × 250 × 200 mm" },
   { label: "Dung sai", value: "+10 mm" },
-  { label: "Nguồn DC", value: "≤ 12,6 V" },
-  { label: "Khối lượng", value: "Không giới hạn" },
+  { label: "Nguồn DC", value: "12 V (+0,6 V)" },
+  { label: "Cơ cấu", value: "Chỉ càng đẩy" },
   { label: "Chặng 1", value: "100% tự hành" },
   { label: "Chặng 2–3", value: "Điều khiển từ xa" },
 ];
@@ -57,7 +57,7 @@ export const FAQ = [
   },
   {
     q: "Linh kiện lấy ở đâu? Có được dùng linh kiện tự mua không?",
-    a: "BTC phát bộ kit cơ bản sau buổi họp kỹ thuật. Đội được tự bổ sung linh kiện miễn là robot đạt quy chuẩn kích thước (≤ 300 × 250 × 200 mm, dung sai +10 mm) và nguồn DC ≤ 12,6 V. Cấm nguồn AC và pin trên 14,8 V.",
+    a: "BTC phát bộ kit cơ bản sau buổi họp kỹ thuật. Đội được tự bổ sung linh kiện miễn là robot đạt quy chuẩn kích thước (≤ 300 × 250 × 200 mm tính cả càng đẩy, dung sai +10 mm) và nguồn DC tối đa 12 V (dung sai +0,6 V). Robot chỉ dùng càng đẩy phía trước, không gắp/kẹp/nâng. Cấm nguồn AC.",
   },
   {
     q: "Làm sao để thử robot trên sa bàn thật?",

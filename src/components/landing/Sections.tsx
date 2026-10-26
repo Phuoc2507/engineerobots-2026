@@ -22,7 +22,7 @@ export function Intro() {
             </p>
             <h2 className="section-title mt-3">Sân chơi đầu tiên của kỹ sư K26</h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-600">
-              ENGINEERING PATH là cuộc thi học thuật thường niên do Khoa Cơ khí tổ chức, dành cho tân sinh viên
+              ENGINEEROBOTS là cuộc thi học thuật thường niên do Khoa Cơ khí tổ chức, dành cho tân sinh viên
               khóa 2026 hệ chính quy toàn trường HCM-UTE. Chỉ với kiến thức cơ khí và lập trình cơ bản, các đội sẽ tự
               tay đi từ ý tưởng đến một robot thi đấu thực thụ.
             </p>
@@ -74,7 +74,7 @@ export function ArenaShowcase() {
   const zones = [
     { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 90 cm dọc hai mép, line đen 20 mm: Đường Danh vọng thẳng 180 cm tới Checkpoint, Đường Thách thức ziczac 45°, vạch đích chữ T." },
     { tag: "Chặng 2", title: "Cấu kiện & Bục Cơ hội", desc: "6 Cấu kiện Kiến thức 6 cm hai màu, Bục Cơ hội 40 × 40 cm cao 5 cm mang khối Cơ hội vàng 8 cm, 2 Trạm thành tựu 30 × 30 cm ở hai cánh sân." },
-    { tag: "Chặng 3", title: "Cầu Bản lĩnh & Bục Vinh Quang", desc: "Cầu gỗ 60 × 55 cm, 2 sân độc lập: Địa hình 5 thanh gờ, Trạm Thực nghiệm, Dốc Kiên trì lên Đài Bảo vệ 25 cm, Dốc Thăng hoa lên Đỉnh 50 cm có Đèn Vinh Quang." },
+    { tag: "Chặng 3", title: "Cầu Bản lĩnh & Bục Vinh Quang", desc: "Cầu gỗ 60 × 55 cm, 2 sân độc lập: Địa hình 5 thanh gờ, Trạm Thực nghiệm, Dốc Kiên trì 10° lên Đài Bảo vệ 100 mm, Dốc Thăng hoa lên Đỉnh 200 mm có Đèn Vinh Quang." },
   ];
   return (
     <section id="sa-ban-3d" className="bg-navy py-20 text-white md:py-28">

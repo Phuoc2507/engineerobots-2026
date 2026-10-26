@@ -62,7 +62,7 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
-        <Link href="/" className="text-white" aria-label="ENGINEERING PATH 2026 – Trang chủ">
+        <Link href="/" className="text-white" aria-label="ENGINEEROBOTS 2026 – Trang chủ">
           <BrandMark />
         </Link>
 
