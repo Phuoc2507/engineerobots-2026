@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import type { ComponentProps } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/staff";
 import AdminShell from "@/components/admin/AdminShell";
 import { card } from "@/components/admin/ui";
 import SheetLink from "@/components/admin/SheetLink";
+import { serviceAccount } from "@/lib/googleSheets";
 
 export const metadata: Metadata = { title: "Quản trị · Tổng quan" };
 export const dynamic = "force-dynamic";
@@ -177,7 +179,7 @@ export default async function AdminOverview() {
         </section>
       </div>
 
-      <SheetLink initial={(sheet as { key: string; created_at: string; created_by: string | null } | null) ?? null} />
+      <SheetLink initial={(sheet as ComponentProps<typeof SheetLink>["initial"]) ?? null} serviceEmail={serviceAccount()?.client_email ?? null} />
     </AdminShell>
   );
 }
