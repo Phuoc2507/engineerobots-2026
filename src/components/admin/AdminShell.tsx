@@ -6,7 +6,8 @@ import { BrandMark } from "@/components/brand/Logos";
 import { SignOutButton } from "@/components/register/PortalShell";
 
 const TABS = [
-  { href: "/admin", label: "Đội thi", roles: ["BTC"] },
+  { href: "/admin", label: "Tổng quan", roles: ["BTC"] },
+  { href: "/admin/teams", label: "Đội thi", roles: ["BTC"] },
   { href: "/admin/matches", label: "Trận đấu", roles: ["BTC"] },
   { href: "/referee", label: "Điều khiển trận", roles: ["BTC", "HEAD_REFEREE", "REFEREE"] },
   { href: "/admin/checkin", label: "Check-in & Kỹ thuật", roles: ["BTC", "HEAD_REFEREE", "REFEREE"] },
