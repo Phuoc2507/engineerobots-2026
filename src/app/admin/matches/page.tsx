@@ -14,7 +14,7 @@ export default async function AdminMatches() {
     supabase.from("matches")
       .select("id, match_code, stage, status, start_time, duration_seconds, red_team_id, blue_team_id, red_score, blue_score, winner_team_id")
       .order("start_time", { ascending: true, nullsFirst: false }),
-    supabase.from("teams").select("id, team_name, robot_name, inspection_passed").eq("status", "APPROVED").order("team_name"),
+    supabase.from("teams").select("id, team_name, inspection_passed").eq("status", "APPROVED").order("team_name"),
   ]);
 
   return (

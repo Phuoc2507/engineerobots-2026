@@ -10,7 +10,7 @@ const SECTIONS = [
     title: "Dữ liệu chúng tôi thu thập",
     items: [
       `Từ tài khoản Google @${STUDENT_DOMAIN}: địa chỉ email, họ tên và ảnh đại diện — chỉ để xác thực bạn là sinh viên HCMUTE.`,
-      "Thông tin đội do đội trưởng khai báo: tên đội, tên robot, ngành, khẩu hiệu; họ tên, MSSV, email trường và số điện thoại (không bắt buộc) của các thành viên.",
+      "Thông tin đội do đội trưởng khai báo: tên đội, ngành; họ tên, MSSV, email trường và số điện thoại (không bắt buộc) của các thành viên.",
       "Kết quả thi đấu, lịch thử sa bàn và khiếu nại phát sinh trong giải.",
     ],
   },
@@ -18,7 +18,7 @@ const SECTIONS = [
     title: "Mục đích sử dụng",
     items: [
       "Xác thực người dùng, xét duyệt hồ sơ, cấp mã QR check-in và liên hệ các đội về lịch thi.",
-      "Hiển thị công khai tên đội, tên robot, ngành và kết quả thi đấu trên website, màn hình sân khấu và livestream.",
+      "Hiển thị công khai tên đội, ngành và kết quả thi đấu trên website, màn hình sân khấu và livestream.",
       "Chúng tôi không bán, không chia sẻ dữ liệu cá nhân cho bên thứ ba và không dùng cho mục đích quảng cáo.",
     ],
   },

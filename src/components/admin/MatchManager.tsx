@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeftRight, Gamepad2, Loader2, MonitorPlay, Pencil, Plus, Trash2, X } from "lucide-react";
 import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input, useRpc } from "@/components/admin/ui";
 
-export type TeamOption = { id: string; team_name: string; robot_name: string | null; inspection_passed: boolean };
+export type TeamOption = { id: string; team_name: string; inspection_passed: boolean };
 export type AdminMatch = {
   id: string; match_code: string | null; stage: string; status: string; start_time: string | null; duration_seconds: number;
   red_team_id: string | null; blue_team_id: string | null; red_score: number; blue_score: number; winner_team_id: string | null;

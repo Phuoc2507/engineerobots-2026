@@ -61,7 +61,7 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
       </header>
 
       <main className="grid flex-1 grid-cols-[1fr_auto_1fr] items-center gap-8 px-8">
-        <Side name={data.red?.team_name} robot={data.red?.robot_name} score={m.red_score} fouls={data.fouls.RED} tone="bg-team-red" win={m.status === "FINISHED" && m.winner === "RED"} />
+        <Side name={data.red?.team_name} score={m.red_score} fouls={data.fouls.RED} tone="bg-team-red" win={m.status === "FINISHED" && m.winner === "RED"} />
         <div className="flex flex-col items-center gap-6">
           <div className={`rounded-2xl px-10 py-4 text-center ${urgent ? "animate-pulse bg-mech-red" : "bg-black/30"}`}>
             <p className="font-display text-[9rem] leading-none tabular-nums">{fmtClock(remaining)}</p>
@@ -79,7 +79,7 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
             ))}
           </div>
         </div>
-        <Side name={data.blue?.team_name} robot={data.blue?.robot_name} score={m.blue_score} fouls={data.fouls.BLUE} tone="bg-team-blue" win={m.status === "FINISHED" && m.winner === "BLUE"} />
+        <Side name={data.blue?.team_name} score={m.blue_score} fouls={data.fouls.BLUE} tone="bg-team-blue" win={m.status === "FINISHED" && m.winner === "BLUE"} />
       </main>
 
       <footer className="px-8 pb-6">
@@ -98,11 +98,10 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
   );
 }
 
-function Side({ name, robot, score, fouls, tone, win }: { name?: string; robot?: string | null; score: number; fouls: number; tone: string; win: boolean }) {
+function Side({ name, score, fouls, tone, win }: { name?: string; score: number; fouls: number; tone: string; win: boolean }) {
   return (
     <div className={`flex flex-col items-center rounded-3xl ${tone} px-6 py-10 text-center shadow-2xl ${win ? "ring-8 ring-mech-gold" : ""}`}>
       <p className="line-clamp-2 font-display text-5xl uppercase leading-tight">{name ?? "—"}</p>
-      {robot && <p className="mt-1 text-xl text-white/80">{robot}</p>}
       <p className="mt-4 font-display text-[11rem] leading-none tabular-nums">{score}</p>
       <p className="mt-2 text-lg font-bold uppercase text-white/80">{fouls} lỗi</p>
     </div>

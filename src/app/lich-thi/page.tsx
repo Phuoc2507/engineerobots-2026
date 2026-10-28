@@ -50,7 +50,7 @@ function Side({ team, robot, score, color, won, show }: { team: string | null; r
 }
 
 type StandingRow = {
-  stage: string; team_id: string; team_name: string; robot_name: string | null;
+  stage: string; team_id: string; team_name: string;
   played: number; won: number; drawn: number; lost: number; points: number;
   golden_cores: number; fouls: number; score_for: number; score_against: number;
 };
@@ -147,7 +147,7 @@ export default async function SchedulePage() {
                     {standings.filter((r) => r.stage === stage).map((r, i) => (
                       <tr key={r.team_id} className={i === 0 ? "bg-mech-gold/10" : ""}>
                         <td className="px-3 py-2 font-bold text-navy">{i + 1}</td>
-                        <td className="px-3 py-2"><b className="text-navy">{r.team_name}</b>{r.robot_name && <span className="block text-xs text-slate-500">{r.robot_name}</span>}</td>
+                        <td className="px-3 py-2"><b className="text-navy">{r.team_name}</b></td>
                         <td className="px-2 py-2 text-center">{r.played}</td>
                         <td className="px-2 py-2 text-center">{r.won}-{r.drawn}-{r.lost}</td>
                         <td className="px-2 py-2 text-center">{r.golden_cores}</td>

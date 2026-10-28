@@ -24,8 +24,6 @@ type MemberRow = { student_id: string; full_name: string; email: string; phone: 
 type TeamRow = {
   id: string;
   team_name: string;
-  robot_name: string | null;
-  slogan: string | null;
   major: string;
   status: string;
   review_note: string | null;
@@ -50,7 +48,7 @@ export default async function TeamDashboard() {
   const { data: ids } = await supabase.rpc("my_team_ids");
   const { data } = await supabase
     .from("teams")
-    .select("id, team_name, robot_name, slogan, major, status, review_note, qr_code_token, leader_email, created_at, updated_at, team_members(student_id, full_name, email, phone, role, joined_at)")
+    .select("id, team_name, major, status, review_note, qr_code_token, leader_email, created_at, updated_at, team_members(student_id, full_name, email, phone, role, joined_at)")
     .in("id", ((ids ?? []) as string[]).length ? (ids as string[]) : ["00000000-0000-0000-0000-000000000000"])
     .limit(1)
     .maybeSingle();
@@ -110,7 +108,7 @@ export default async function TeamDashboard() {
         canLeave={isLeader ? team.status !== "APPROVED" : editable && members.length > 3}
         lockedReason={lockedReason ?? (!isLeader && members.length <= 3 ? "Đội đang có 3 người (tối thiểu) — muốn rời đội, nhờ đội trưởng thay người khác vào trước." : undefined)}
         initial={{
-          team: { team_name: team.team_name, robot_name: team.robot_name ?? "", slogan: team.slogan ?? "", major: team.major },
+          team: { team_name: team.team_name, major: team.major },
           leader: { student_id: leader?.student_id ?? "", full_name: leader?.full_name ?? "", phone: leader?.phone ?? "" },
           members: members.filter((m) => m.role !== "LEADER").map((m) => ({
             student_id: m.student_id, full_name: m.full_name, email: m.email, phone: m.phone ?? "", role: m.role === "PILOT" ? "PILOT" : "MEMBER",
@@ -133,10 +131,7 @@ export default async function TeamDashboard() {
             <div className="min-w-0">
               <p className="section-kicker">{isLeader ? <><Crown className="h-4 w-4" /> Bạn là đội trưởng</> : <><MailCheck className="h-4 w-4" /> Bạn là {ROLE_LABEL[me?.role ?? "MEMBER"].toLowerCase()}</>}</p>
               <h2 className="mt-2 break-words font-display text-3xl uppercase tracking-wide text-navy">{team.team_name}</h2>
-              <p className="mt-1 text-sm text-slate-500">
-                {team.robot_name ? `Robot ${team.robot_name} · ` : ""}{team.major}
-              </p>
-              {team.slogan && <p className="mt-2 text-sm italic text-slate-600">“{team.slogan}”</p>}
+              <p className="mt-1 text-sm text-slate-500">{team.major}</p>
             </div>
             <span className={`rounded-full px-3 py-1 text-sm font-bold ${status.tone}`}>{status.label}</span>
           </div>

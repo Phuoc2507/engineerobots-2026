@@ -7,7 +7,7 @@ import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input, useRpc } from "
 
 type Member = { id: string; student_id: string; full_name: string; email: string; phone: string | null; role: string; joined_at: string | null };
 export type AdminTeam = {
-  id: string; team_name: string; robot_name: string | null; slogan: string | null; major: string; cohort: string | null;
+  id: string; team_name: string; major: string; cohort: string | null;
   status: string; review_note: string | null; leader_email: string; leader_phone: string; inspection_passed: boolean;
   created_at: string; updated_at: string | null; team_members: Member[];
 };
@@ -21,9 +21,9 @@ const ROLE: Record<string, string> = { LEADER: "Đội trưởng", PILOT: "Pilot
 const fmt = (s: string) => new Date(s).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 
 function toCsv(teams: AdminTeam[]) {
-  const rows = [["Đội", "Robot", "Ngành", "Trạng thái", "Kiểm tra KT", "Vai trò", "MSSV", "Họ tên", "Email", "SĐT"]];
+  const rows = [["Đội", "Ngành", "Trạng thái", "Kiểm tra KT", "Vai trò", "MSSV", "Họ tên", "Email", "SĐT"]];
   teams.forEach((t) => t.team_members.forEach((m) => rows.push([
-    t.team_name, t.robot_name ?? "", t.major, STATUS[t.status]?.label ?? t.status, t.inspection_passed ? "Đạt" : "",
+    t.team_name, t.major, STATUS[t.status]?.label ?? t.status, t.inspection_passed ? "Đạt" : "",
     ROLE[m.role] ?? m.role, m.student_id, m.full_name, m.email, m.phone ?? "",
   ])));
   return "﻿" + rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\r\n");
@@ -74,7 +74,7 @@ function MemberRow({ m }: { m: Member }) {
   );
 }
 
-// Danh sách hồ sơ đội: lọc, duyệt / yêu cầu bổ sung (có email báo đội), thống kê theo ngành, xuất CSV
+// Danh sách hồ sơ đội: lọc, duyệt / yêu cầu bổ sung (có email báo đội), xuất CSV
 export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
   const router = useRouter();
   const [filter, setFilter] = useState("PENDING");
@@ -90,16 +90,8 @@ export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
     teams.forEach((t) => { c[t.status] = (c[t.status] ?? 0) + 1; });
     return c;
   }, [teams]);
-  const byMajor = useMemo(() => {
-    const m = new Map<string, { teams: number; members: number }>();
-    teams.filter((t) => t.status !== "REJECTED").forEach((t) => {
-      const v = m.get(t.major) ?? { teams: 0, members: 0 };
-      m.set(t.major, { teams: v.teams + 1, members: v.members + t.team_members.length });
-    });
-    return Array.from(m.entries()).sort((a, b) => b[1].teams - a[1].teams);
-  }, [teams]);
 
-  const list = teams.filter((t) => (filter === "ALL" || t.status === filter) && (!q || `${t.team_name} ${t.robot_name ?? ""} ${t.leader_email} ${t.team_members.map((m) => `${m.full_name} ${m.student_id}`).join(" ")}`.toLowerCase().includes(q.toLowerCase())));
+  const list = teams.filter((t) => (filter === "ALL" || t.status === filter) && (!q || `${t.team_name} ${t.leader_email} ${t.team_members.map((m) => `${m.full_name} ${m.student_id}`).join(" ")}`.toLowerCase().includes(q.toLowerCase())));
 
   const review = async (t: AdminTeam, status: string) => {
     const note = notes[t.id]?.trim() ?? "";
@@ -130,19 +122,6 @@ export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
         ))}
       </section>
 
-      {byMajor.length > 0 && (
-        <section className={card}>
-          <h2 className="font-display text-lg uppercase tracking-wide text-navy">Theo ngành (không tính hồ sơ cần bổ sung)</h2>
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {byMajor.map(([major, v]) => (
-              <li key={major} className="flex items-center justify-between rounded-lg bg-ice px-4 py-2 text-sm">
-                <span className="font-semibold text-navy">{major}</span>
-                <span className="text-slate-600"><b>{v.teams}</b> đội · {v.members} SV</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       <section className={card}>
         <div className="flex flex-wrap items-center gap-2">
@@ -174,7 +153,6 @@ export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
                   <button onClick={() => setOpen(expanded ? null : t.id)} aria-expanded={expanded} className="flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left hover:bg-ice/60">
                     <span className="min-w-0 flex-1">
                       <b className="text-navy">{t.team_name}</b>
-                      {t.robot_name && <span className="text-sm text-slate-500"> · Robot {t.robot_name}</span>}
                       <span className="block text-xs text-slate-500">{t.major} · {t.team_members.length} SV · nộp {fmt(t.created_at)}{t.updated_at ? ` · sửa ${fmt(t.updated_at)}` : ""}</span>
                     </span>
                     {t.inspection_passed && <span className="inline-flex items-center gap-1 rounded-full bg-navy-600/10 px-2 py-0.5 text-xs font-bold text-navy-600"><ShieldCheck className="h-3.5 w-3.5" /> KT đạt</span>}
@@ -183,7 +161,6 @@ export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
                   </button>
                   {expanded && (
                     <div className="space-y-4 bg-ice/40 px-4 pb-5 pt-2">
-                      {t.slogan && <p className="text-sm italic text-slate-600">“{t.slogan}”</p>}
                       <p className="text-sm text-slate-600">Đội trưởng: <b>{t.leader_email}</b> · {t.leader_phone}</p>
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[560px] text-sm">

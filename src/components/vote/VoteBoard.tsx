@@ -5,7 +5,7 @@ import { CheckCircle2, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { VOTE_CATEGORIES } from "@/lib/site";
 
-export type PublicTeam = { id: string; team_name: string; robot_name: string | null; slogan: string | null; logo_url: string | null; major: string };
+export type PublicTeam = { id: string; team_name: string; logo_url: string | null; major: string };
 
 const KEY = "er26_voter";
 const PICKS = "er26_votes";
@@ -68,10 +68,9 @@ export default function VoteBoard({ teams, open }: { teams: PublicTeam[]; open: 
                     : <span className="grid h-12 w-12 place-items-center rounded-lg bg-navy font-display text-xl text-white">{t.team_name.slice(0, 1)}</span>}
                   <span className="min-w-0">
                     <span className="block truncate font-display text-lg uppercase text-navy">{t.team_name}</span>
-                    <span className="block truncate text-xs text-slate-500">{t.robot_name ? `Robot ${t.robot_name} · ` : ""}{t.major}</span>
+                    <span className="block truncate text-xs text-slate-500">{t.major}</span>
                   </span>
                 </div>
-                {t.slogan && <p className="mt-3 flex-1 text-sm italic text-slate-600">“{t.slogan}”</p>}
                 <button disabled={!open || busy !== null || mine} onClick={() => vote(t.id)}
                   className={`mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-lg text-sm font-bold disabled:cursor-not-allowed ${mine ? "bg-emerald-50 text-emerald-700" : "bg-mech-red text-white disabled:opacity-40"}`}>
                   {busy === t.id ? <Loader2 className="h-4 w-4 animate-spin" /> : mine ? <><CheckCircle2 className="h-4 w-4" /> Bạn đã chọn</> : "Bình chọn"}

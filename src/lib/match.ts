@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 export type Color = "RED" | "BLUE";
-export type LiveTeam = { id: string; team_name: string; robot_name: string | null; logo_url: string | null; inspection_passed: boolean } | null;
+export type LiveTeam = { id: string; team_name: string; logo_url: string | null; inspection_passed: boolean } | null;
 export type LiveEvent = {
   id: string; team_color: Color; event_type: string; point_value: number; target_point_index: number | null;
   match_timestamp_seconds: number | null; notes: string | null; created_at: string; rule_name: string | null;

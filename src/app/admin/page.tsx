@@ -11,7 +11,7 @@ import { serviceAccount } from "@/lib/googleSheets";
 export const metadata: Metadata = { title: "Quản trị · Tổng quan" };
 export const dynamic = "force-dynamic";
 
-type Team = { id: string; team_name: string; major: string; status: string; inspection_passed: boolean; created_at: string; team_members: { id: string }[] };
+type Team = { id: string; team_name: string; status: string; inspection_passed: boolean; created_at: string; team_members: { id: string }[] };
 type Match = { id: string; match_code: string | null; stage: string; status: string; start_time: string | null; red_team_id: string | null; blue_team_id: string | null; red_score: number; blue_score: number };
 type Standing = { stage: string; team_id: string; team_name: string; played: number; won: number; points: number; score_for: number };
 type Vote = { team_name: string; votes: number };
@@ -32,31 +32,12 @@ function Stat({ label, value, sub, href }: { label: string; value: number | stri
   return href ? <Link href={href} className={`${cls} transition hover:ring-navy-600`}>{body}</Link> : <div className={cls}>{body}</div>;
 }
 
-// Thanh ngang một màu, giá trị in bằng chữ thường (không dựa vào màu)
-function Bars({ rows }: { rows: { label: string; value: number }[] }) {
-  const max = Math.max(1, ...rows.map((r) => r.value));
-  if (!rows.length) return <p className="text-sm text-slate-500">Chưa có dữ liệu.</p>;
-  return (
-    <ul className="space-y-2">
-      {rows.map((r) => (
-        <li key={r.label} className="grid grid-cols-[minmax(0,9rem)_1fr_2.5rem] items-center gap-3 text-sm" title={`${r.label}: ${r.value}`}>
-          <span className="truncate text-slate-600">{r.label}</span>
-          <span className="h-3 rounded-r bg-slate-100">
-            <span className="block h-3 rounded-r bg-navy-600" style={{ width: `${(r.value / max) * 100}%` }} />
-          </span>
-          <span className="text-right font-semibold tabular-nums text-navy">{r.value}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 export default async function AdminOverview() {
   const staff = await requireStaff(["BTC"]);
   const supabase = createClient();
   const [{ data: teamsData }, { data: matchesData }, { data: appeals }, { data: bookings }, { data: votesData }, { data: standingsData }, { data: sheet }] =
     await Promise.all([
-      supabase.from("teams").select("id, team_name, major, status, inspection_passed, created_at, team_members(id)"),
+      supabase.from("teams").select("id, team_name, status, inspection_passed, created_at, team_members(id)"),
       supabase.from("matches").select("id, match_code, stage, status, start_time, red_team_id, blue_team_id, red_score, blue_score")
         .order("start_time", { ascending: true, nullsFirst: false }),
       supabase.from("match_appeals").select("id, status"),
@@ -89,9 +70,6 @@ export default async function AdminOverview() {
   teams.forEach((t) => { const k = dayKey(new Date(t.created_at)); if (perDay.has(k)) perDay.set(k, perDay.get(k)! + 1); });
   const dayMax = Math.max(1, ...Array.from(perDay.values()));
 
-  const majors = Object.entries(teams.reduce<Record<string, number>>((m, t) => ({ ...m, [t.major]: (m[t.major] ?? 0) + 1 }), {}))
-    .map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
-
   const topStage = standings[0]?.stage;
   const top = standings.filter((s) => s.stage === topStage).slice(0, 5);
 
@@ -123,11 +101,6 @@ export default async function AdminOverview() {
             <span>{days[0].slice(8)}/{days[0].slice(5, 7)}</span>
             <span>Hôm nay</span>
           </div>
-        </section>
-
-        <section className={card}>
-          <h2 className="font-display text-xl uppercase text-navy">Đội theo ngành</h2>
-          <div className="mt-5"><Bars rows={majors} /></div>
         </section>
 
         <section className={card}>

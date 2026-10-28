@@ -19,7 +19,7 @@ const emptyMember = (): Member => ({ student_id: "", full_name: "", email: "", p
 
 // Dữ liệu điền sẵn khi đội trưởng sửa hồ sơ (gọi update_team thay vì register_team)
 export type TeamFormValues = {
-  team: { team_name: string; robot_name: string; slogan: string; major: string };
+  team: { team_name: string; major: string };
   leader: { student_id: string; full_name: string; phone: string };
   members: Omit<Member, "autoEmail">[];
 };
@@ -33,7 +33,7 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
   const router = useRouter();
   const editing = !!initial;
   const emailPrefix = email.split("@")[0];
-  const [team, setTeam] = useState(initial?.team ?? { team_name: "", robot_name: "", slogan: "", major: "" });
+  const [team, setTeam] = useState(initial?.team ?? { team_name: "", major: "" });
   const [leader, setLeader] = useState(initial?.leader ?? {
     student_id: MSSV_RE.test(emailPrefix) ? emailPrefix : "",
     full_name: defaultName,
@@ -99,8 +99,6 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
     const { error } = await createClient().rpc(editing ? "update_team" : "register_team", {
       p_team: {
         team_name: team.team_name.trim(),
-        robot_name: team.robot_name.trim(),
-        slogan: team.slogan.trim(),
         major: team.major,
         leader_student_id: leader.student_id.trim(),
         leader_full_name: leader.full_name.trim(),
@@ -140,17 +138,11 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
             <input className={input(errors.team_name)} value={team.team_name} maxLength={100}
               onChange={(e) => setTeam({ ...team, team_name: e.target.value })} placeholder="VD: Bách Khoa Titans" aria-invalid={!!errors.team_name} />
           </Field>
-          <Field label="Tên robot">
-            <input className={input()} value={team.robot_name} onChange={(e) => setTeam({ ...team, robot_name: e.target.value })} placeholder="VD: Iron Lotus" />
-          </Field>
           <Field label="Ngành (đội trưởng)" required error={errors.major}>
             <select className={input(errors.major)} value={team.major} onChange={(e) => setTeam({ ...team, major: e.target.value })} aria-invalid={!!errors.major}>
               <option value="">— Chọn ngành —</option>
               {MAJORS.map((m) => <option key={m}>{m}</option>)}
             </select>
-          </Field>
-          <Field label="Slogan" className="sm:col-span-2">
-            <input className={input()} value={team.slogan} maxLength={150} onChange={(e) => setTeam({ ...team, slogan: e.target.value })} placeholder="Một câu thật chất của đội bạn" />
           </Field>
         </div>
       </Card>

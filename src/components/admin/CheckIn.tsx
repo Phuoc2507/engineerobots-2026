@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input } from "@/components/admin/ui";
 
 type Lookup = {
-  team: { id: string; team_name: string; robot_name: string | null; major: string | null; status: string; inspection_passed: boolean; inspection_data: Inspection | null; inspection_at: string | null };
+  team: { id: string; team_name: string; major: string | null; status: string; inspection_passed: boolean; inspection_data: Inspection | null; inspection_at: string | null };
   members: { full_name: string; student_id: string; role: string }[];
   bookings: { id: string; starts_at: string; ends_at: string; location: string | null; status: string; check_in_at: string | null }[];
   next_match: { id: string; match_code: string; stage: string; start_time: string; color: string } | null;
@@ -116,7 +116,7 @@ export default function CheckIn() {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h2 className="font-display text-2xl uppercase text-navy">{data.team.team_name}</h2>
-                <p className="text-sm text-slate-500">Robot: {data.team.robot_name || "—"} · {data.team.major || "—"}</p>
+                <p className="text-sm text-slate-500">{data.team.major || "—"}</p>
               </div>
               <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold ${data.team.inspection_passed ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-mech-red"}`}>
                 {data.team.inspection_passed ? <ShieldCheck className="h-4 w-4" /> : <ShieldX className="h-4 w-4" />}
