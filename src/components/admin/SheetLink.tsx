@@ -126,9 +126,9 @@ export default function SheetLink({ initial, serviceEmail }: { initial: KeyInfo;
             ) : (
               <>
                 <ol className="mt-3 list-decimal space-y-1 pl-5 text-xs text-slate-700">
-                  <li className="flex flex-wrap items-center gap-2">
-                    Trong Sheet bấm <b>Chia sẻ</b>, thêm email này với quyền <b>Người chỉnh sửa</b>:
-                    <code className="rounded bg-white px-1.5 py-0.5 ring-1 ring-slate-200">{serviceEmail}</code>
+                  <li>
+                    Trong Sheet bấm <b>Chia sẻ</b>, thêm email này với quyền <b>Người chỉnh sửa</b>:{" "}
+                    <code className="break-all rounded bg-white px-1.5 py-0.5 ring-1 ring-slate-200">{serviceEmail}</code>{" "}
                     <button onClick={() => copy("sa", serviceEmail)} className="font-semibold text-navy-600 hover:underline">
                       {copied === "sa" ? "Đã chép" : "Chép"}
                     </button>
