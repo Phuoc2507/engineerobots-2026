@@ -14,7 +14,8 @@ const DATASETS = [
 ];
 
 // Apps Script dán vào Sheet: tải 6 bảng song song (fetchAll) mỗi phút, ghi đè trang tính cùng tên
-const appsScript = (origin: string, key: string) => `// ENGINEEROBOTS 2026 – tự cập nhật dữ liệu từ web vào Sheet này
+const appsScript = (origin: string, key: string) => `/** @OnlyCurrentDoc */
+// ENGINEEROBOTS 2026 – tự cập nhật dữ liệu từ web vào Sheet này (chỉ xin quyền với đúng file này)
 const BASE = "${origin}/api/sheets/";
 const KEY = "${key}";
 const SHEETS = ${JSON.stringify(Object.fromEntries(DATASETS.map((d) => [d.id, d.label])))};
