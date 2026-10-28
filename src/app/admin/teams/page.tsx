@@ -11,7 +11,7 @@ export default async function AdminTeams() {
   const staff = await requireStaff(["BTC"]);
   const { data } = await createClient()
     .from("teams")
-    .select("id, team_name, robot_name, slogan, major, cohort, status, review_note, leader_email, leader_phone, inspection_passed, created_at, updated_at, team_members(student_id, full_name, email, phone, role, joined_at)")
+    .select("id, team_name, robot_name, slogan, major, cohort, status, review_note, leader_email, leader_phone, inspection_passed, created_at, updated_at, team_members(id, student_id, full_name, email, phone, role, joined_at)")
     .order("created_at", { ascending: true });
 
   return (

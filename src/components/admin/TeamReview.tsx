@@ -2,10 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, ChevronDown, Download, Loader2, Search, ShieldCheck, XCircle } from "lucide-react";
-import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input } from "@/components/admin/ui";
+import { Check, CheckCircle2, ChevronDown, Download, Loader2, Pencil, Search, ShieldCheck, X, XCircle } from "lucide-react";
+import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input, useRpc } from "@/components/admin/ui";
 
-type Member = { student_id: string; full_name: string; email: string; phone: string | null; role: string; joined_at: string | null };
+type Member = { id: string; student_id: string; full_name: string; email: string; phone: string | null; role: string; joined_at: string | null };
 export type AdminTeam = {
   id: string; team_name: string; robot_name: string | null; slogan: string | null; major: string; cohort: string | null;
   status: string; review_note: string | null; leader_email: string; leader_phone: string; inspection_passed: boolean;
@@ -27,6 +27,51 @@ function toCsv(teams: AdminTeam[]) {
     ROLE[m.role] ?? m.role, m.student_id, m.full_name, m.email, m.phone ?? "",
   ])));
   return "﻿" + rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\r\n");
+}
+
+// Một dòng thành viên; BTC bấm bút chì để sửa khi đội báo khai nhầm
+function MemberRow({ m }: { m: Member }) {
+  const { busy, error, call } = useRpc();
+  const [edit, setEdit] = useState(false);
+  const [f, setF] = useState({ student_id: m.student_id, full_name: m.full_name, email: m.email, phone: m.phone ?? "" });
+  const cell = `${input} h-8 px-2`;
+  const save = async () => {
+    const { error } = await call("save", "admin_update_member", {
+      p_member_id: m.id, p_student_id: f.student_id, p_full_name: f.full_name, p_email: f.email, p_phone: f.phone,
+    }, { confirm: f.email.trim().toLowerCase() !== m.email.toLowerCase() && m.role === "LEADER" ? "Đổi email đội trưởng? Người dùng email mới sẽ quản lý hồ sơ đội." : undefined });
+    if (!error) setEdit(false);
+  };
+  if (!edit) return (
+    <tr className="border-t border-slate-200">
+      <td className="py-1.5 pr-3">{ROLE[m.role] ?? m.role}</td><td className="pr-3 font-mono">{m.student_id}</td>
+      <td className="pr-3 font-semibold text-navy">{m.full_name}</td><td className="pr-3">{m.email}</td><td className="pr-3">{m.phone}</td>
+      <td className="text-right">
+        <button onClick={() => setEdit(true)} className="rounded p-1 text-slate-400 hover:bg-white hover:text-navy" aria-label={`Sửa ${m.full_name}`}><Pencil className="h-4 w-4" /></button>
+      </td>
+    </tr>
+  );
+  const field = (k: keyof typeof f, label: string) => (
+    <input value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} className={cell} aria-label={label} />
+  );
+  return (
+    <>
+      <tr className="border-t border-slate-200 bg-white">
+        <td className="py-1.5 pr-3">{ROLE[m.role] ?? m.role}</td>
+        <td className="pr-2">{field("student_id", "MSSV")}</td>
+        <td className="pr-2">{field("full_name", "Họ tên")}</td>
+        <td className="pr-2">{field("email", "Email")}</td>
+        <td className="pr-2">{field("phone", "SĐT")}</td>
+        <td className="whitespace-nowrap text-right">
+          <button onClick={save} disabled={!!busy} className="rounded p-1 text-emerald-700 hover:bg-emerald-50" aria-label="Lưu">
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+          </button>
+          <button onClick={() => { setEdit(false); setF({ student_id: m.student_id, full_name: m.full_name, email: m.email, phone: m.phone ?? "" }); }} disabled={!!busy}
+            className="rounded p-1 text-slate-500 hover:bg-slate-100" aria-label="Hủy"><X className="h-4 w-4" /></button>
+        </td>
+      </tr>
+      {error && <tr><td colSpan={6} className="pb-2 text-xs text-mech-red">{error}</td></tr>}
+    </>
+  );
 }
 
 // Danh sách hồ sơ đội: lọc, duyệt / yêu cầu bổ sung (có email báo đội), thống kê theo ngành, xuất CSV
@@ -143,19 +188,14 @@ export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[560px] text-sm">
                           <thead className="text-left text-xs uppercase tracking-wider text-slate-500">
-                            <tr><th className="py-1.5 pr-3">Vai trò</th><th className="pr-3">MSSV</th><th className="pr-3">Họ tên</th><th className="pr-3">Email</th><th className="pr-3">SĐT</th><th>Xác nhận</th></tr>
+                            <tr><th className="py-1.5 pr-3">Vai trò</th><th className="pr-3">MSSV</th><th className="pr-3">Họ tên</th><th className="pr-3">Email</th><th className="pr-3">SĐT</th><th /></tr>
                           </thead>
                           <tbody>
-                            {t.team_members.map((m) => (
-                              <tr key={m.student_id} className="border-t border-slate-200">
-                                <td className="py-1.5 pr-3">{ROLE[m.role] ?? m.role}</td><td className="pr-3 font-mono">{m.student_id}</td>
-                                <td className="pr-3 font-semibold text-navy">{m.full_name}</td><td className="pr-3">{m.email}</td><td className="pr-3">{m.phone}</td>
-                                <td>{m.joined_at ? <CheckCircle2 className="h-4 w-4 text-emerald-600" aria-label="Đã đăng nhập xác nhận" /> : <span className="text-xs text-slate-400">chưa</span>}</td>
-                              </tr>
-                            ))}
+                            {t.team_members.map((m) => <MemberRow key={m.id} m={m} />)}
                           </tbody>
                         </table>
                       </div>
+                      <p className="text-xs text-slate-500">Đội báo thông tin thành viên sai thì bấm <Pencil className="inline h-3 w-3" /> để sửa. Đổi email đội trưởng thì người mới đăng nhập bằng email đó sẽ quản lý đội.</p>
                       {t.review_note && <p className="rounded-md bg-white p-3 text-sm text-slate-600 ring-1 ring-slate-200">Ghi chú lần trước: {t.review_note}</p>}
                       <label className="block text-sm">
                         <span className="font-semibold text-navy">Ghi chú gửi đội (bắt buộc khi yêu cầu bổ sung)</span>

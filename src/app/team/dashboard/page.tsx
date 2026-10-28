@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import QRCode from "react-qr-code";
-import { AlertTriangle, ArrowRight, CheckCircle2, Circle, Clock, Crown, Heart, Lock, MailCheck, QrCode, Swords } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle2, Circle, Crown, Heart, Lock, MailCheck, QrCode, Swords } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { SITE, STUDENT_DOMAIN } from "@/lib/site";
+import { CONTACT, SITE, STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
-import TeamManager, { CopyInvite } from "@/components/team/TeamManager";
+import TeamManager from "@/components/team/TeamManager";
 import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBooking";
 import TeamAppeals, { type AppealMatch, type MyAppeal } from "@/components/team/TeamAppeals";
 import Link from "next/link";
@@ -45,7 +44,7 @@ export default async function TeamDashboard() {
   const email = user?.email?.toLowerCase() ?? "";
   if (!user || !email.endsWith(`@${STUDENT_DOMAIN}`)) redirect("/register");
 
-  // Đánh dấu "đã xác nhận" cho thành viên đăng nhập lần đầu, rồi đọc đội qua RLS
+  // Gắn tài khoản cho thành viên đăng nhập lần đầu, rồi đọc đội qua RLS
   // (lọc theo đội của chính mình — staff có thể đọc mọi đội qua RLS)
   await supabase.rpc("claim_membership");
   const { data: ids } = await supabase.rpc("my_team_ids");
@@ -86,15 +85,10 @@ export default async function TeamDashboard() {
   const me = members.find((m) => m.email.toLowerCase() === email);
   const isLeader = team.leader_email.toLowerCase() === email;
   const leader = members.find((m) => m.role === "LEADER");
-  const confirmed = members.filter((m) => m.joined_at).length;
-  const pendingMembers = members.filter((m) => !m.joined_at);
   const open = Date.now() <= new Date(SITE.registrationDeadline).getTime();
   const editable = team.status !== "APPROVED" && open;
   const status = STATUS[team.status] ?? { label: team.status, tone: "bg-slate-100 text-slate-600" };
 
-  const host = headers().get("host") ?? "";
-  const proto = host.startsWith("localhost") ? "http" : "https";
-  const invite = `Mình đã thêm bạn vào đội "${team.team_name}" – ${SITE.name}. Vào ${proto}://${host}/team/dashboard, đăng nhập Google bằng email trường (@${STUDENT_DOMAIN}) để xác nhận nhé!`;
 
   const lockedReason = team.status === "APPROVED"
     ? "Đội đã được duyệt — mọi thay đổi vui lòng liên hệ BTC."
@@ -102,7 +96,6 @@ export default async function TeamDashboard() {
 
   const steps = [
     { label: "Gửi hồ sơ", done: true },
-    { label: `Thành viên xác nhận ${confirmed}/${members.length}`, done: confirmed === members.length },
     { label: "BTC duyệt", done: team.status === "APPROVED" },
     { label: "Nhận QR check-in", done: team.status === "APPROVED" },
   ];
@@ -148,7 +141,7 @@ export default async function TeamDashboard() {
             <span className={`rounded-full px-3 py-1 text-sm font-bold ${status.tone}`}>{status.label}</span>
           </div>
 
-          <ol className="mt-6 grid gap-2 sm:grid-cols-4">
+          <ol className="mt-6 grid gap-2 sm:grid-cols-3">
             {steps.map((s, i) => (
               <li key={s.label} className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold ${s.done ? "bg-emerald-50 text-emerald-700" : "bg-ice text-slate-500"}`}>
                 {s.done ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <Circle className="h-4 w-4 shrink-0" />}
@@ -180,11 +173,6 @@ export default async function TeamDashboard() {
                     <span className="block truncate text-xs text-slate-500">{m.student_id} · {m.email}</span>
                   </span>
                   <span className="flex items-center gap-2">
-                    {m.joined_at ? (
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700"><CheckCircle2 className="h-3.5 w-3.5" /> Đã xác nhận</span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700"><Clock className="h-3.5 w-3.5" /> Chưa đăng nhập</span>
-                    )}
                     <span className={`rounded px-2 py-0.5 text-xs font-bold uppercase ${m.role === "LEADER" ? "bg-mech-red text-white" : "bg-ice text-navy-600"}`}>
                       {ROLE_LABEL[m.role] ?? m.role}
                     </span>
@@ -194,14 +182,9 @@ export default async function TeamDashboard() {
             })}
           </ul>
 
-          {isLeader && pendingMembers.length > 0 && (
-            <div className="mt-4 flex flex-col gap-3 rounded-lg border border-mech-gold/40 bg-mech-gold/10 p-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-amber-800">
-                <b>{pendingMembers.length} thành viên chưa đăng nhập.</b> Gửi lời mời để họ đăng nhập bằng email đã khai báo và xác nhận tham gia.
-              </p>
-              <CopyInvite text={invite} />
-            </div>
-          )}
+          <p className="mt-3 text-xs text-slate-500">
+            Khai nhầm thông tin thành viên (tên, MSSV, email, SĐT)? Báo Ban tổ chức{CONTACT.email ? <> qua <a href={`mailto:${CONTACT.email}`} className="font-semibold text-navy-600 hover:underline">{CONTACT.email}</a></> : null} để được sửa.
+          </p>
         </section>
 
         <section className="grid gap-6 md:grid-cols-[auto_1fr]">

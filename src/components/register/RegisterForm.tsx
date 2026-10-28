@@ -239,7 +239,7 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
       <div className="flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-slate-500">
           {editing
-            ? "Lưu thay đổi sẽ đưa hồ sơ về trạng thái Chờ duyệt. Thành viên mới cần đăng nhập để xác nhận."
+            ? "Lưu thay đổi sẽ đưa hồ sơ về trạng thái Chờ duyệt."
             : "Sau khi gửi, mỗi thành viên đăng nhập bằng email trường là thấy đội. BTC duyệt và cấp mã QR check-in."}
         </p>
         <div className="flex flex-col-reverse gap-3 sm:flex-row">
