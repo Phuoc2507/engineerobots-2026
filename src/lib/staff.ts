@@ -4,12 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 export type StaffRole = "BTC" | "HEAD_REFEREE" | "REFEREE";
 export type Staff = { email: string; full_name: string | null; role: StaffRole };
 
-// Đọc tài khoản BTC/trọng tài của người đang đăng nhập (null nếu không phải staff)
+// Đọc tài khoản BTC/trọng tài của người đang đăng nhập (null nếu không phải staff).
+// Không gọi auth.getUser() ở đây: middleware đã làm mới session, còn PostgREST tự kiểm chữ ký JWT
+// trước khi get_my_staff đọc email → bớt một lượt gọi mạng mỗi lần đổi trang.
 export async function getStaff(): Promise<Staff | null> {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
-  const { data } = await supabase.rpc("get_my_staff");
+  const { data } = await createClient().rpc("get_my_staff");
   return ((data as Staff[] | null) ?? [])[0] ?? null;
 }
 
