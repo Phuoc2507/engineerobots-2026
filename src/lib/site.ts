@@ -38,7 +38,7 @@ export const ROBOT_SPECS = [
   { label: "Khi bung cơ cấu", value: "≤ 400 × 350 × 250 mm (+10)" },
   { label: "Nguồn DC", value: "12 V (+0,6 V)" },
   { label: "Cơ cấu", value: "Tự do: càng đẩy, con lăn, tay gắp…" },
-  { label: "Khối lượng", value: "≤ 2,5 kg (cả pin)" },
+  { label: "Khối lượng", value: "≤ 2,5 kg (cả pin, +100 g)" },
   { label: "Điều khiển", value: "C1 tự hành · C2–3 từ xa" },
 ];
 
@@ -65,7 +65,7 @@ export const FAQ = [
   },
   {
     q: "Robot có được điều khiển từ xa không?",
-    a: "Chặng 1 bắt buộc tự hành 100%, chỉ ấn nút khởi động một lần. Sau khi hoàn thành Chặng 1 được điều khiển từ xa (RF, Bluetooth, Wifi, gamepad không dây…). Cấm thiết bị gây nhiễu sóng.",
+    a: "Chặng 1 bắt buộc tự hành 100%, chỉ ấn nút khởi động một lần; tay cầm được kết nối sẵn nhưng phải đặt xuống đất suốt Chặng 1. Sau khi hoàn thành Chặng 1 được điều khiển từ xa (RF, Bluetooth, Wifi, gamepad không dây…). Cấm thiết bị gây nhiễu sóng.",
   },
 ];
 
