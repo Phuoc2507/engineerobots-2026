@@ -6,6 +6,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Bỏ qua file tĩnh và ảnh
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  // Bỏ qua file tĩnh, ảnh/video/mô hình 3D và API Google Sheet (dùng khóa riêng, không cần session)
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/sheets|.*\.(?:svg|png|jpg|jpeg|gif|webp|mp4|glb)$).*)"],
 };

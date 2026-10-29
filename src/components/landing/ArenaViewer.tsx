@@ -121,7 +121,7 @@ export default function ArenaViewer() {
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gradient-to-b from-navy-900 to-navy md:aspect-[16/10]">
         <Script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js" onReady={() => setReady(true)} />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/sa-ban-3d.png" alt="Ảnh render sa bàn 3D"
+        <img src="/images/sa-ban-3d.webp" alt="Ảnh render sa bàn 3D"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${loaded ? "pointer-events-none opacity-0" : "opacity-100"}`} />
         {createElement(
           "model-viewer",

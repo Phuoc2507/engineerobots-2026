@@ -22,7 +22,7 @@ export default function ArenaVideo({ className = "" }: { className?: string }) {
   }, []);
 
   return (
-    <video ref={ref} muted loop playsInline preload="metadata" poster="/images/sa-ban-3d.png"
+    <video ref={ref} muted loop playsInline preload="metadata" poster="/images/sa-ban-3d.webp"
       aria-label="Video mô phỏng hai robot thi đấu trên sa bàn ENGINEERING PATH 2026"
       className={`h-auto w-full bg-navy-900 ${className}`}>
       <source src="/videos/sa-ban-2026.mp4" type="video/mp4" />

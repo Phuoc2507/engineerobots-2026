@@ -3,6 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Làm mới session Supabase trên mỗi request để Server Components luôn đọc được user mới nhất
 export async function updateSession(request: NextRequest) {
+  // Khách chưa đăng nhập không có cookie sb-… → khỏi gọi Supabase Auth, trang công khai trả nhanh hơn
+  if (!request.cookies.getAll().some((c) => c.name.startsWith("sb-"))) return NextResponse.next({ request });
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
