@@ -33,7 +33,7 @@ const PENALTIES = [
   { name: "Chặng 2: đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây", pts: "−10 / lần" },
   { name: "Chặng 2: cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân (Trọng tài đặt lại bóng)", pts: "−10 / lần" },
   { name: "Chặng 2: tự làm văng bóng Kiến thức của đội mình ra ngoài sân (Trọng tài đặt lại bóng)", pts: "−5 / lần" },
-  { name: "Chặng 2 (Chung kết): chạm bóng Cơ hội vàng khi chưa đủ 2 bóng Kiến thức trong trạm (Trọng tài đặt lại về Bục Cơ hội)", pts: "−10 / lần" },
+  { name: "Chặng 2 (Chung kết): cố ý thu thập bóng Cơ hội vàng khi chưa đủ 2 bóng Kiến thức trong trạm (Trọng tài đặt lại về Bục Cơ hội)", pts: "−10 / lần" },
   { name: "Chặng 2: cầm, giữ hoặc mang bóng Kiến thức của đối phương (Trọng tài đặt bóng về vị trí ban đầu; được phép chặn đường)", pts: "−10 / lần" },
   { name: "Chặng 2 (Vòng loại): sang nửa sân đối phương hoặc cản phá đối phương (buộc Retry về Ô Retry Chặng 2)", pts: "−15 / lần" },
   { name: "Robot ra khỏi khu vực Chặng 2 / Chặng 3", pts: "−10 / lần" },
@@ -131,7 +131,7 @@ export default function RulesPage() {
             <li>Đồng hồ chạy liên tục, chỉ dừng khi Trọng tài chính ra lệnh dừng khẩn cấp (sa bàn hư hỏng, chập điện).</li>
             <li><b>Vòng loại (03:00/trận, 01 phút chuẩn bị):</b> 2 robot chạy cùng lúc nhưng độc lập; nội dung là Chặng 1 và đưa 2 bóng Kiến thức vào Trạm thành tựu, mỗi đội thi <b>01 trận</b>, <b>xếp hạng theo điểm số</b>; trận chỉ kết thúc sớm khi cả hai đội hoàn thành hết trước 180 giây. Ở Chặng 2 vòng loại, robot không được sang nửa sân đối phương hoặc cản phá nhau. <b>16 đội</b> cao nhất vào Vòng Chung kết xếp hạng.</li>
             <li><b>Vòng Chung kết xếp hạng (05:00/trận, 02 phút chuẩn bị):</b> đối kháng 1 vs 1 loại trực tiếp trên toàn bộ sa bàn; cặp đấu xác định bằng <b>bốc thăm</b>; tranh Hạng 3 thi đấu 1 trận; <b>trận Chung kết</b> thi đấu Best of 3. Màu sân bốc thăm ở ván đầu, đổi màu sau mỗi ván; nghỉ <b>02 phút</b> giữa các ván để thay pin, sửa robot.</li>
-            <li>Đội được gọi tên <b>03 lần trong 30 giây</b> mà không có mặt bị xử thua trận đó (vòng loại tính 0 điểm), áp dụng cả hai vòng.</li>
+            <li>Đội được gọi tên <b>03 lần</b> mà không có mặt bị xử thua trận đó (vòng loại tính 0 điểm), áp dụng cả hai vòng.</li>
             <li>Nền sa bàn màu trắng, line đen. Sau vạch chữ T, robot đi thẳng vào khu vực Chặng 2 của đội mình.</li>
           </ul>
         </section>
@@ -154,7 +154,7 @@ export default function RulesPage() {
             <li>Khi bóng còn ngoài trạm, hai robot <b>được phép</b> tì đè, che chắn và tranh chấp trực tiếp, kể cả trên Bục Cơ hội. Bóng đã nằm trọn trong trạm là bất khả xâm phạm.</li>
             <li>Được chặn đường di chuyển của đối phương, nhưng <b>không được cầm, giữ hoặc mang bóng Kiến thức của đối phương</b>: <b>−10 điểm/lần</b>, Trọng tài đặt bóng về vị trí ban đầu.</li>
             <li><b>Vòng loại:</b> hai robot thi đấu độc lập, không được sang nửa sân đối phương hoặc cản phá nhau: <b>−15 điểm/lần</b> và buộc Retry về Ô Retry Chặng 2.</li>
-            <li><b>Vòng Chung kết:</b> sau khi đủ 2 bóng Kiến thức, đội được tranh chấp bóng Cơ hội vàng trên Bục Cơ hội. Đưa được về trạm: <b>+30 điểm</b>, đồng thời là chỉ số ưu tiên khi hòa điểm. Chạm bóng vàng khi chưa đủ 2 Kiến thức: <b>−10 điểm/lần</b>, Trọng tài đặt lại; bị đối phương đẩy vào bóng vàng thì không phạt (Trọng tài xem xét); bóng vàng văng ra ngoài biên được đặt lại trên Bục Cơ hội.</li>
+            <li><b>Vòng Chung kết:</b> sau khi đủ 2 bóng Kiến thức, đội được tranh chấp bóng Cơ hội vàng trên Bục Cơ hội. Đưa được về trạm: <b>+30 điểm</b>, đồng thời là chỉ số ưu tiên khi hòa điểm. Cố ý thu thập bóng vàng khi chưa đủ 2 Kiến thức: <b>−10 điểm/lần</b>, Trọng tài đặt lại; bị đối phương đẩy vào bóng vàng thì không phạt (Trọng tài xem xét); bóng vàng văng ra ngoài biên được đặt lại trên Bục Cơ hội.</li>
             <li>Được bắn hoặc ném bóng vào trạm, miễn bóng nằm trọn trong trạm; không giới hạn số bóng robot mang cùng lúc.</li>
             <li><b>Điều kiện lên Chặng 3:</b> có tối thiểu 2 bóng Kiến thức hợp lệ trong trạm.</li>
             <li>Đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10 điểm/lần</b>. Ra khỏi khu vực Chặng 2: <b>−10 điểm/lần</b>.</li>

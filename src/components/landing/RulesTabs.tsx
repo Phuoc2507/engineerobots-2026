@@ -88,7 +88,7 @@ export default function RulesTabs() {
                 <Fact k="Cơ hội vàng" v="+30đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-red bg-white p-4 text-sm text-slate-700">
-                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b>. Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng). Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần. Chạm bóng vàng khi chưa đủ 2 Kiến thức: <b>−10đ</b>/lần. Được chặn đường, nhưng cầm/giữ bóng Kiến thức của đối phương: <b>−10đ</b>/lần. Vòng loại sang nửa sân đối phương: <b>−15đ</b> và Retry.
+                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b>. Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng). Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần. Cố ý thu thập bóng vàng khi chưa đủ 2 Kiến thức: <b>−10đ</b>/lần. Được chặn đường, nhưng cầm/giữ bóng Kiến thức của đối phương: <b>−10đ</b>/lần. Vòng loại sang nửa sân đối phương: <b>−15đ</b> và Retry.
               </div>
             </div>
           )}
