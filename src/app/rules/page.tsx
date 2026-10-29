@@ -16,7 +16,7 @@ const h2 = "font-display text-2xl uppercase tracking-wide text-navy";
 const SCORING = [
   { stage: "Chặng 1 · Thích nghi", task: "Qua Checkpoint (cuối Đường Danh vọng)", pts: "+10", cond: "Toàn bộ xe đi qua vạch Checkpoint; robot được lưu vị trí Retry tại đó" },
   { stage: "Chặng 1 · Thích nghi", task: "Về đích (hết Đường Thách thức)", pts: "+20", cond: "≥ 2 bánh xe cắt vạch chữ T 300 mm; thời gian là chỉ số phụ khi hòa" },
-  { stage: "Chặng 2 · Tích lũy", task: "Bóng Kiến thức Ø74 mm màu đội mình vào Trạm thành tựu", pts: "+15 / bóng", cond: "Vượt gờ chặn, nằm trọn trong Trạm thành tựu 300 × 300 mm, không tự lăn ra (tối đa 2 bóng)" },
+  { stage: "Chặng 2 · Tích lũy", task: "Bóng Kiến thức Ø74 mm màu đội mình vào Trạm thành tựu", pts: "+15 / bóng", cond: "Vượt gờ chặn, nằm trọn trong Trạm thành tựu 300 × 300 mm (tối đa 2 bóng)" },
   { stage: "Chặng 2 · Tích lũy", task: "Tranh chấp bóng Cơ hội vàng về Trạm thành tựu", pts: "+30", cond: "Chỉ Vòng Chung kết, sau khi đủ 2 Kiến thức; là chỉ số ưu tiên khi hòa điểm" },
   { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Cầu Bản lĩnh (3.8)", pts: "+10", cond: "Toàn bộ thân xe qua cầu, khi đã có 2 Kiến thức hợp lệ ở Chặng 2" },
   { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Địa hình Thử thách (3.3 / 3.4)", pts: "+20", cond: "Toàn bộ thân xe và 4 bánh vượt qua thanh gờ thứ 5, không đi vòng ra ngoài" },
@@ -32,13 +32,13 @@ const PENALTIES = [
   { name: "Chạm tay vào robot khi chưa được Trọng tài cho Retry", pts: "−10 / lần" },
   { name: "Chặng 2: đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây", pts: "−10 / lần" },
   { name: "Chặng 2: cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân (Trọng tài đặt lại bóng)", pts: "−10 / lần" },
-  { name: "Chặng 2: tự làm văng bóng Kiến thức của đội mình ra ngoài sân", pts: "Bóng bị vô hiệu" },
+  { name: "Chặng 2: tự làm văng bóng Kiến thức của đội mình ra ngoài sân (Trọng tài đặt lại bóng)", pts: "−5 / lần" },
   { name: "Robot ra khỏi khu vực Chặng 2 / Chặng 3", pts: "−10 / lần" },
   { name: "Chặng 3: chạm vạch giới hạn đoạn đường Địa hình Thử thách (Nhiệm vụ 1)", pts: "−5 / lần" },
   { name: "Chặng 3: làm rơi bóng Đồ án khỏi dốc hoặc Đài Bảo vệ (đưa về Trạm Thực nghiệm)", pts: "−5 / lần" },
   { name: "Chặng 3: lấn sang phần sân đối phương (buộc Retry về ô 3.1 / 3.2)", pts: "−15 / lần" },
-  { name: "Chiếm giữ Cầu Bản lĩnh quá 15 giây (Trọng tài cưỡng chế lùi xe)", pts: "−15" },
-  { name: "Tác động bóng trong Trạm thành tựu đối phương (phục hồi nguyên trạng)", pts: "−20" },
+  { name: "Chiếm giữ Cầu Bản lĩnh quá 10 giây (Trọng tài cưỡng chế lùi xe)", pts: "−15" },
+  { name: "Cố ý tác động bóng trong Trạm thành tựu đối phương (phục hồi nguyên trạng)", pts: "−10 / lần" },
 ];
 
 const TIEBREAK = [
@@ -96,7 +96,7 @@ export default function RulesPage() {
             ))}
           </dl>
           <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            <li>Kiểm định kỹ thuật trước <b>mỗi vòng đấu</b>. Kích thước tối đa 300 (D) × 250 (R) × 200 (C) mm <b>tính cả cơ cấu thu thập</b>, dung sai +10 mm.</li>
+            <li>Kiểm định kỹ thuật trước <b>mỗi vòng đấu</b>. Kích thước khi bắt đầu thi đấu tối đa 300 (D) × 250 (R) × 200 (C) mm. Khi bung cơ cấu (càng, tay gắp…) trong trận, tối đa <b>400 × 350 × 250 mm</b>. Dung sai +10 mm.</li>
             <li><b>Cơ cấu tự do:</b> robot được dùng bất kỳ cơ chế nào để thu thập và đưa bóng (càng đẩy, con lăn cuốn bóng, tay gắp, ngàm kẹp…), miễn là nằm trong giới hạn kích thước.</li>
             <li>Pin DC (LiPo, Li-Ion, Ni-MH, 18650) tối đa <b>12 V</b>, dung sai +0,6 V. Cấm điện lưới AC.</li>
             <li>Chặng 1 tự hành 100%, chỉ bấm nút Start một lần. Sau khi hoàn thành Chặng 1 được điều khiển từ xa (RF, Bluetooth, Wifi, gamepad không dây…).</li>
@@ -136,6 +136,7 @@ export default function RulesPage() {
           <h3 className="mt-4 font-bold text-team-red">Chặng 1 · Thích nghi (dò line tự động)</h3>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li>Robot nằm trọn trong Trạm khởi hành 300 × 250 mm. Khi có hiệu lệnh, 01 thành viên ấn nút khởi động một lần duy nhất.</li>
+            <li>Robot <b>bắt buộc chạy bám theo đường line trong suốt Chặng 1</b>.</li>
             <li>Qua Checkpoint cuối Đường Danh vọng (toàn bộ xe đi qua): <b>+10 điểm</b>, robot được lưu vị trí Retry tại Checkpoint.</li>
             <li>Về đích khi ≥ 2 bánh xe cắt vạch chữ T cuối Đường Thách thức: <b>+20 điểm</b>. Thời gian hoàn thành là chỉ số phụ khi hòa.</li>
             <li>Giới hạn Chặng 1 là <b>60 giây</b>: quá thời gian mà chưa về đích, đội đưa robot lên khu vực đích Chặng 1 để thi Chặng 2 và không được tính điểm Chặng 1.</li>
@@ -149,12 +150,13 @@ export default function RulesPage() {
             <li><b>Vòng Chung kết:</b> sau khi đủ 2 bóng Kiến thức, đội được tranh chấp bóng Cơ hội vàng trên Bục Cơ hội. Đưa được về trạm: <b>+30 điểm</b>, đồng thời là chỉ số ưu tiên khi hòa điểm.</li>
             <li><b>Điều kiện lên Chặng 3:</b> có tối thiểu 2 bóng Kiến thức hợp lệ trong trạm.</li>
             <li>Đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10 điểm/lần</b>. Ra khỏi khu vực Chặng 2: <b>−10 điểm/lần</b>.</li>
-            <li>Cố ý húc văng bóng Kiến thức của đối phương ra ngoài biên Chặng 2: <b>−10 điểm/lần</b>, Trọng tài đặt lại bóng. Tự làm văng bóng của đội mình: bóng đó bị vô hiệu.</li>
+            <li>Cố ý húc văng bóng Kiến thức của đối phương ra ngoài biên Chặng 2: <b>−10 điểm/lần</b>, Trọng tài đặt lại bóng. Tự làm văng bóng của đội mình: <b>−5 điểm/lần</b>, Trọng tài đặt lại bóng về vị trí ban đầu.</li>
+            <li>Cố ý tác động vào bóng đã nằm trong Trạm thành tựu của đối phương: <b>−10 điểm/lần</b>, phục hồi nguyên trạng.</li>
           </ul>
           <h3 className="mt-4 font-bold text-team-blue">Chặng 3 · Bản lĩnh (bảo vệ Đồ án tốt nghiệp)</h3>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li>Hai robot thi đấu độc lập trên sân của đội mình; cấm sang sân đối phương hoặc cản phá nhau. Lộ trình bắt buộc theo thứ tự dưới đây.</li>
-            <li>Vượt Cầu Bản lĩnh (toàn bộ thân xe): <b>+10 điểm</b>. Đỗ chiếm cầu quá 15 giây: <b>−15 điểm</b>, Trọng tài cưỡng chế lùi xe.</li>
+            <li>Vượt Cầu Bản lĩnh (toàn bộ thân xe): <b>+10 điểm</b>. Đỗ chiếm cầu quá 10 giây: <b>−15 điểm</b>, Trọng tài cưỡng chế lùi xe.</li>
             <li><b>Nhiệm vụ 1:</b> vượt Địa hình Thử thách — toàn bộ thân xe và 4 bánh qua khỏi thanh gờ thứ 5, không đi vòng ra ngoài: <b>+20 điểm</b>. Chạm vạch giới hạn đoạn đường: <b>−5 điểm/lần</b>.</li>
             <li><b>Nhiệm vụ 2:</b> dùng cơ chế của robot đưa bóng Đồ án từ Trạm Thực nghiệm vượt Dốc Kiên trì lên Đài Bảo vệ (100 mm), đặt nằm vững trên đế nhỏ trong Ô Bảo vệ Đồ án 120 × 120 mm: <b>+25 điểm</b>. Làm rơi bóng khỏi dốc hoặc Đài: <b>−5 điểm/lần</b>, bóng đưa về Trạm Thực nghiệm.</li>
             <li><b>Nhiệm vụ 3:</b> di chuyển trên Đài Bảo vệ, leo Dốc Thăng hoa lên Bục Vinh Quang (200 mm) và nhấn nút của đội mình trên vách ngăn làm sáng Đèn Vinh Quang: <b>+40 điểm</b>. Nhấn đèn khi chưa đặt bóng Đồ án lên đế thì không được công nhận.</li>
