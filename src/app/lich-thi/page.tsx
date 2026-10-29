@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { SITE, TIMELINE } from "@/lib/site";
 import PortalShell from "@/components/register/PortalShell";
 
-export const metadata: Metadata = { title: "Lịch thi · ENGINEEROBOTS 2026" };
+export const metadata: Metadata = { title: "Lịch thi · ENGINEERING PATH 2026" };
 
 type MatchRow = {
   id: string;
@@ -130,7 +130,7 @@ export default async function SchedulePage() {
           <h2 className="flex items-center gap-2 font-display text-xl uppercase tracking-wide text-navy">
             <Trophy className="h-5 w-5 text-mech-gold" /> Bảng xếp hạng
           </h2>
-          <p className="mt-1 text-xs text-slate-500">Thống kê theo trận đã kết thúc (Thắng 3 · Hòa 1 · Thua 0). Vòng loại xếp hạng theo thời gian, top 16 vào Vòng Chung kết xếp hạng loại trực tiếp.</p>
+          <p className="mt-1 text-xs text-slate-500">Thống kê theo trận đã kết thúc (Thắng 3 · Hòa 1 · Thua 0). Vòng loại xếp hạng theo điểm số, top 16 vào Vòng Chung kết xếp hạng loại trực tiếp.</p>
           {standingStages.map((stage) => (
             <div key={stage} className="mt-5">
               <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-mech-red">{stage}</h3>

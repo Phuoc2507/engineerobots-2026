@@ -1,7 +1,7 @@
 import { CONTACT, SITE } from "@/lib/site";
 
 // Gửi email qua Resend (https://resend.com). Chưa đặt RESEND_API_KEY thì bỏ qua, không báo lỗi.
-// Cần thêm trên Vercel: RESEND_API_KEY, EMAIL_FROM (vd: "ENGINEEROBOTS <noreply@ten-mien-da-xac-minh>")
+// Cần thêm trên Vercel: RESEND_API_KEY, EMAIL_FROM (vd: "ENGINEERING PATH <noreply@ten-mien-da-xac-minh>")
 export async function sendEmail(to: string, subject: string, html: string): Promise<{ sent: boolean; error?: string }> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return { sent: false };

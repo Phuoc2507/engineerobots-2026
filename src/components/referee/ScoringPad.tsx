@@ -79,7 +79,7 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
               </button>
             ))}
           </div>
-          <h2 className="mb-2 mt-4 text-xs font-bold uppercase tracking-wider text-white/50">Retry (tối đa 3) / cảnh cáo (tái phạm → truất quyền)</h2>
+          <h2 className="mb-2 mt-4 text-xs font-bold uppercase tracking-wider text-white/50">Retry (không giới hạn) / cảnh cáo (tái phạm → truất quyền)</h2>
           <div className="grid grid-cols-2 gap-2">
             {marks.map((r) => (
               <button key={r.rule_key} disabled={!live || busy !== null || full(r)}

@@ -5,7 +5,7 @@ import Script from "next/script";
 import { Pause, Play, RotateCcw } from "lucide-react";
 
 // Trình xem GLB dùng web component <model-viewer> (tải từ CDN, ghim phiên bản).
-// GLB xuất từ Blender có sẵn 1 animation: 2 robot chạy line, tranh khối, leo Bục Vinh Quang bật đèn.
+// GLB xuất từ Blender có sẵn 1 animation: 2 robot chạy line, gom bóng pickleball, đặt Đồ án lên đế, leo Bục Vinh Quang bật đèn.
 // Toạ độ hotspot theo glTF (Y hướng lên): Blender (x, y, z) -> (x, z, -y), đơn vị m.
 
 type ModelViewerEl = HTMLElement & {
@@ -37,7 +37,7 @@ const HOTSPOTS = [
   { id: "terrain", pos: "1.45m 0.03m -3.02m", label: "Địa hình", tone: "bg-slate-600" },
   { id: "lab", pos: "1.45m 0.08m -3.58m", label: "Trạm thực nghiệm", tone: "bg-orange-500" },
   { id: "kientri", pos: "1.275m 0.07m -3.98m", label: "Dốc Kiên trì", tone: "bg-team-blue" },
-  { id: "guard", pos: "1.11m 0.12m -4.74m", label: "Ô bảo vệ", tone: "bg-cyan-500" },
+  { id: "guard", pos: "1.04m 0.13m -4.66m", label: "Ô bảo vệ Đồ án", tone: "bg-cyan-500" },
   { id: "thanghoa", pos: "1.775m 0.17m -4.525m", label: "Dốc Thăng hoa", tone: "bg-team-blue" },
   { id: "lamp", pos: "2.4m 0.25m -4.52m", label: "Đèn Vinh quang", tone: "bg-navy-600" },
 ] as const;
@@ -128,7 +128,7 @@ export default function ArenaViewer() {
           {
             ref,
             src: "/models/sa-ban-2026.glb",
-            alt: "Mô hình 3D sa bàn ENGINEEROBOTS 2026 với hai robot mô phỏng",
+            alt: "Mô hình 3D sa bàn ENGINEERING PATH 2026 với hai robot mô phỏng",
             autoplay: true,
             "camera-controls": true,
             "auto-rotate": true,

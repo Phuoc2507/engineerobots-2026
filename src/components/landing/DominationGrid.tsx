@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 type Team = "RED" | "BLUE";
 
-// Lộ trình Chặng 3 theo thể lệ ENGINEEROBOTS 2026, mỗi đội trên nửa sân riêng
+// Lộ trình Chặng 3 theo thể lệ ENGINEERING PATH 2026, mỗi đội trên nửa sân riêng
 const STEPS = [
   { name: "Cầu Bản lĩnh", pts: 10 },
   { name: "Địa hình", pts: 20 },

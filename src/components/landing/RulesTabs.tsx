@@ -33,7 +33,7 @@ export default function RulesTabs() {
         <p className="section-kicker">
           <span className="h-px w-8 bg-mech-red" /> Thể lệ thi đấu
         </p>
-        <h2 className="section-title mt-3">Ba chặng – 180 giây – Một hành trình kỹ sư</h2>
+        <h2 className="section-title mt-3">Ba chặng – 180 / 300 giây – Một hành trình kỹ sư</h2>
 
         <div role="tablist" className="mt-10 flex flex-wrap gap-2">
           {TABS.map((t) => (
@@ -64,6 +64,7 @@ export default function RulesTabs() {
                 <li><strong>Tự hành 100%:</strong> chỉ ấn nút khởi động một lần, không được điều khiển.</li>
                 <li><strong>Mất line / chạm rào chắn:</strong> −5đ mỗi lần. Xuất phát sớm: −5đ.</li>
                 <li><strong>Retry:</strong> chưa qua Checkpoint thì về Trạm khởi hành; đã qua Checkpoint thì đặt lại tại Checkpoint.</li>
+                <li><strong>Giới hạn 60 giây:</strong> chưa về đích thì đội tự đưa robot tới khu vực đích Chặng 1 để thi Chặng 2 (không có điểm Chặng 1).</li>
                 <li><strong>Thời gian về đích</strong> được ghi lại để xét phụ khi hòa điểm.</li>
               </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
@@ -77,17 +78,17 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Tích lũy – Tranh chấp cấu kiện</h3>
               <p className="mt-4 text-slate-600">
-                Được điều khiển từ xa. Robot dùng càng đẩy đưa Cấu kiện Kiến thức 6 cm (nhựa in 3D) màu đội mình về Trạm thành tựu 30 × 30 cm. Có ≥ 2 khối
-                trong trạm thì được <b>tích lũy liên ngành</b>: thu cả khối của đối phương còn trên sân. Khối ngoài trạm được
-                tranh chấp, tì đè; khối nằm trọn trong trạm là bất khả xâm phạm. Chỉ ở Vòng Chung kết xếp hạng, Cơ hội vàng 8 cm trên Bục
-                Cơ hội mở tranh chấp ngay từ đầu. Cần ≥ 2 cấu kiện bất kỳ trong trạm để sang Chặng 3.
+                Được điều khiển từ xa. Mỗi đội có 2 Cấu kiện Kiến thức là bóng pickleball Ø74 mm màu đội mình; robot dùng cơ cấu tự chọn
+                (càng đẩy, con lăn, tay gắp…) đưa bóng vượt gờ vào Trạm thành tựu 30 × 30 cm. Bóng ngoài trạm được tranh chấp;
+                bóng nằm trọn trong trạm là bất khả xâm phạm. Chỉ ở Vòng Chung kết xếp hạng, sau khi đủ 2 Kiến thức, đội mới được đưa
+                bóng Cơ hội vàng trên Bục Cơ hội về trạm. Cần ≥ 2 Kiến thức trong trạm để sang Chặng 3.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Fact k="Kiến thức" v="+15đ / khối" />
-                <Fact k="Cơ hội vàng" v="+25đ" />
+                <Fact k="Kiến thức" v="+15đ / bóng" />
+                <Fact k="Cơ hội vàng" v="+30đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-red bg-white p-4 text-sm text-slate-700">
-                Dùng càng đẩy ép khóa cứng robot đối phương vào vách quá 5 giây: <b>−10đ</b>/lần. Cố ý húc văng cấu kiện Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại cấu kiện). Tác động cấu kiện trong trạm đối thủ: <b>−20đ</b>.
+                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b>. Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình thì bóng bị vô hiệu. Tác động bóng trong trạm đối thủ: <b>−20đ</b>.
               </div>
             </div>
           )}
@@ -96,9 +97,9 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Bảo vệ Đồ án</h3>
               <p className="mt-4 text-slate-600">
-                Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Địa hình 5 thanh gờ ống PVC cao 15 mm, đẩy Cấu kiện Đồ án 7 cm từ Trạm
-                Thực nghiệm lên Dốc Kiên trì (10°) vào Ô Bảo vệ 10 × 10 cm trên Đài cao 100 mm, rồi leo Dốc Thăng hoa lên Đỉnh 200 mm
-                nhấn sáng Đèn Vinh Quang. Chạm vạch giới hạn Địa hình hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
+                Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Địa hình 5 thanh gờ ống PVC cao 15 mm, đưa bóng Đồ án Ø74 mm từ Trạm
+                Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 12 × 12 cm trên Đài cao 100 mm, rồi leo Dốc
+                Thăng hoa lên Bục Vinh Quang 200 mm nhấn nút Đèn trên vách ngăn. Chạm vạch giới hạn Địa hình hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
                 lấn sang sân đối phương: −15đ và Retry.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
@@ -108,8 +109,8 @@ export default function RulesTabs() {
                 <Fact k="Đèn Vinh Quang" v="+40đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-gold bg-white p-4 text-slate-700">
-                <strong className="text-navy">CHIẾN THẮNG TUYỆT ĐỐI:</strong> đội nhấn sáng Đèn Vinh Quang trước tiên (đã
-                đặt Đồ án vào ô) là trận kết thúc ngay.
+                <strong className="text-navy">CHIẾN THẮNG TUYỆT ĐỐI:</strong> đội đầu tiên hoàn thành đủ 2 Kiến thức, Cơ
+                hội vàng, Cầu, Địa hình, Đồ án trên đế và nhấn sáng Đèn Vinh Quang thắng ngay, trận kết thúc.
               </div>
             </div>
           )}
@@ -119,7 +120,7 @@ export default function RulesTabs() {
               <h3 className="font-display text-3xl uppercase text-navy">Quy chuẩn kỹ thuật robot</h3>
               <p className="mt-4 text-slate-600">
                 Robot được kiểm định tại bàn kỹ thuật (quét QR đội) trước mỗi trận. Cấm vũ khí, thiết bị gây nhiễu,
-                chất lỏng. Robot chỉ có cơ cấu càng đẩy phía trước (không gắp, kẹp hay nâng); bề mặt càng đẩy phẳng hoặc có đệm mềm.
+                chất lỏng. Cơ cấu thu thập tự do (càng đẩy, con lăn, tay gắp, ngàm kẹp…); bề mặt tiếp xúc bóng và nút đèn phải mềm.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 {ROBOT_SPECS.map((s) => (

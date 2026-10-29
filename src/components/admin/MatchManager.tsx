@@ -20,6 +20,8 @@ const fromLocal = (v: string) => (v ? `${v}:00+07:00` : null);
 const fmt = (s: string | null) => (s ? new Date(s).toLocaleString("vi-VN", { timeZone: TZ, weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "Chưa xếp giờ");
 
 type Form = { id: string | null; code: string; stage: string; red: string; blue: string; start: string; duration: number };
+// Thể lệ: Vòng loại 180 giây, Vòng Chung kết xếp hạng 300 giây
+const durationFor = (stage: string) => (stage === "Vòng loại" ? 180 : 300);
 const EMPTY: Form = { id: null, code: "", stage: "Vòng loại", red: "", blue: "", start: "", duration: 180 };
 
 export default function MatchManager({ matches, teams }: { matches: AdminMatch[]; teams: TeamOption[] }) {
@@ -64,7 +66,7 @@ export default function MatchManager({ matches, teams }: { matches: AdminMatch[]
               <input value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} placeholder="vd: A1, BK2" className={`${input} mt-1`} maxLength={20} />
             </label>
             <label className="text-sm font-semibold text-navy">Vòng
-              <input list="stages" value={form.stage} onChange={(e) => setForm({ ...form, stage: e.target.value })} className={`${input} mt-1`} />
+              <input list="stages" value={form.stage} onChange={(e) => setForm({ ...form, stage: e.target.value, ...(STAGES.includes(e.target.value) && { duration: durationFor(e.target.value) }) })} className={`${input} mt-1`} />
               <datalist id="stages">{STAGES.map((s) => <option key={s} value={s} />)}</datalist>
             </label>
             <label className="text-sm font-semibold text-navy">Giờ thi đấu (giờ VN)

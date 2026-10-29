@@ -119,7 +119,7 @@ export function SettingsEditor({ votingOpen, appealMinutes, votes, emailReady }:
             </button>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-ice p-4">
-            <span><b className="text-navy">Hạn khiếu nại sau trận</b><span className="block text-sm text-slate-500">Thể lệ: 2 phút kể từ khi công bố kết quả, trước khi ký biên bản.</span></span>
+            <span><b className="text-navy">Hạn khiếu nại sau trận</b><span className="block text-sm text-slate-500">Thể lệ: 3 phút kể từ khi công bố kết quả, trước khi ký biên bản.</span></span>
             <span className="flex items-center gap-2">
               <input type="number" min={1} max={60} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} aria-label="Số phút" className={`${input} w-20 text-right`} /> phút
               <button onClick={() => call("appeal", "admin_set_setting", { p_key: "appeal_window_minutes", p_value: minutes })} disabled={busy !== null || minutes === appealMinutes} className={btnPrimary}>Lưu</button>

@@ -24,14 +24,14 @@ export default function Hero() {
             {SITE.faculty} · Tân sinh viên K26
           </p>
           <h1 className="mt-5 font-display uppercase leading-[0.9] tracking-wide">
-            <span className="block text-6xl sm:text-7xl md:text-8xl">Engineerobots</span>
+            <span className="block text-6xl sm:text-7xl md:text-8xl">Engineering Path</span>
             <span className="block text-7xl text-mech-gold sm:text-8xl md:text-9xl">2026</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-white/80">
             Chủ đề <strong className="text-white">&ldquo;{SITE.theme}&rdquo;</strong>. Thiết kế, chế tạo và lập
             trình robot tự hành <strong className="text-white">dò line</strong>, tích lũy{" "}
             <strong className="text-white">Cấu kiện tri thức</strong> rồi vượt địa hình, bảo vệ{" "}
-            <strong className="text-white">Đồ án</strong> và nhấn sáng <strong className="text-white">Đèn Vinh Quang</strong> trong 180 giây.
+            <strong className="text-white">Đồ án</strong> và nhấn sáng <strong className="text-white">Đèn Vinh Quang</strong> trong 180 giây (Chung kết 300 giây).
           </p>
 
           <ul className="mt-6 flex flex-wrap gap-2 text-sm font-semibold">

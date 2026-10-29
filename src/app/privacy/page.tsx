@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SITE, STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell from "@/components/register/PortalShell";
 
-export const metadata: Metadata = { title: "Chính sách quyền riêng tư · ENGINEEROBOTS 2026" };
+export const metadata: Metadata = { title: "Chính sách quyền riêng tư · ENGINEERING PATH 2026" };
 
 // Trang bắt buộc cho màn hình xin quyền Google OAuth
 const SECTIONS = [

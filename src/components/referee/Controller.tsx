@@ -33,7 +33,10 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
   const spin = (k: string) => busy === k && <Loader2 className="h-5 w-5 animate-spin" />;
   const name = (c: Color) => (c === "RED" ? `Đỏ (${data.red?.team_name ?? "—"})` : `Xanh (${data.blue?.team_name ?? "—"})`);
   // Chiến thắng tuyệt đối: Đồ án đã vào Ô Bảo vệ và nhấn sáng Đèn Vinh Quang trước → kết thúc ngay (trọng tài chính xác nhận)
-  const koReady = (c: Color) => countEv(data.events, c, "STAGE3_PROJECT") > 0 && countEv(data.events, c, "STAGE3_LAMP") > 0;
+  // Khớp head_declare_winner (0017): 2 Kiến thức + Cơ hội vàng + đủ 4 bước Chặng 3
+  const koReady = (c: Color) =>
+    countEv(data.events, c, "STAGE2_BLOCK") >= 2 &&
+    ["STAGE2_GOLDEN_BLOCK", ...STAGE3_STEPS.map((x) => x.key)].every((k) => countEv(data.events, c, k) > 0);
   const warn = { RED: countEv(data.events, "RED", "WARNING"), BLUE: countEv(data.events, "BLUE", "WARNING") };
   const retry = { RED: countEv(data.events, "RED", "RETRY"), BLUE: countEv(data.events, "BLUE", "RETRY") };
 
@@ -50,7 +53,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
       <main className="mx-auto max-w-4xl space-y-5 px-4 pt-5">
         <section className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 rounded-2xl bg-white/5 p-5">
           <div className="text-left">
-            <p className="text-xs font-bold uppercase text-team-red">Đỏ · {data.fouls.RED} lỗi · {retry.RED}/3 retry · {warn.RED}/2 cảnh cáo</p>
+            <p className="text-xs font-bold uppercase text-team-red">Đỏ · {data.fouls.RED} lỗi · {retry.RED} retry · {warn.RED}/2 cảnh cáo</p>
             <p className="truncate font-display text-xl uppercase">{data.red?.team_name ?? "—"}</p>
             <p className="font-display text-6xl tabular-nums text-team-red">{m.red_score}</p>
           </div>
@@ -59,7 +62,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
             <p className={`font-display text-6xl tabular-nums ${remaining <= 30 && m.status === "RUNNING" ? "text-mech-red" : ""}`}>{fmtClock(remaining)}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs font-bold uppercase text-team-blue">Xanh · {data.fouls.BLUE} lỗi · {retry.BLUE}/3 retry · {warn.BLUE}/2 cảnh cáo</p>
+            <p className="text-xs font-bold uppercase text-team-blue">Xanh · {data.fouls.BLUE} lỗi · {retry.BLUE} retry · {warn.BLUE}/2 cảnh cáo</p>
             <p className="truncate font-display text-xl uppercase">{data.blue?.team_name ?? "—"}</p>
             <p className="font-display text-6xl tabular-nums text-team-blue">{m.blue_score}</p>
           </div>
@@ -80,7 +83,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
           {(m.status === "RUNNING" || m.status === "PAUSED") && (
             <>
               {(["RED", "BLUE"] as Color[]).map((c) => (
-                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận CHIẾN THẮNG TUYỆT ĐỐI: phe ${name(c)} đã đặt Đồ án và nhấn sáng Đèn Vinh Quang trước? Trận kết thúc ngay.`)}
+                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận CHIẾN THẮNG TUYỆT ĐỐI: phe ${name(c)} đã có 2 Kiến thức, Cơ hội vàng, qua Cầu, Địa hình, đặt Đồ án lên đế và nhấn sáng Đèn Vinh Quang trước? Trận kết thúc ngay.`)}
                   disabled={busy !== null || !koReady(c)} className={`${big} ${c === "RED" ? "bg-team-red" : "bg-team-blue"}`}>
                   {spin(`ko${c}`) || <Crown className="h-5 w-5" />} Thắng tuyệt đối {c === "RED" ? "Đỏ" : "Xanh"}
                 </button>
