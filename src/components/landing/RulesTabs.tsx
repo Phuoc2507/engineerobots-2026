@@ -99,14 +99,14 @@ export default function RulesTabs() {
               <p className="mt-4 text-slate-600">
                 Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Địa hình 5 thanh gờ ống PVC cao 15 mm, đưa bóng Đồ án Ø74 mm từ Trạm
                 Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 12 × 12 cm trên Đài cao 100 mm, rồi leo Dốc
-                Thăng hoa lên Bục Vinh Quang 200 mm nhấn nút Đèn trên vách ngăn. Chạm vạch giới hạn Địa hình hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
+                Thăng hoa lên Bục Vinh Quang 200 mm nhấn nút Đèn trên vách ngăn (đội nhấn trước +40đ, nhấn sau +10đ). Chạm vạch giới hạn Địa hình hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
                 lấn sang sân đối phương: −15đ và Retry.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Fact k="Cầu Bản lĩnh" v="+10đ" />
                 <Fact k="Địa hình" v="+20đ" />
                 <Fact k="Bảo vệ Đồ án" v="+25đ" />
-                <Fact k="Đèn Vinh Quang" v="+40đ" />
+                <Fact k="Đèn Vinh Quang" v="+40đ / +10đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-gold bg-white p-4 text-slate-700">
                 <strong className="text-navy">CHIẾN THẮNG TUYỆT ĐỐI:</strong> đội đầu tiên hoàn thành đủ 2 Kiến thức, Cơ

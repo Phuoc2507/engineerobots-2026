@@ -21,7 +21,7 @@ const SCORING = [
   { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Cầu Bản lĩnh (3.8)", pts: "+10", cond: "Toàn bộ thân xe qua cầu, khi đã có 2 Kiến thức hợp lệ ở Chặng 2" },
   { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Địa hình Thử thách (3.3 / 3.4)", pts: "+20", cond: "Toàn bộ thân xe và 4 bánh vượt qua thanh gờ thứ 5, không đi vòng ra ngoài" },
   { stage: "Chặng 3 · Bản lĩnh", task: "Đưa bóng Đồ án vượt Dốc Kiên trì, đặt lên đế nhỏ trong Ô Bảo vệ Đồ án (3.9 / 3.10)", pts: "+25", cond: "Bóng Ø74 mm từ Trạm Thực nghiệm lên Đài Bảo vệ (cao 100 mm), nằm vững trên đế trong ô 120 × 120 mm" },
-  { stage: "Chặng 3 · Bản lĩnh", task: "Leo Dốc Thăng hoa lên Bục Vinh Quang, nhấn sáng Đèn Vinh Quang (3.7)", pts: "+40", cond: "Bóng Đồ án đã nằm vững trên đế; robot lên Bục 200 mm, nhấn nút của đội mình trên vách ngăn làm đèn sáng" },
+  { stage: "Chặng 3 · Bản lĩnh", task: "Leo Dốc Thăng hoa lên Bục Vinh Quang, nhấn sáng Đèn Vinh Quang (3.7)", pts: "+40 / +10", cond: "Bóng Đồ án đã nằm vững trên đế; robot lên Bục 200 mm, nhấn nút của đội mình trên vách ngăn làm đèn sáng. Đội nhấn trước +40, đội nhấn sau +10" },
   { stage: "Toàn trận", task: "CHIẾN THẮNG TUYỆT ĐỐI (Tốt nghiệp Xuất sắc)", pts: "Thắng ngay", cond: "Đủ 2 Kiến thức + Cơ hội vàng, qua Cầu, Địa hình, đặt Đồ án lên đế và nhấn sáng Đèn Vinh Quang trước đối phương → trận kết thúc ngay" },
 ];
 
@@ -167,7 +167,7 @@ export default function RulesPage() {
             <li>Vượt Cầu Bản lĩnh (toàn bộ thân xe): <b>+10 điểm</b>. Đỗ chiếm cầu quá 10 giây: <b>−15 điểm</b>, Trọng tài cưỡng chế lùi xe.</li>
             <li><b>Nhiệm vụ 1:</b> vượt Địa hình Thử thách — toàn bộ thân xe và 4 bánh qua khỏi thanh gờ thứ 5, không đi vòng ra ngoài: <b>+20 điểm</b>. Chạm vạch giới hạn đoạn đường: <b>−5 điểm/lần</b>.</li>
             <li><b>Nhiệm vụ 2:</b> dùng cơ chế của robot đưa bóng Đồ án từ Trạm Thực nghiệm vượt Dốc Kiên trì lên Đài Bảo vệ (100 mm), đặt nằm vững trên đế nhỏ trong Ô Bảo vệ Đồ án 120 × 120 mm: <b>+25 điểm</b>. Làm rơi bóng khỏi dốc hoặc Đài: <b>−5 điểm/lần</b>, bóng đưa về Trạm Thực nghiệm.</li>
-            <li><b>Nhiệm vụ 3:</b> di chuyển trên Đài Bảo vệ, leo Dốc Thăng hoa lên Bục Vinh Quang (200 mm) và nhấn nút của đội mình trên vách ngăn làm sáng Đèn Vinh Quang: <b>+40 điểm</b>. Nhấn đèn khi chưa đặt bóng Đồ án lên đế thì không được công nhận.</li>
+            <li><b>Nhiệm vụ 3:</b> di chuyển trên Đài Bảo vệ, leo Dốc Thăng hoa lên Bục Vinh Quang (200 mm) và nhấn nút của đội mình trên vách ngăn làm sáng Đèn Vinh Quang: đội nhấn trước <b>+40 điểm</b>, đội nhấn sau <b>+10 điểm</b>. Nhấn đèn khi chưa đặt bóng Đồ án lên đế thì không được công nhận.</li>
             <li><b>CHIẾN THẮNG TUYỆT ĐỐI:</b> đội có đủ 2 Kiến thức và Cơ hội vàng, hoàn thành cả lộ trình Chặng 3 và nhấn sáng Đèn Vinh Quang <b>trước tiên</b> → trận kết thúc ngay, thắng bất kể tỉ số.</li>
             <li>Ra khỏi khu vực Chặng 3: <b>−10 điểm/lần</b>. Lấn sang sân đối phương: <b>−15 điểm/lần</b> và buộc Retry về ô 3.1 / 3.2.</li>
           </ul>
@@ -176,7 +176,7 @@ export default function RulesPage() {
         <section id="diem" className={card}>
           <h2 className={h2}>VI. Barem điểm</h2>
           <Table head={["Chặng", "Nhiệm vụ", "Điểm", "Điều kiện công nhận"]} rows={SCORING.map((s) => [s.stage, s.task, <b key="p" className="whitespace-nowrap text-navy">{s.pts}</b>, s.cond])} />
-          <p className="mt-2 text-xs text-slate-500">Điểm tối đa không tính Chiến thắng tuyệt đối: Chặng 1 30 + Chặng 2 (2 Kiến thức 30 + Cơ hội vàng 30) + Chặng 3 (10 + 20 + 25 + 40) = 185 điểm. Vòng loại tối đa 30 + 30 = 60 điểm. Tổng điểm có thể âm.</p>
+          <p className="mt-2 text-xs text-slate-500">Điểm tối đa không tính Chiến thắng tuyệt đối: Chặng 1 30 + Chặng 2 (2 Kiến thức 30 + Cơ hội vàng 30) + Chặng 3 (10 + 20 + 25 + 40 nếu nhấn đèn trước) = 185 điểm. Vòng loại tối đa 30 + 30 = 60 điểm. Tổng điểm có thể âm.</p>
         </section>
 
         <section id="retry" className={card}>

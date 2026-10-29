@@ -73,7 +73,7 @@ export default function ScoringPad({ matchId, side, rules }: { matchId: string; 
           <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-white/50">Ghi điểm</h2>
           <div className="grid grid-cols-2 gap-2">
             {plus.map((r) => (
-              <button key={r.rule_key} disabled={!live || busy !== null || full(r)} onClick={() => rpc(r.rule_key, "ref_add_event", { p_match: matchId, p_color: side, p_rule_key: r.rule_key }, `+${r.score_value} ${r.rule_name}`)}
+              <button key={r.rule_key} disabled={!live || busy !== null || full(r)} onClick={() => rpc(r.rule_key, "ref_add_event", { p_match: matchId, p_color: side, p_rule_key: r.rule_key }, r.rule_key === "STAGE3_LAMP" ? r.rule_name : `+${r.score_value} ${r.rule_name}`)}
                 className="min-h-[72px] rounded-xl bg-emerald-600 px-3 py-2 text-left text-sm font-bold transition active:scale-95 disabled:opacity-40">
                 <span className="block font-display text-2xl">+{r.score_value}</span>{r.rule_name}{tally(r)}
               </button>
