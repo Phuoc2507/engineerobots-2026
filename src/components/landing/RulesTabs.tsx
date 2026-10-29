@@ -61,10 +61,10 @@ export default function RulesTabs() {
                 rộng 20 mm qua Đường Danh vọng thẳng 180 cm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 215 cm về vạch chữ T.
               </p>
               <ul className="mt-6 space-y-3 text-slate-700">
-                <li><strong>Tự hành 100%:</strong> chỉ ấn nút khởi động một lần, không được điều khiển.</li>
+                <li><strong>Tự hành 100%:</strong> chỉ ấn nút khởi động một lần, không được điều khiển; về đích xong robot tự chuyển sang điều khiển từ xa.</li>
                 <li><strong>Mất line / chạm rào chắn:</strong> −5đ mỗi lần. Xuất phát sớm: −5đ.</li>
                 <li><strong>Retry:</strong> chưa qua Checkpoint thì về Trạm khởi hành; đã qua Checkpoint thì đặt lại tại Checkpoint.</li>
-                <li><strong>Giới hạn 60 giây:</strong> chưa về đích thì đội tự đưa robot tới khu vực đích Chặng 1 để thi Chặng 2 (không có điểm Chặng 1).</li>
+                <li><strong>Giới hạn 60 giây:</strong> chưa về đích thì đội tự đưa robot tới khu vực đích Chặng 1 để thi Chặng 2 (mất +20 về đích, giữ +10 Checkpoint nếu đã qua).</li>
                 <li><strong>Thời gian về đích</strong> được ghi lại để xét phụ khi hòa điểm.</li>
               </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
@@ -88,7 +88,7 @@ export default function RulesTabs() {
                 <Fact k="Cơ hội vàng" v="+30đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-red bg-white p-4 text-sm text-slate-700">
-                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b>. Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng). Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần.
+                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b>. Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng). Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần. Chạm bóng vàng khi chưa đủ 2 Kiến thức: <b>−10đ</b>/lần.
               </div>
             </div>
           )}
@@ -119,7 +119,7 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Quy chuẩn kỹ thuật robot</h3>
               <p className="mt-4 text-slate-600">
-                Robot được kiểm định tại bàn kỹ thuật (quét QR đội) trước mỗi trận. Cấm vũ khí, thiết bị gây nhiễu,
+                Robot được kiểm định tại bàn kỹ thuật (quét QR đội) trước mỗi trận; không đạt là thua trận, không có thời gian sửa. Cấm vũ khí, thiết bị gây nhiễu,
                 chất lỏng. Cơ cấu thu thập tự do (càng đẩy, con lăn, tay gắp, ngàm kẹp…); bề mặt tiếp xúc bóng và nút đèn phải mềm.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">

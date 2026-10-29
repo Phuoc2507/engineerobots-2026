@@ -29,8 +29,8 @@ export const TIMELINE = [
   { title: "Mở cổng đăng ký", date: "Tháng 10/2026", desc: "Đăng ký đội tối đa 5 thành viên K26 bằng email trường.", status: "current" },
   { title: "2 buổi tập huấn kỹ thuật", date: "Dự kiến 8:00", desc: "Buổi 1 cơ khí & điện tử cơ bản, Buổi 2 lập trình PID & điều khiển không dây.", status: "upcoming" },
   { title: "Open Field Test", date: "Trước 2 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đặt slot qua hệ thống.", status: "upcoming" },
-  { title: "Vòng loại", date: "Dự kiến", desc: "180 giây, xếp hạng theo điểm số: Chặng 1 và 2 cấu kiện Kiến thức. Top 16 đi tiếp.", status: "upcoming" },
-  { title: "Chung kết xếp hạng", date: "Dự kiến", desc: "300 giây/trận, 16 đội đối kháng 1 vs 1 loại trực tiếp; tranh hạng ba 1 trận, chung kết Bo3. Trao giải & bình chọn khán giả.", status: "upcoming" },
+  { title: "Vòng loại", date: "Dự kiến", desc: "Mỗi đội 1 trận 180 giây, xếp hạng theo điểm số: Chặng 1 và 2 cấu kiện Kiến thức. Top 16 đi tiếp.", status: "upcoming" },
+  { title: "Chung kết xếp hạng", date: "Dự kiến", desc: "300 giây/trận, 16 đội bốc thăm cặp đấu, đối kháng 1 vs 1 loại trực tiếp; tranh hạng ba 1 trận, chung kết Bo3. Trao giải & bình chọn khán giả.", status: "upcoming" },
 ] as const;
 
 export const ROBOT_SPECS = [
@@ -38,8 +38,8 @@ export const ROBOT_SPECS = [
   { label: "Khi bung cơ cấu", value: "≤ 400 × 350 × 250 mm (+10)" },
   { label: "Nguồn DC", value: "12 V (+0,6 V)" },
   { label: "Cơ cấu", value: "Tự do: càng đẩy, con lăn, tay gắp…" },
-  { label: "Chặng 1", value: "100% tự hành" },
-  { label: "Chặng 2–3", value: "Điều khiển từ xa" },
+  { label: "Khối lượng", value: "≤ 2,5 kg (cả pin)" },
+  { label: "Điều khiển", value: "C1 tự hành · C2–3 từ xa" },
 ];
 
 export const FAQ = [
