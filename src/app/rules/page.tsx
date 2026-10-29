@@ -38,7 +38,7 @@ const PENALTIES = [
   { name: "Chặng 3: làm rơi bóng Đồ án khỏi dốc hoặc Đài Bảo vệ (đưa về Trạm Thực nghiệm)", pts: "−5 / lần" },
   { name: "Chặng 3: lấn sang phần sân đối phương (buộc Retry về ô 3.1 / 3.2)", pts: "−15 / lần" },
   { name: "Chiếm giữ Cầu Bản lĩnh quá 10 giây (Trọng tài cưỡng chế lùi xe)", pts: "−15" },
-  { name: "Cố ý tác động bóng trong Trạm thành tựu đối phương (phục hồi nguyên trạng)", pts: "−10 / lần" },
+  { name: "Cố ý tác động bóng trong Trạm thành tựu đối phương (phục hồi nguyên trạng)", pts: "−20 / lần" },
 ];
 
 const TIEBREAK = [
@@ -151,7 +151,7 @@ export default function RulesPage() {
             <li><b>Điều kiện lên Chặng 3:</b> có tối thiểu 2 bóng Kiến thức hợp lệ trong trạm.</li>
             <li>Đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10 điểm/lần</b>. Ra khỏi khu vực Chặng 2: <b>−10 điểm/lần</b>.</li>
             <li>Cố ý húc văng bóng Kiến thức của đối phương ra ngoài biên Chặng 2: <b>−10 điểm/lần</b>, Trọng tài đặt lại bóng. Tự làm văng bóng của đội mình: <b>−5 điểm/lần</b>, Trọng tài đặt lại bóng về vị trí ban đầu.</li>
-            <li>Cố ý tác động vào bóng đã nằm trong Trạm thành tựu của đối phương: <b>−10 điểm/lần</b>, phục hồi nguyên trạng.</li>
+            <li>Cố ý tác động vào bóng đã nằm trong Trạm thành tựu của đối phương: <b>−20 điểm/lần</b>, phục hồi nguyên trạng.</li>
           </ul>
           <h3 className="mt-4 font-bold text-team-blue">Chặng 3 · Bản lĩnh (bảo vệ Đồ án tốt nghiệp)</h3>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
