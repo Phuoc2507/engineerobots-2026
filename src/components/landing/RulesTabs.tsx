@@ -57,15 +57,15 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Thích nghi – Dò line tự hành</h3>
               <p className="mt-4 text-slate-600">
-                Mỗi đội một làn line riêng rộng 90 cm dọc hai mép sa bàn. Robot xuất phát từ Trạm khởi hành 31 × 26 cm, bám line đen
-                rộng 20 mm qua Đường Danh vọng thẳng 180 cm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 215 cm về vạch chữ T.
+                Mỗi đội một làn line riêng rộng 90 cm dọc hai mép sa bàn. Robot xuất phát từ Trạm khởi hành 41 × 36 cm, bám line đen
+                rộng 20 mm qua Đường Danh vọng thẳng 180 cm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 205 cm về vạch chữ T.
               </p>
               <ul className="mt-6 space-y-3 text-slate-700">
                 <li><strong>Tự hành 100%:</strong> chỉ ấn nút khởi động một lần, tay cầm đặt xuống đất suốt Chặng 1; về đích xong robot tự chuyển sang điều khiển từ xa.</li>
                 <li><strong>Mất line / chạm rào chắn:</strong> −5đ mỗi lần. Xuất phát sớm: −5đ.</li>
                 <li><strong>Retry:</strong> chưa qua Checkpoint thì về Trạm khởi hành; đã qua Checkpoint thì đặt lại tại Checkpoint.</li>
-                <li><strong>Giới hạn 60 giây:</strong> chưa về đích thì đội tự đưa robot tới khu vực đích Chặng 1 để thi Chặng 2 (mất +20 về đích, giữ +10 Checkpoint nếu đã qua).</li>
-                <li><strong>Thời gian về đích</strong> được ghi lại để xét phụ khi hòa điểm.</li>
+                <li><strong>Giới hạn 60 giây (TIMEOUT):</strong> chưa về đích thì 01 thành viên nhấc robot đưa tới khu vực đích Chặng 1 để thi Chặng 2 (mất +20 về đích, giữ +10 Checkpoint nếu đã qua).</li>
+                <li><strong>Thời gian về đích</strong> được ghi lại để xét phụ khi hòa điểm (đội TIMEOUT không được xét tiêu chí này).</li>
               </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Fact k="Checkpoint" v="+10đ" />
@@ -88,7 +88,7 @@ export default function RulesTabs() {
                 <Fact k="Cơ hội vàng" v="+30đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-red bg-white p-4 text-sm text-slate-700">
-                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b>. Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng). Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần. Cố ý thu thập bóng vàng khi chưa đủ 2 Kiến thức: <b>−10đ</b>/lần. Được chặn đường, nhưng cầm/giữ bóng Kiến thức của đối phương: <b>−10đ</b>/lần. Vòng loại sang nửa sân đối phương: <b>−15đ</b> và Retry.
+                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b> (đi qua Cầu khi đã đủ điều kiện lên Chặng 3 không tính). Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng). Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần. Cố ý thu thập bóng vàng khi chưa đủ 2 Kiến thức: <b>−10đ</b>/lần. Được chặn đường, nhưng cầm/giữ bóng Kiến thức của đối phương: <b>−10đ</b>/lần. Vòng loại sang nửa sân đối phương: <b>−15đ</b> và Retry.
               </div>
             </div>
           )}
@@ -97,20 +97,21 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Bảo vệ Đồ án</h3>
               <p className="mt-4 text-slate-600">
-                Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Địa hình 5 thanh gờ ống PVC cao 15 mm, đưa bóng Đồ án Ø74 mm từ Trạm
+                Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Đường Thử thách 5 thanh gờ ống PVC cao 15 mm, đưa bóng Đồ án Ø74 mm từ Trạm
                 Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 12 × 12 cm trên Đài cao 100 mm, rồi leo Dốc
-                Thăng hoa lên Bục Vinh Quang 200 mm nhấn nút Đèn trên vách ngăn (đội nhấn trước +40đ, nhấn sau +10đ). Chạm vạch giới hạn Địa hình hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
+                Thăng hoa lên Bục Vinh Quang 200 mm nhấn nút Đèn trên vách ngăn (đội nhấn trước +40đ, nhấn sau +25đ). Chạm vạch giới hạn Đường Thử thách hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
                 lấn sang sân đối phương: −15đ và Retry.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Fact k="Cầu Bản lĩnh" v="+10đ" />
-                <Fact k="Địa hình" v="+20đ" />
+                <Fact k="Đường Thử thách" v="+20đ" />
                 <Fact k="Bảo vệ Đồ án" v="+25đ" />
-                <Fact k="Đèn Vinh Quang" v="+40đ / +10đ" />
+                <Fact k="Đèn Vinh Quang" v="+40đ / +25đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-gold bg-white p-4 text-slate-700">
-                <strong className="text-navy">CHIẾN THẮNG TUYỆT ĐỐI:</strong> đội đầu tiên hoàn thành đủ 2 Kiến thức, Cơ
-                hội vàng, Cầu, Địa hình, Đồ án trên đế và nhấn sáng Đèn Vinh Quang thắng ngay, trận kết thúc.
+                <strong className="text-navy">CHIẾN THẮNG TUYỆT ĐỐI (Chung kết):</strong> hoàn thành đúng trình tự 2 Kiến thức + Cơ
+                hội vàng → Cầu → Đường Thử thách → Đồ án trên đế → Dốc Thăng hoa → nhấn sáng Đèn Vinh Quang thì thắng ngay, trận kết thúc.
+                Nhấn đèn khi chưa đủ trình tự không tạo ra Chiến thắng tuyệt đối.
               </div>
             </div>
           )}

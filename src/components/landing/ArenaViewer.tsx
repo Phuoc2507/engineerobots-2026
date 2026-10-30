@@ -34,7 +34,7 @@ const HOTSPOTS = [
   { id: "drop", pos: "1.47m 0.03m -1.37m", label: "Trạm kiến thức", tone: "bg-team-red" },
   { id: "gold", pos: "2.4m 0.15m -1.4m", label: "Cơ hội vàng", tone: "bg-mech-gold" },
   { id: "bridge", pos: "2.4m 0.12m -2.43m", label: "Cầu Bản lĩnh", tone: "bg-amber-700" },
-  { id: "terrain", pos: "1.45m 0.03m -3.02m", label: "Địa hình", tone: "bg-slate-600" },
+  { id: "terrain", pos: "1.45m 0.03m -3.02m", label: "Đường Thử thách", tone: "bg-slate-600" },
   { id: "lab", pos: "1.45m 0.08m -3.58m", label: "Trạm thực nghiệm", tone: "bg-orange-500" },
   { id: "kientri", pos: "1.275m 0.07m -3.98m", label: "Dốc Kiên trì", tone: "bg-team-blue" },
   { id: "guard", pos: "1.04m 0.13m -4.66m", label: "Ô bảo vệ Đồ án", tone: "bg-cyan-500" },

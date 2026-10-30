@@ -21,22 +21,22 @@ const SCORING = [
   { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Cầu Bản lĩnh (3.8)", pts: "+10", cond: "Toàn bộ thân xe qua cầu, khi đã có 2 Kiến thức hợp lệ ở Chặng 2" },
   { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Địa hình Thử thách (3.3 / 3.4)", pts: "+20", cond: "Toàn bộ thân xe và 4 bánh vượt qua thanh gờ thứ 5, không đi vòng ra ngoài" },
   { stage: "Chặng 3 · Bản lĩnh", task: "Đưa bóng Đồ án vượt Dốc Kiên trì, đặt lên đế nhỏ trong Ô Bảo vệ Đồ án (3.9 / 3.10)", pts: "+25", cond: "Bóng Ø74 mm từ Trạm Thực nghiệm lên Đài Bảo vệ (cao 100 mm), nằm vững trên đế trong ô 120 × 120 mm" },
-  { stage: "Chặng 3 · Bản lĩnh", task: "Leo Dốc Thăng hoa lên Bục Vinh Quang, nhấn sáng Đèn Vinh Quang (3.7)", pts: "+40 / +10", cond: "Bóng Đồ án đã nằm vững trên đế; robot lên Bục 200 mm, nhấn nút của đội mình trên vách ngăn làm đèn sáng. Đội nhấn trước +40, đội nhấn sau +10" },
-  { stage: "Toàn trận", task: "CHIẾN THẮNG TUYỆT ĐỐI (Tốt nghiệp Xuất sắc)", pts: "Thắng ngay", cond: "Đủ 2 Kiến thức + Cơ hội vàng, qua Cầu, Địa hình, đặt Đồ án lên đế và nhấn sáng Đèn Vinh Quang trước đối phương → trận kết thúc ngay" },
+  { stage: "Chặng 3 · Bản lĩnh", task: "Leo Dốc Thăng hoa lên Bục Vinh Quang, nhấn sáng Đèn Vinh Quang (3.7)", pts: "+40 / +25", cond: "Bóng Đồ án đã nằm vững trên đế; robot lên Bục 200 mm, nhấn nút của đội mình trên vách ngăn làm đèn sáng. Đội nhấn trước +40, đội nhấn sau +25" },
+  { stage: "Toàn trận", task: "CHIẾN THẮNG TUYỆT ĐỐI (Tốt nghiệp Xuất sắc)", pts: "Thắng ngay", cond: "Chỉ Vòng Chung kết, đúng trình tự: đủ 2 Kiến thức + Cơ hội vàng → vượt Cầu → vượt Đường Thử thách → đặt Đồ án lên đế → leo Dốc Thăng hoa → nhấn sáng Đèn Vinh Quang → trận kết thúc ngay. Nhấn đèn khi chưa đủ trình tự thì không phải Chiến thắng tuyệt đối" },
 ];
 
 const PENALTIES = [
   { name: "Chặng 1: mất line (tất cả bánh ra khỏi line, không tự phục hồi trong 5 giây), đi tắt hoặc bắt lại line ở chỗ khác", pts: "−5 / lần" },
   { name: "Chặng 1: chạm / đâm vào rào chắn", pts: "−5 / lần" },
   { name: "Xuất phát sớm (dừng robot, đưa về vị trí ban đầu)", pts: "−5" },
-  { name: "Chạm tay vào robot khi chưa được Trọng tài cho Retry", pts: "−10 / lần" },
+  { name: "Chạm tay trái phép vào robot khi chưa được Trọng tài cho Retry (trừ khi đưa robot lên đích Chặng 1 sau TIMEOUT)", pts: "−10 / lần" },
   { name: "Chặng 2: đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây", pts: "−10 / lần" },
   { name: "Chặng 2: cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân (Trọng tài đặt lại bóng)", pts: "−10 / lần" },
   { name: "Chặng 2: tự làm văng bóng Kiến thức của đội mình ra ngoài sân (Trọng tài đặt lại bóng)", pts: "−5 / lần" },
   { name: "Chặng 2 (Chung kết): cố ý thu thập bóng Cơ hội vàng khi chưa đủ 2 bóng Kiến thức trong trạm (Trọng tài đặt lại về Bục Cơ hội)", pts: "−10 / lần" },
   { name: "Chặng 2: cầm, giữ hoặc mang bóng Kiến thức của đối phương (Trọng tài đặt bóng về vị trí ban đầu; được phép chặn đường)", pts: "−10 / lần" },
   { name: "Chặng 2 (Vòng loại): sang nửa sân đối phương hoặc cản phá đối phương (buộc Retry về Ô Retry Chặng 2)", pts: "−15 / lần" },
-  { name: "Robot ra khỏi khu vực Chặng 2 / Chặng 3", pts: "−10 / lần" },
+  { name: "Robot ra khỏi khu vực Chặng 2 / Chặng 3 (đi qua Cầu Bản lĩnh khi đã đủ điều kiện lên Chặng 3 không tính lỗi rời Chặng 2)", pts: "−10 / lần" },
   { name: "Chặng 3: chạm vạch giới hạn đoạn đường Địa hình Thử thách (Nhiệm vụ 1)", pts: "−5 / lần" },
   { name: "Chặng 3: làm rơi bóng Đồ án khỏi dốc hoặc Đài Bảo vệ (đưa về Trạm Thực nghiệm)", pts: "−5 / lần" },
   { name: "Chặng 3: lấn sang phần sân đối phương (buộc Retry về ô 3.1 / 3.2)", pts: "−15 / lần" },
@@ -44,11 +44,19 @@ const PENALTIES = [
   { name: "Cố ý tác động bóng trong Trạm thành tựu đối phương (phục hồi nguyên trạng)", pts: "−20 / lần" },
 ];
 
-const TIEBREAK = [
-  "Đội giành Chiến thắng tuyệt đối.",
+const TIEBREAK_QUAL = [
   "Tổng điểm cao hơn (cộng các chặng, trừ điểm phạt).",
-  "Thời gian hoàn thành Chặng 1 nhanh hơn (theo đồng hồ Tổ trọng tài).",
-  "Tiến độ Chặng 3 cao hơn: đã đặt Đồ án lên đế trong Ô Bảo vệ, rồi đến đã vượt Địa hình Thử thách.",
+  "Thời gian hoàn thành Chặng 1 nhanh hơn (chỉ so các đội về đích Chặng 1 hợp lệ; đội bị TIMEOUT không được xét tiêu chí này).",
+  "Thời gian hoàn thành toàn bộ nội dung vòng loại (Chặng 1 + 02 bóng Kiến thức) nhanh hơn.",
+  "Gọi Retry ít hơn.",
+  "Bốc thăm trước Ban Tổ chức.",
+];
+
+const TIEBREAK_FINAL = [
+  "Đội giành Chiến thắng tuyệt đối (đúng trình tự ở mục Chặng 3).",
+  "Tổng điểm cao hơn (cộng các chặng, trừ điểm phạt).",
+  "Thời gian hoàn thành Chặng 1 nhanh hơn (chỉ so các đội về đích Chặng 1 hợp lệ; đội bị TIMEOUT không được xét tiêu chí này).",
+  "Tiến độ Chặng 3 cao hơn: Đèn Vinh Quang > Dốc Thăng hoa > hoàn thành Bảo vệ Đồ án > Dốc Kiên trì > Trạm Thực nghiệm > Đường Thử thách > Cầu Bản lĩnh.",
   "Có bóng Cơ hội vàng trong Trạm thành tựu.",
   "Gọi Retry ít hơn.",
   "Bốc thăm trước Ban Tổ chức.",
@@ -71,7 +79,7 @@ function Table({ head, rows }: { head: string[]; rows: React.ReactNode[][] }) {
 
 export default function RulesPage() {
   return (
-    <PortalShell title="Thể lệ chính thức" subtitle="Cuộc thi “ENGINEERING PATH 2026” · BCH Đoàn – Hội Khoa Cơ khí · tháng 10/2026 · Chủ đề “Hành trình Kỹ sư Cơ khí”.">
+    <PortalShell title="Thể lệ chính thức" subtitle="Cuộc thi “ENGINEERING PATH 2026” · BCH Đoàn – Hội Khoa Cơ khí · tháng 11/2026 · Chủ đề “Hành trình Kỹ sư Cơ khí”.">
       <div className="space-y-6">
         <nav aria-label="Mục lục" className={`${card} text-sm`}>
           <p className="font-bold text-navy">Mục lục</p>
@@ -99,10 +107,10 @@ export default function RulesPage() {
             ))}
           </dl>
           <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            <li>Kiểm định kỹ thuật (kích thước, khối lượng, điện áp) tại bàn kỹ thuật trước <b>mỗi trận đấu</b>, không tính vào thời gian chuẩn bị (trận Bo3 chỉ kiểm định trước ván đầu); robot không đạt bị <b>xử thua trận đó</b> (vòng loại tính 0 điểm), không có thời gian sửa. Kích thước khi bắt đầu thi đấu tối đa 300 (D) × 250 (R) × 200 (C) mm. Khi bung cơ cấu (càng, tay gắp…) trong trận, tối đa <b>400 × 350 × 250 mm</b>. Dung sai +10 mm. Được dùng <b>robot dự phòng</b>, nhưng robot dự phòng cũng phải qua kiểm định.</li>
+            <li>Kiểm định kỹ thuật (kích thước, khối lượng, điện áp) tại bàn kỹ thuật trước <b>mỗi trận đấu</b>, không tính vào thời gian chuẩn bị (trận Bo3 chỉ kiểm định trước ván đầu); robot không đạt bị <b>xử thua trận đó</b> (vòng loại tính 0 điểm), không có thời gian sửa. Không giới hạn riêng kích thước lúc xuất phát; kích thước tối đa (khi bung toàn bộ cơ cấu) trong suốt trận là <b>400 (D) × 350 (R) × 250 (C) mm</b>, dung sai +10 mm, không chi tiết nào tràn ra ngoài. Được dùng <b>robot dự phòng</b>, nhưng robot dự phòng cũng phải qua kiểm định.</li>
             <li><b>Cơ cấu tự do:</b> robot được dùng bất kỳ cơ chế nào để thu thập và đưa bóng (càng đẩy, con lăn cuốn bóng, tay gắp, ngàm kẹp…), miễn là nằm trong giới hạn kích thước. Khối lượng tối đa <b>2,5 kg</b> (tính cả pin, dung sai +100 g); được dùng khung xe, kit robot mua sẵn.</li>
             <li>Pin DC (LiPo, Li-Ion, Ni-MH, 18650) tối đa <b>12 V</b>, dung sai +0,6 V. Cấm điện lưới AC.</li>
-            <li>Chặng 1 tự hành 100%, chỉ bấm nút Start một lần. Sau khi về đích Chặng 1, robot <b>tự chuyển</b> sang điều khiển từ xa (RF, Bluetooth, Wifi, gamepad không dây…); không được chạm tay vào robot để đổi chế độ, chỉ chạm tay khi Trọng tài chấp nhận Retry hoặc khi đưa robot lên đích Chặng 1 sau 60 giây. Tay cầm được kết nối sẵn nhưng phải <b>đặt xuống đất suốt Chặng 1</b>. Tối đa <b>02 thành viên</b> ở khu vực điều khiển.</li>
+            <li>Chặng 1 tự hành 100%, chỉ bấm nút Start một lần. Sau khi về đích Chặng 1, robot <b>tự chuyển</b> sang điều khiển từ xa (RF, Bluetooth, Wifi, gamepad không dây…); không được chạm tay vào robot để đổi chế độ, chỉ chạm tay khi Trọng tài chấp nhận Retry hoặc khi đưa robot lên đích Chặng 1 sau 60 giây (TIMEOUT). Tay cầm được kết nối sẵn nhưng phải <b>đặt xuống đất suốt Chặng 1</b>. Tối đa <b>02 thành viên</b> ở khu vực điều khiển.</li>
             <li>Cấm vũ khí, vật sắc nhọn, mũi khoan, lưỡi cắt kim loại, chất lỏng, khói, lửa; cấm keo dính sàn, nam châm điện cường độ lớn.</li>
             <li>Cấm thiết bị gây nhiễu sóng hoặc can thiệp tín hiệu đội khác — <b>truất quyền thi đấu</b>.</li>
             <li>Bề mặt cơ cấu tiếp xúc với bóng và nút Đèn Vinh Quang phải phẳng hoặc bọc cao su, silicon, vật liệu mềm.</li>
@@ -118,10 +126,10 @@ export default function RulesPage() {
           </div>
           <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li>Sân bao quanh bởi dây giăng cảnh báo. Vạch dò line màu đen rộng 20 mm trên nền trắng.</li>
-            <li><b>Chặng 1:</b> 2 làn biên 4800 × 900 mm (Đỏ trái, Xanh phải); Trạm khởi hành 310 × 260 mm ở đỉnh làn; <i>Đường Danh vọng</i> thẳng 1800 mm kết thúc tại Checkpoint, tiếp nối <i>Đường Thách thức</i> ziczac góc 45° dài 2150 mm, về đích ở vạch chữ T 300 mm (cách vách đáy 550 mm).</li>
-            <li><b>Chặng 2:</b> khu 3000 × 1850 mm; 2 Ô Retry 310 × 260 mm (gạch chéo 45°) sát lối vào; 2 Trạm thành tựu 300 × 300 mm (họa tiết lưới) phía trên hai cánh sân, có gờ chặn bóng cao 10 mm quanh chu vi; 4 Cấu kiện Kiến thức là bóng pickleball Ø74 mm (2 Đỏ ở cụm bên sân Đỏ, 2 Xanh ở cụm bên sân Xanh, phía dưới sân); Bục Cơ hội ở tâm, đáy 400 × 400, đỉnh 300 × 300, cao 50 mm với bóng Cơ hội vàng Ø74 mm trên đỉnh (chỉ đặt ở Vòng Chung kết xếp hạng).</li>
+            <li><b>Chặng 1:</b> 2 làn biên 4800 × 900 mm (Đỏ trái, Xanh phải); Trạm khởi hành 410 × 360 mm ở đỉnh làn; <i>Đường Danh vọng</i> thẳng 1800 mm kết thúc tại Checkpoint, tiếp nối <i>Đường Thách thức</i> ziczac góc 45° dài 2050 mm, về đích ở vạch chữ T 300 mm (cách vách đáy 550 mm).</li>
+            <li><b>Chặng 2:</b> khu 3000 × 1850 mm; 2 Ô Retry 410 × 360 mm (gạch chéo 45°) ở 2 góc dưới; 2 Trạm thành tựu 300 × 300 mm (họa tiết lưới) phía trên hai cánh sân, có gờ chặn bóng cao 10 mm quanh chu vi; 4 Cấu kiện Kiến thức là bóng pickleball Ø74 mm (2 Đỏ ở cụm bên sân Đỏ, 2 Xanh ở cụm bên sân Xanh, phía dưới sân); Bục Cơ hội ở tâm, đáy 400 × 400, đỉnh 300 × 300, cao 50 mm với bóng Cơ hội vàng Ø74 mm trên đỉnh (chỉ đặt ở Vòng Chung kết xếp hạng).</li>
             <li><b>Cầu Bản lĩnh (3.8):</b> cầu gỗ có dây treo nối Chặng 2 sang Chặng 3, dài 600 × rộng 550 × cao 100 mm.</li>
-            <li><b>Chặng 3:</b> khu 3000 × 2400 mm, chia 2 sân độc lập đối xứng (Đỏ trái, Xanh phải) bằng vạch trung tâm; 2 Ô Retry 310 × 260 mm sát biên ngoài; <i>Địa hình Thử thách</i> 400 × 600 mm gồm 5 thanh gờ ống PVC cao 15 mm; <i>Trạm Thực nghiệm</i> (3.5 / 3.6) ngay sau Địa hình, tâm trạm đặt bóng Đồ án Ø74 mm màu đội; <i>Tổ hợp Bục Vinh Quang</i> 2 bậc, dốc nghiêng 10°: Dốc Kiên trì (550 × 450 mm) thẳng phía trên Trạm Thực nghiệm lên Đài Bảo vệ cao 100 mm sát mép trên sa bàn; <i>Ô Bảo vệ Đồ án</i> (3.9 / 3.10) 120 × 120 mm ở góc trên phía ngoài Đài, bên trong có đế nhỏ đặt bóng; 2 Dốc Thăng hoa (500 × 450 mm) nằm ngang hai bên, dẫn lên Bục Vinh Quang (3.7) cao 200 mm (400 × 450 mm) ở trung tâm, vách ngăn giữa bục gắn 2 nút nhấn Đèn Vinh Quang cho hai đội.</li>
+            <li><b>Chặng 3:</b> khu 3000 × 2400 mm, chia 2 sân độc lập đối xứng (Đỏ trái, Xanh phải) bằng vạch trung tâm; 2 Ô Retry 410 × 360 mm sát biên ngoài; <i>Địa hình Thử thách</i> 400 × 600 mm gồm 5 thanh gờ ống PVC cao 15 mm; <i>Trạm Thực nghiệm</i> (3.5 / 3.6) ngay sau Địa hình, tâm trạm đặt bóng Đồ án Ø74 mm màu đội; <i>Tổ hợp Bục Vinh Quang</i> 2 bậc, dốc nghiêng 10°: Dốc Kiên trì (550 × 450 mm) thẳng phía trên Trạm Thực nghiệm lên Đài Bảo vệ cao 100 mm sát mép trên sa bàn; <i>Ô Bảo vệ Đồ án</i> (3.9 / 3.10) 120 × 120 mm ở góc trên phía ngoài Đài, bên trong có đế nhỏ đặt bóng; 2 Dốc Thăng hoa (500 × 450 mm) nằm ngang hai bên, dẫn lên Bục Vinh Quang (3.7) cao 200 mm (400 × 450 mm) ở trung tâm, vách ngăn giữa bục gắn 2 nút nhấn Đèn Vinh Quang cho hai đội.</li>
           </ul>
         </section>
 
@@ -130,7 +138,7 @@ export default function RulesPage() {
           <ul className="mt-3 list-disc space-y-1 pl-5 text-slate-700">
             <li>Đồng hồ chạy liên tục, chỉ dừng khi Trọng tài chính ra lệnh dừng khẩn cấp (sa bàn hư hỏng, chập điện).</li>
             <li><b>Vòng loại (03:00/trận, 01 phút chuẩn bị):</b> 2 robot chạy cùng lúc nhưng độc lập; nội dung là Chặng 1 và đưa 2 bóng Kiến thức vào Trạm thành tựu, mỗi đội thi <b>01 trận</b>, <b>xếp hạng theo điểm số</b>; trận chỉ kết thúc sớm khi cả hai đội hoàn thành hết trước 180 giây. Ở Chặng 2 vòng loại, robot không được sang nửa sân đối phương hoặc cản phá nhau. <b>16 đội</b> cao nhất vào Vòng Chung kết xếp hạng.</li>
-            <li><b>Vòng Chung kết xếp hạng (05:00/trận, 02 phút chuẩn bị):</b> đối kháng 1 vs 1 loại trực tiếp trên toàn bộ sa bàn; cặp đấu xác định bằng <b>bốc thăm</b>; tranh Hạng 3 thi đấu 1 trận; <b>trận Chung kết</b> thi đấu Best of 3. Màu sân bốc thăm ở ván đầu, đổi màu sau mỗi ván; nghỉ <b>02 phút</b> giữa các ván để thay pin, sửa robot.</li>
+            <li><b>Vòng Chung kết xếp hạng (05:00/trận, 02 phút chuẩn bị):</b> đối kháng 1 vs 1 loại trực tiếp trên toàn bộ sa bàn; cặp đấu xác định bằng <b>bốc thăm</b>; tranh Hạng 3 thi đấu 1 trận; <b>trận Chung kết</b> thi đấu Best of 3. Màu sân bốc thăm ở trận/ván đầu, trận Bo3 đổi màu sau mỗi ván; nghỉ <b>02 phút</b> giữa các ván Bo3 của trận chung kết để thay pin, sửa robot.</li>
             <li>Đội được gọi tên <b>03 lần</b> mà không có mặt bị xử thua trận đó (vòng loại tính 0 điểm), áp dụng cả hai vòng.</li>
             <li>Nền sa bàn màu trắng, line đen. Sau vạch chữ T, robot đi thẳng vào khu vực Chặng 2 của đội mình.</li>
           </ul>
@@ -140,35 +148,35 @@ export default function RulesPage() {
           <h2 className={h2}>V. Luật từng chặng</h2>
           <h3 className="mt-4 font-bold text-team-red">Chặng 1 · Thích nghi (dò line tự động)</h3>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            <li>Robot nằm trọn trong Trạm khởi hành 310 × 260 mm. Khi có hiệu lệnh, 01 thành viên ấn nút khởi động một lần duy nhất.</li>
+            <li>Robot đặt trong Trạm khởi hành 410 × 360 mm. Khi có hiệu lệnh, 01 thành viên ấn nút khởi động một lần duy nhất.</li>
             <li>Robot <b>bắt buộc chạy bám theo đường line trong suốt Chặng 1</b>.</li>
             <li>Qua Checkpoint cuối Đường Danh vọng (toàn bộ xe đi qua): <b>+10 điểm</b>, robot được lưu vị trí Retry tại Checkpoint.</li>
             <li>Về đích khi ≥ 2 bánh xe cắt vạch chữ T cuối Đường Thách thức: <b>+20 điểm</b>. Thời gian hoàn thành là chỉ số phụ khi hòa.</li>
-            <li>Giới hạn Chặng 1 là <b>60 giây</b>: quá thời gian mà chưa về đích, đội đưa robot lên khu vực đích Chặng 1 để thi Chặng 2; mất điểm về đích (+20) nhưng <b>giữ +10 Checkpoint</b> nếu đã qua. Khi xét hòa, thời gian Chặng 1 của đội chưa về đích tính là 60 giây.</li>
+            <li>Giới hạn Chặng 1 là <b>60 giây</b>: tính từ lúc bắt đầu trận; quá thời gian mà chưa về đích (TIMEOUT), chỉ 01 thành viên được nhấc robot và đưa lên khu vực đích Chặng 1 để thi Chặng 2; mất điểm về đích (+20) nhưng <b>giữ +10 Checkpoint</b> nếu đã qua. Khi xét hòa, thời gian Chặng 1 của đội chưa về đích tính là 60 giây.</li>
             <li>Mất line (tất cả bánh ra khỏi line, không tự phục hồi trong 5 giây): <b>−5 điểm/lần</b>, đội được Retry (tính 1 lần): chưa qua Checkpoint thì về Trạm khởi hành, đã qua thì đặt lại tại Checkpoint. Chạm / đâm vào rào chắn: <b>−5 điểm/lần</b>. Đi tắt hoặc rời line rồi bắt lại line ở chỗ khác bị xử như mất line.</li>
           </ul>
           <h3 className="mt-4 font-bold text-navy">Chặng 2 · Tích lũy (thu thập & tranh chấp cấu kiện)</h3>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            <li>Hoàn thành Chặng 1 thì được điều khiển từ xa; đội về đích Chặng 1 sớm hơn được vào Chặng 2 sớm hơn.</li>
+            <li>Hoàn thành Chặng 1 thì được điều khiển từ xa; đội về đích Chặng 1 sớm hơn được vào Chặng 2 sớm hơn. Nếu robot gặp sự cố chuyển chế độ điều khiển, đội được Retry (tính 1 lần) ngay tại vạch đích Chặng 1.</li>
             <li>Robot dùng bất kỳ cơ chế nào đưa 2 bóng Kiến thức màu đội mình vượt gờ chặn vào Trạm thành tựu: <b>+15 điểm/bóng</b>.</li>
             <li>Khi bóng còn ngoài trạm, hai robot <b>được phép</b> tì đè, che chắn và tranh chấp trực tiếp, kể cả trên Bục Cơ hội. Bóng đã nằm trọn trong trạm là bất khả xâm phạm.</li>
             <li>Được chặn đường di chuyển của đối phương, nhưng <b>không được cầm, giữ hoặc mang bóng Kiến thức của đối phương</b>: <b>−10 điểm/lần</b>, Trọng tài đặt bóng về vị trí ban đầu.</li>
             <li><b>Vòng loại:</b> hai robot thi đấu độc lập, không được sang nửa sân đối phương hoặc cản phá nhau: <b>−15 điểm/lần</b> và buộc Retry về Ô Retry Chặng 2.</li>
             <li><b>Vòng Chung kết:</b> sau khi đủ 2 bóng Kiến thức, đội được tranh chấp bóng Cơ hội vàng trên Bục Cơ hội. Đưa được về trạm: <b>+30 điểm</b>, đồng thời là chỉ số ưu tiên khi hòa điểm. Cố ý thu thập bóng vàng khi chưa đủ 2 Kiến thức: <b>−10 điểm/lần</b>, Trọng tài đặt lại; bị đối phương đẩy vào bóng vàng thì không phạt (Trọng tài xem xét); bóng vàng văng ra ngoài biên được đặt lại trên Bục Cơ hội.</li>
             <li>Được bắn hoặc ném bóng vào trạm, miễn bóng nằm trọn trong trạm; không giới hạn số bóng robot mang cùng lúc.</li>
-            <li><b>Điều kiện lên Chặng 3:</b> có tối thiểu 2 bóng Kiến thức hợp lệ trong trạm.</li>
-            <li>Đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10 điểm/lần</b>. Ra khỏi khu vực Chặng 2: <b>−10 điểm/lần</b>.</li>
+            <li><b>Điều kiện lên Chặng 3:</b> có tối thiểu 2 bóng Kiến thức hợp lệ trong trạm. Robot gặp sự cố trước khi được xác nhận vào Chặng 3 phải Retry tại ô Chặng 2; không được đặt vào ô Retry Chặng 3 để bỏ qua nhiệm vụ vượt cầu.</li>
+            <li>Đâm húc phá hoại, hoặc ép khóa cứng robot đối phương quá 5 giây: <b>−10 điểm/lần</b>. Ra khỏi khu vực Chặng 2: <b>−10 điểm/lần</b> (Cầu Bản lĩnh là vùng chuyển tiếp: robot đã đủ điều kiện lên Chặng 3 đi qua cầu không bị tính lỗi này).</li>
             <li>Cố ý húc văng bóng Kiến thức của đối phương ra ngoài biên Chặng 2: <b>−10 điểm/lần</b>, Trọng tài đặt lại bóng. Tự làm văng bóng của đội mình: <b>−5 điểm/lần</b>, Trọng tài đặt lại bóng về vị trí ban đầu.</li>
             <li>Cố ý tác động vào bóng đã nằm trong Trạm thành tựu của đối phương: <b>−20 điểm/lần</b>, phục hồi nguyên trạng.</li>
           </ul>
           <h3 className="mt-4 font-bold text-team-blue">Chặng 3 · Bản lĩnh (bảo vệ Đồ án tốt nghiệp)</h3>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            <li>Hai robot thi đấu độc lập trên sân của đội mình; cấm sang sân đối phương hoặc cản phá nhau. Lộ trình bắt buộc theo thứ tự dưới đây.</li>
+            <li>Robot được xác nhận vào Chặng 3 khi đã đủ điều kiện ở Chặng 2 và toàn bộ robot vượt qua vạch hết Cầu Bản lĩnh phía Chặng 3. Hai robot thi đấu độc lập trên sân của đội mình; cấm sang sân đối phương hoặc cản phá nhau. Lộ trình bắt buộc theo thứ tự dưới đây.</li>
             <li>Vượt Cầu Bản lĩnh (toàn bộ thân xe): <b>+10 điểm</b>. Đỗ chiếm cầu quá 10 giây: <b>−15 điểm</b>, Trọng tài cưỡng chế lùi xe.</li>
             <li><b>Nhiệm vụ 1:</b> vượt Địa hình Thử thách — toàn bộ thân xe và 4 bánh qua khỏi thanh gờ thứ 5, không đi vòng ra ngoài: <b>+20 điểm</b>. Chạm vạch giới hạn đoạn đường: <b>−5 điểm/lần</b>.</li>
             <li><b>Nhiệm vụ 2:</b> dùng cơ chế của robot đưa bóng Đồ án từ Trạm Thực nghiệm vượt Dốc Kiên trì lên Đài Bảo vệ (100 mm), đặt nằm vững trên đế nhỏ trong Ô Bảo vệ Đồ án 120 × 120 mm: <b>+25 điểm</b>. Làm rơi bóng khỏi dốc hoặc Đài: <b>−5 điểm/lần</b>, bóng đưa về Trạm Thực nghiệm.</li>
-            <li><b>Nhiệm vụ 3:</b> di chuyển trên Đài Bảo vệ, leo Dốc Thăng hoa lên Bục Vinh Quang (200 mm) và nhấn nút của đội mình trên vách ngăn làm sáng Đèn Vinh Quang: đội nhấn trước <b>+40 điểm</b>, đội nhấn sau <b>+10 điểm</b>. Nhấn đèn khi chưa đặt bóng Đồ án lên đế thì không được công nhận.</li>
-            <li><b>CHIẾN THẮNG TUYỆT ĐỐI:</b> đội có đủ 2 Kiến thức và Cơ hội vàng, hoàn thành cả lộ trình Chặng 3 và nhấn sáng Đèn Vinh Quang <b>trước tiên</b> → trận kết thúc ngay, thắng bất kể tỉ số.</li>
+            <li><b>Nhiệm vụ 3:</b> di chuyển trên Đài Bảo vệ, leo Dốc Thăng hoa lên Bục Vinh Quang (200 mm) và nhấn nút của đội mình trên vách ngăn làm sáng Đèn Vinh Quang: đội nhấn trước <b>+40 điểm</b>, đội nhấn sau <b>+25 điểm</b>. Nhấn đèn khi chưa đặt bóng Đồ án lên đế thì không được công nhận.</li>
+            <li><b>CHIẾN THẮNG TUYỆT ĐỐI (Chung kết):</b> hoàn thành <b>đúng trình tự</b> đủ 2 Kiến thức + Cơ hội vàng → vượt Cầu Bản lĩnh → vượt Đường Thử thách → đưa Đồ án vượt Dốc Kiên trì đặt lên đế trong Ô Bảo vệ → leo Dốc Thăng hoa vào Bục Vinh Quang → nhấn sáng Đèn Vinh Quang của đội mình → trận kết thúc ngay, thắng bất kể tỉ số. Nhấn đèn khi chưa đủ trình tự trên thì không tạo ra Chiến thắng tuyệt đối.</li>
             <li>Ra khỏi khu vực Chặng 3: <b>−10 điểm/lần</b>. Lấn sang sân đối phương: <b>−15 điểm/lần</b> và buộc Retry về ô 3.1 / 3.2.</li>
           </ul>
         </section>
@@ -176,7 +184,7 @@ export default function RulesPage() {
         <section id="diem" className={card}>
           <h2 className={h2}>VI. Barem điểm</h2>
           <Table head={["Chặng", "Nhiệm vụ", "Điểm", "Điều kiện công nhận"]} rows={SCORING.map((s) => [s.stage, s.task, <b key="p" className="whitespace-nowrap text-navy">{s.pts}</b>, s.cond])} />
-          <p className="mt-2 text-xs text-slate-500">Điểm tối đa không tính Chiến thắng tuyệt đối: Chặng 1 30 + Chặng 2 (2 Kiến thức 30 + Cơ hội vàng 30) + Chặng 3 (10 + 20 + 25 + 40 nếu nhấn đèn trước) = 185 điểm. Vòng loại tối đa 30 + 30 = 60 điểm. Tổng điểm có thể âm.</p>
+          <p className="mt-2 text-xs text-slate-500">Điểm tối đa không tính Chiến thắng tuyệt đối: Chặng 1 30 + Chặng 2 (2 Kiến thức 30 + Cơ hội vàng 30) + Chặng 3 (10 + 20 + 25 + 40 nếu nhấn đèn trước, 25 nếu nhấn sau) = 185 điểm. Vòng loại tối đa 30 + 30 = 60 điểm. Tổng điểm có thể âm.</p>
         </section>
 
         <section id="retry" className={card}>
@@ -184,7 +192,7 @@ export default function RulesPage() {
           <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li><b>Không giới hạn</b> số lần Retry; chỉ người điều khiển chính hô “RETRY”, Trọng tài bàn ghi nhận số lần (là chỉ số phụ khi hòa). Đồng hồ vẫn chạy; đội được sửa robot trong lúc Retry.</li>
             <li>Retry tại Ô Retry của chặng đang gặp sự cố hoặc lùi về chặng trước — <b>không nhảy cóc lên chặng sau</b>.</li>
-            <li>Chặng 1: về Trạm khởi hành (hoặc Checkpoint nếu đã qua). Chặng 2: Ô Retry Chặng 2 của đội hoặc lùi về Trạm khởi hành chạy lại Chặng 1. Chặng 3: Ô Retry 3.1 / 3.2 của đội. Toàn bộ thân robot và bánh xe phải nằm trọn trong ô.</li>
+            <li>Chặng 1: về Trạm khởi hành (hoặc Checkpoint nếu đã qua). Chặng 2: Ô Retry Chặng 2 của đội hoặc lùi về Trạm khởi hành chạy lại Chặng 1. Chặng 3: Ô Retry 3.1 / 3.2 của đội. Khi Retry phải đặt robot đúng vào vị trí ô Retry (410 × 360 mm).</li>
             <li>Mỗi mục điểm chỉ được tính <b>01 lần</b> trong trận (Kiến thức tính theo từng bóng); đi lại lộ trình sau Retry không được cộng thêm.</li>
             <li>Bóng đang được robot giữ hoặc thao tác khi Retry bị coi là chưa hoàn thành, Trọng tài đặt lại vị trí ban đầu; không được mang bóng về Ô Retry.</li>
             <li>Chặng 3: điểm Địa hình Thử thách đã ghi được giữ nguyên; Retry khi đang mang bóng Đồ án không bị phạt, bóng trả về Trạm Thực nghiệm và robot phải vượt lại Địa hình để tiếp tục đưa bóng lên Dốc Kiên trì.</li>
@@ -207,9 +215,11 @@ export default function RulesPage() {
 
         <section id="ket-qua" className={card}>
           <h2 className={h2}>IX. Kết quả & khiếu nại</h2>
-          <p className="mt-3 text-sm font-bold text-navy">Thứ tự xác định đội thắng</p>
-          <ol className="mt-1 list-decimal space-y-1 pl-5 text-sm text-slate-700">{TIEBREAK.map((t) => <li key={t}>{t}</li>)}</ol>
-          <p className="mt-1 text-xs text-slate-500">Vòng loại không xét tiêu chí 4 và 5; sau tiêu chí 3, vòng loại xét thêm thời gian hoàn thành toàn bộ nội dung (Chặng 1 + 02 bóng Kiến thức) nhanh hơn.</p>
+          <p className="mt-3 text-sm font-bold text-navy">Thứ tự xác định đội thắng · Vòng loại</p>
+          <ol className="mt-1 list-decimal space-y-1 pl-5 text-sm text-slate-700">{TIEBREAK_QUAL.map((t) => <li key={t}>{t}</li>)}</ol>
+          <p className="mt-3 text-sm font-bold text-navy">Thứ tự xác định đội thắng · Vòng Chung kết xếp hạng</p>
+          <ol className="mt-1 list-decimal space-y-1 pl-5 text-sm text-slate-700">{TIEBREAK_FINAL.map((t) => <li key={t}>{t}</li>)}</ol>
+          <p className="mt-1 text-xs text-slate-500">Tổng điểm của đội trong trận có thể là số âm.</p>
           <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li>Khiếu nại <b>trong vòng 03 phút</b> sau khi có kết quả và trước khi ký biên bản; quá hạn bị bác. Gửi qua <Link href="/team/dashboard" className="font-semibold text-navy-600 underline">trang đội thi</Link>.</li>
             <li>Chỉ 01 đại diện được khiếu nại. Bằng chứng là camera sa bàn của BTC; video điện thoại chỉ để tham khảo. Gây áp lực tập thể → xử thua.</li>

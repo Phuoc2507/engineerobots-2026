@@ -34,8 +34,7 @@ export const TIMELINE = [
 ] as const;
 
 export const ROBOT_SPECS = [
-  { label: "Kích thước xuất phát", value: "≤ 300 × 250 × 200 mm (+10)" },
-  { label: "Khi bung cơ cấu", value: "≤ 400 × 350 × 250 mm (+10)" },
+  { label: "Kích thước tối đa (khi bung)", value: "≤ 400 × 350 × 250 mm (+10)" },
   { label: "Nguồn DC", value: "12 V (+0,6 V)" },
   { label: "Cơ cấu", value: "Tự do: càng đẩy, con lăn, tay gắp…" },
   { label: "Khối lượng", value: "≤ 2,5 kg (cả pin, +100 g)" },
@@ -57,7 +56,7 @@ export const FAQ = [
   },
   {
     q: "Linh kiện lấy ở đâu? Có được dùng linh kiện tự mua không?",
-    a: "BTC phát bộ kit cơ bản sau buổi họp kỹ thuật. Đội được tự bổ sung linh kiện miễn là robot đạt quy chuẩn kích thước (xuất phát ≤ 300 × 250 × 200 mm, bung cơ cấu tối đa 400 × 350 × 250 mm, dung sai +10 mm) và nguồn DC tối đa 12 V (dung sai +0,6 V). Cơ cấu thu thập bóng tùy chọn (càng đẩy, con lăn, tay gắp, ngàm kẹp…), bề mặt tiếp xúc phải mềm. Cấm nguồn AC.",
+    a: "BTC phát bộ kit cơ bản sau buổi họp kỹ thuật. Đội được tự bổ sung linh kiện miễn là robot đạt quy chuẩn kích thước (không giới hạn riêng lúc xuất phát; khi bung toàn bộ cơ cấu tối đa 400 × 350 × 250 mm, dung sai +10 mm) và nguồn DC tối đa 12 V (dung sai +0,6 V). Cơ cấu thu thập bóng tùy chọn (càng đẩy, con lăn, tay gắp, ngàm kẹp…), bề mặt tiếp xúc phải mềm. Cấm nguồn AC.",
   },
   {
     q: "Làm sao để thử robot trên sa bàn thật?",

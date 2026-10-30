@@ -15,7 +15,7 @@ type Inspection = { size?: boolean; voltage?: boolean; arm?: boolean; start?: bo
 
 // Mục kiểm tra kỹ thuật theo thể lệ — sửa ở đây nếu BTC đổi thông số
 const CHECKS: { key: keyof Inspection; label: string }[] = [
-  { key: "size", label: "Kích thước ≤ 300 × 250 × 200 mm (dung sai +10 mm), khối lượng ≤ 2,5 kg cả pin (+100 g)" },
+  { key: "size", label: "Kích thước tối đa khi bung cơ cấu ≤ 400 × 350 × 250 mm (dung sai +10 mm), khối lượng ≤ 2,5 kg cả pin (+100 g)" },
   { key: "voltage", label: "Nguồn DC ≤ 12.6 V, pin cố định chắc chắn — cấm điện AC / > 14.8 V" },
   { key: "arm", label: "Cơ cấu thu thập có bề mặt tiếp xúc mềm, không vật sắc nhọn (được bắn / ném bóng)" },
   { key: "start", label: "Chế độ tự hành Chặng 1 khởi động bằng đúng 1 nút; tay điều khiển 2.4 GHz" },

@@ -17,7 +17,7 @@ const TONE: Record<Team, { on: string; text: string; label: string }> = {
   BLUE: { on: "bg-team-blue border-sky-300/60 shadow-[0_0_20px_rgba(30,136,229,0.55)]", text: "text-sky-300", label: "ĐỘI XANH" },
 };
 
-// Mô phỏng hai đội tiến dần qua các nhiệm vụ; ai nhấn đèn trước thắng tuyệt đối rồi chạy lại
+// Mô phỏng hai đội tiến dần qua các nhiệm vụ; ai hoàn thành đúng trình tự và nhấn đèn thắng tuyệt đối rồi chạy lại
 export default function DominationGrid() {
   const [done, setDone] = useState<Record<Team, number>>({ RED: 0, BLUE: 0 });
   const winner: Team | null = done.RED === STEPS.length ? "RED" : done.BLUE === STEPS.length ? "BLUE" : null;

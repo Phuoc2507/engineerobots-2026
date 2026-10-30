@@ -32,11 +32,19 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
   const big = "flex h-16 items-center justify-center gap-2 rounded-xl text-base font-bold transition active:scale-95 disabled:opacity-40";
   const spin = (k: string) => busy === k && <Loader2 className="h-5 w-5 animate-spin" />;
   const name = (c: Color) => (c === "RED" ? `Đỏ (${data.red?.team_name ?? "—"})` : `Xanh (${data.blue?.team_name ?? "—"})`);
-  // Chiến thắng tuyệt đối: Đồ án đã vào Ô Bảo vệ và nhấn sáng Đèn Vinh Quang trước → kết thúc ngay (trọng tài chính xác nhận)
-  // Khớp head_declare_winner (0017): 2 Kiến thức + Cơ hội vàng + đủ 4 bước Chặng 3
-  const koReady = (c: Color) =>
-    countEv(data.events, c, "STAGE2_BLOCK") >= 2 &&
-    ["STAGE2_GOLDEN_BLOCK", ...STAGE3_STEPS.map((x) => x.key)].every((k) => countEv(data.events, c, k) > 0);
+  // Chiến thắng tuyệt đối (thể lệ chính thức): đúng trình tự 2 Kiến thức + Cơ hội vàng → Cầu → Đường Thử thách → Đồ án → Đèn
+  // Khớp head_declare_winner (0024): kiểm tra đủ sự kiện và thứ tự thời điểm ghi nhận
+  const koReady = (c: Color) => {
+    const at = (k: string, nth = 1) =>
+      data.events
+        .filter((e) => e.team_color === c && e.event_type === k)
+        .map((e) => Date.parse(e.created_at))
+        .sort((a, b) => a - b)[nth - 1];
+    const s2 = Math.max(at("STAGE2_BLOCK", 2) ?? NaN, at("STAGE2_GOLDEN_BLOCK") ?? NaN);
+    const s3 = STAGE3_STEPS.map((x) => at(x.key) ?? NaN);
+    if ([s2, ...s3].some((t) => Number.isNaN(t))) return false;
+    return [s2, ...s3].every((t, i, arr) => i === 0 || arr[i - 1] <= t);
+  };
   const warn = { RED: countEv(data.events, "RED", "WARNING"), BLUE: countEv(data.events, "BLUE", "WARNING") };
   const retry = { RED: countEv(data.events, "RED", "RETRY"), BLUE: countEv(data.events, "BLUE", "RETRY") };
 
@@ -83,7 +91,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
           {(m.status === "RUNNING" || m.status === "PAUSED") && (
             <>
               {(["RED", "BLUE"] as Color[]).map((c) => (
-                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận CHIẾN THẮNG TUYỆT ĐỐI: phe ${name(c)} đã có 2 Kiến thức, Cơ hội vàng, qua Cầu, Địa hình, đặt Đồ án lên đế và nhấn sáng Đèn Vinh Quang trước? Trận kết thúc ngay.`)}
+                <button key={c} onClick={() => rpc(`ko${c}`, "head_declare_winner", { ...p, p_color: c, p_kind: "KNOCKOUT" }, `Xác nhận CHIẾN THẮNG TUYỆT ĐỐI: phe ${name(c)} đã hoàn thành đúng trình tự 2 Kiến thức + Cơ hội vàng → Cầu → Đường Thử thách → Đồ án lên đế → Dốc Thăng hoa → nhấn sáng Đèn Vinh Quang? Trận kết thúc ngay.`)}
                   disabled={busy !== null || !koReady(c)} className={`${big} ${c === "RED" ? "bg-team-red" : "bg-team-blue"}`}>
                   {spin(`ko${c}`) || <Crown className="h-5 w-5" />} Thắng tuyệt đối {c === "RED" ? "Đỏ" : "Xanh"}
                 </button>
