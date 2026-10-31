@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import QRCode from "react-qr-code";
-import { AlertTriangle, ArrowRight, CheckCircle2, Circle, Crown, Heart, Lock, MailCheck, QrCode, Swords } from "lucide-react";
+import { AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, Circle, Crown, Heart, Lock, MailCheck, QrCode, Swords } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CONTACT, SITE, STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
@@ -196,6 +196,14 @@ export default async function TeamDashboard() {
             )}
           </div>
           <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-1">
+            <Link href="/team/practice" className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:ring-navy-600">
+              <CalendarClock className="h-6 w-6 shrink-0 text-navy-600" />
+              <span className="flex-1">
+                <span className="block font-semibold text-navy">Đăng ký lịch chạy thử</span>
+                <span className="block text-xs text-slate-500">Chọn khung giờ thử sa bàn, mỗi khung chỉ 1 đội</span>
+              </span>
+              <ArrowRight className="h-4 w-4 text-slate-400" />
+            </Link>
             <Link href="/lich-thi" className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:ring-navy-600">
               <Swords className="h-6 w-6 shrink-0 text-mech-red" />
               <span className="flex-1">

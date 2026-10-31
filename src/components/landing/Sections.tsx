@@ -190,6 +190,11 @@ export function Timeline() {
                 </div>
                 <div className="mt-1 font-bold text-navy">{t.title}</div>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{t.desc}</p>
+                {"href" in t && (
+                  <Link href={t.href} className="mt-3 inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-navy-600 px-2.5 py-2 text-xs font-bold text-white transition hover:bg-mech-red">
+                    {t.cta} <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                )}
               </li>
             );
           })}

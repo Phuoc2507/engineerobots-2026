@@ -27,7 +27,7 @@ export const JOIN_STEPS = [
 export const TIMELINE = [
   { title: "Mở cổng đăng ký", date: "Tháng 10/2026", desc: "Đăng ký đội tối đa 5 thành viên K26 bằng email trường.", status: "current" },
   { title: "2 buổi tập huấn kỹ thuật", date: "Dự kiến 8:00", desc: "Buổi 1 cơ khí & điện tử cơ bản, Buổi 2 lập trình PID & điều khiển không dây.", status: "upcoming" },
-  { title: "Open Field Test", date: "Trước 1 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đăng ký khung giờ trên web để không trùng lịch.", status: "upcoming" },
+  { title: "Open Field Test", date: "Trước 1 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đăng ký khung giờ trên web để không trùng lịch.", status: "upcoming", href: "/team/practice", cta: "Đặt lịch thử" },
   { title: "Vòng loại", date: "Dự kiến", desc: "Mỗi đội 1 trận 180 giây, xếp hạng theo điểm số: Chặng 1 và 2 cấu kiện Kiến thức. Top 16 đi tiếp.", status: "upcoming" },
   { title: "Chung kết xếp hạng", date: "Dự kiến", desc: "300 giây/trận, 16 đội bốc thăm cặp đấu, đối kháng 1 vs 1 loại trực tiếp; tranh hạng ba 1 trận, chung kết Bo3. Trao giải & bình chọn khán giả.", status: "upcoming" },
 ] as const;
