@@ -134,7 +134,7 @@ export function Prizes() {
             <li key={p.rank} className={`rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>
               <div className={`text-xs font-bold uppercase tracking-widest ${i === 0 ? "text-mech-gold" : "text-mech-red"}`}>{p.rank}</div>
               <div className={`mt-2 font-display text-xl leading-tight ${i === 0 ? "" : "text-navy"}`}>{p.reward}</div>
-              <p className={`mt-1 text-sm ${i === 0 ? "text-white/75" : "text-slate-500"}`}>{p.extra}</p>
+              {p.extra && <p className={`mt-1 text-sm ${i === 0 ? "text-white/75" : "text-slate-500"}`}>{p.extra}</p>}
             </li>
           ))}
         </ul>

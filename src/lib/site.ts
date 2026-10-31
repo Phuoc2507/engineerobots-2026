@@ -26,7 +26,7 @@ export const JOIN_STEPS = [
 // status: done | current | upcoming
 export const TIMELINE = [
   { title: "Mở cổng đăng ký", date: "Tháng 10/2026", desc: "Đăng ký đội tối đa 5 thành viên K26 bằng email trường.", status: "current" },
-  { title: "2 buổi tập huấn kỹ thuật", date: "Dự kiến 8:00", desc: "Buổi 1 cơ khí & điện tử cơ bản, Buổi 2 lập trình PID & điều khiển không dây.", status: "upcoming" },
+  { title: "2 buổi tập huấn kỹ thuật", date: "BTC thông báo sau", desc: "Buổi 1 cơ khí & điện tử cơ bản, Buổi 2 lập trình PID & điều khiển không dây.", status: "upcoming" },
   { title: "Open Field Test", date: "Trước 1 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đăng ký khung giờ trên web để không trùng lịch.", status: "upcoming", href: "/team/practice", cta: "Đặt lịch thử" },
   { title: "Vòng loại", date: "Dự kiến", desc: "Mỗi đội 1 trận 180 giây, xếp hạng theo điểm số: Chặng 1 và 2 cấu kiện Kiến thức. Top 16 đi tiếp.", status: "upcoming" },
   { title: "Chung kết xếp hạng", date: "Dự kiến", desc: "300 giây/trận, 16 đội bốc thăm cặp đấu, đối kháng 1 vs 1 loại trực tiếp; tranh hạng ba 1 trận, chung kết Bo3. Trao giải & bình chọn khán giả.", status: "upcoming" },
@@ -41,16 +41,16 @@ export const ROBOT_SPECS = [
 ];
 
 export const PRIZES = [
-  { rank: "Giải Nhất", reward: "Hiện kim + Giấy chứng nhận", extra: "Cúp Vô địch + Giấy khen BCN Khoa" },
-  { rank: "Giải Nhì", reward: "Hiện kim + Giấy chứng nhận", extra: "Huy chương Bạc + Giấy khen BCN Khoa" },
-  { rank: "Giải Ba", reward: "Hiện kim + Giấy chứng nhận", extra: "Huy chương Đồng + Giấy khen BCN Khoa" },
+  { rank: "Giải Nhất", reward: "Hiện kim + Giấy chứng nhận", extra: "" },
+  { rank: "Giải Nhì", reward: "Hiện kim + Giấy chứng nhận", extra: "" },
+  { rank: "Giải Ba", reward: "Hiện kim + Giấy chứng nhận", extra: "" },
   { rank: "Khuyến khích", reward: "Hiện kim + Giấy chứng nhận", extra: "" },
   { rank: "Được yêu thích nhất", reward: "Hiện kim + Giấy chứng nhận", extra: "Bình chọn qua Fanpage" },
 ];
 
 // TODO(BTC): điền ngày 2 buổi tập huấn (thể lệ để trống "ngày … tháng … năm 2026")
 export const WORKSHOPS = [
-  { title: "Buổi 1 · Cơ khí & Điện tử cơ bản", desc: "8:00, ngày BTC thông báo sau. Nền tảng thiết kế cơ khí, điện tử cơ bản, cách dùng cảm biến dò line; hỏi đáp kỹ thuật và thể lệ." },
+  { title: "Buổi 1 · Cơ khí & Điện tử cơ bản", desc: "Thời gian BTC thông báo sau. Nền tảng thiết kế cơ khí, điện tử cơ bản, cách dùng cảm biến dò line; hỏi đáp kỹ thuật và thể lệ." },
   { title: "Buổi 2 · Lập trình", desc: "8:00, ngày BTC thông báo sau. Điều khiển động cơ, thuật toán dò line PID, tích hợp điều khiển không dây; hỏi đáp trực tiếp." },
 ];
 
