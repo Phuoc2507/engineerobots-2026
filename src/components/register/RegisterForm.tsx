@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Crown, Loader2, Plus, Save, Send, Trash2, UserRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { MAJORS, STUDENT_DOMAIN } from "@/lib/site";
+import { STUDENT_DOMAIN } from "@/lib/site";
 
 // Các luật dưới đây trùng với hàm SQL _validate_team() — server vẫn là nơi kiểm tra cuối cùng
 const MSSV_RE = /^26\d{6}$/;
 const PHONE_RE = /^0\d{9}$/;
+const K26_EMAIL = (mail: string) => mail.startsWith("26") && mail.endsWith(`@${STUDENT_DOMAIN}`);
 const MIN_MEMBERS = 2; // + đội trưởng = 3
 const MAX_MEMBERS = 4; // + đội trưởng = 5
 
@@ -62,7 +63,6 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
     const e: Errors = {};
     const name = team.team_name.trim();
     if (name.length < 3 || name.length > 100) e.team_name = "Tên đội cần từ 3 đến 100 ký tự.";
-    if (!team.major) e.major = "Chọn ngành.";
     if (!MSSV_RE.test(leader.student_id.trim())) e.leader_student_id = "MSSV gồm 8 số, bắt đầu bằng 26.";
     if (!leader.full_name.trim()) e.leader_full_name = "Nhập họ tên.";
     if (!PHONE_RE.test(leader.phone.trim())) e.leader_phone = "10 số, bắt đầu bằng 0.";
@@ -75,7 +75,7 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
       if (!MSSV_RE.test(id)) e[`m${i}_student_id`] = "MSSV gồm 8 số, bắt đầu bằng 26.";
       else if (ids.includes(id)) e[`m${i}_student_id`] = "MSSV bị trùng.";
       if (!m.full_name.trim()) e[`m${i}_full_name`] = "Nhập họ tên.";
-      if (!mail.endsWith(`@${STUDENT_DOMAIN}`)) e[`m${i}_email`] = `Email phải có đuôi @${STUDENT_DOMAIN}.`;
+      if (!K26_EMAIL(mail)) e[`m${i}_email`] = `Email phải bắt đầu bằng 26 và có đuôi @${STUDENT_DOMAIN}.`;
       else if (mails.includes(mail)) e[`m${i}_email`] = "Email bị trùng.";
       if (m.phone.trim() && !PHONE_RE.test(m.phone.trim())) e[`m${i}_phone`] = "10 số, bắt đầu bằng 0.";
       ids.push(id);
@@ -136,13 +136,7 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Tên đội" required error={errors.team_name} className="sm:col-span-2">
             <input className={input(errors.team_name)} value={team.team_name} maxLength={100}
-              onChange={(e) => setTeam({ ...team, team_name: e.target.value })} placeholder="VD: Bách Khoa Titans" aria-invalid={!!errors.team_name} />
-          </Field>
-          <Field label="Ngành (đội trưởng)" required error={errors.major}>
-            <select className={input(errors.major)} value={team.major} onChange={(e) => setTeam({ ...team, major: e.target.value })} aria-invalid={!!errors.major}>
-              <option value="">— Chọn ngành —</option>
-              {MAJORS.map((m) => <option key={m}>{m}</option>)}
-            </select>
+              onChange={(e) => setTeam({ ...team, team_name: e.target.value })} placeholder="VD: Cơ Khí SPKT Titans" aria-invalid={!!errors.team_name} />
           </Field>
         </div>
       </Card>

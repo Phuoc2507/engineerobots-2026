@@ -57,8 +57,8 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Thích nghi – Dò line tự hành</h3>
               <p className="mt-4 text-slate-600">
-                Mỗi đội một làn line riêng rộng 90 cm dọc hai mép sa bàn. Robot xuất phát từ Trạm khởi hành 41 × 36 cm, bám line đen
-                rộng 20 mm qua Đường Danh vọng thẳng 180 cm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 194 cm về vạch chữ T.
+                Mỗi đội một làn line riêng rộng 900 mm dọc hai mép sa bàn. Robot xuất phát từ Trạm khởi hành 410 × 360 mm, bám line đen
+                rộng 20 mm qua Đường Danh vọng thẳng 1800 mm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 1940 mm về vạch chữ T.
               </p>
               <ul className="mt-6 space-y-3 text-slate-700">
                 <li><strong>Tự hành 100%:</strong> chỉ ấn nút khởi động một lần, tay cầm đặt xuống đất suốt Chặng 1; về đích xong robot tự chuyển sang điều khiển từ xa.</li>
@@ -79,7 +79,7 @@ export default function RulesTabs() {
               <h3 className="font-display text-3xl uppercase text-navy">Tích lũy – Tranh chấp cấu kiện</h3>
               <p className="mt-4 text-slate-600">
                 Được điều khiển từ xa. Mỗi đội có 2 Cấu kiện Kiến thức là bóng pickleball Ø74 mm màu đội mình; robot dùng cơ cấu tự chọn
-                (càng đẩy, con lăn, tay gắp…) đưa bóng vượt gờ vào Trạm thành tựu 30 × 30 cm. Bóng ngoài trạm được tranh chấp;
+                (càng đẩy, con lăn, tay gắp…) đưa bóng vượt gờ vào Trạm thành tựu 300 × 300 mm. Bóng ngoài trạm được tranh chấp;
                 bóng nằm trọn trong trạm là bất khả xâm phạm. Chỉ ở Vòng Chung kết xếp hạng, sau khi đủ 2 Kiến thức, đội mới được đưa
                 bóng Cơ hội vàng trên Bục Cơ hội về trạm. Cần ≥ 2 Kiến thức trong trạm để sang Chặng 3.
               </p>
@@ -98,7 +98,7 @@ export default function RulesTabs() {
               <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Bảo vệ Đồ án</h3>
               <p className="mt-4 text-slate-600">
                 Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Đường Thử thách 5 thanh gờ ống PVC cao 15 mm, đưa bóng Đồ án Ø74 mm từ Trạm
-                Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 12 × 12 cm trên Đài cao 100 mm, rồi leo Dốc
+                Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 120 × 120 mm trên Đài cao 100 mm, rồi leo Dốc
                 Thăng hoa lên Bục Vinh Quang 200 mm nhấn nút Đèn trên vách ngăn (đội nhấn trước +40đ, nhấn sau +25đ). Chạm vạch giới hạn Đường Thử thách hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
                 lấn sang sân đối phương: −15đ và Retry.
               </p>

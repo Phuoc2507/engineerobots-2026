@@ -72,9 +72,9 @@ export function Intro() {
 
 export function ArenaShowcase() {
   const zones = [
-    { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 90 cm dọc hai mép, line đen 20 mm: Đường Danh vọng thẳng 180 cm tới Checkpoint, Đường Thách thức ziczac 45°, vạch đích chữ T." },
-    { tag: "Chặng 2", title: "Cấu kiện & Bục Cơ hội", desc: "4 bóng pickleball Kiến thức Ø74 mm (2 Đỏ, 2 Xanh), Bục Cơ hội 40 × 40 cm cao 5 cm mang bóng Cơ hội vàng, 2 Trạm thành tựu 30 × 30 cm có gờ chặn ở hai cánh sân." },
-    { tag: "Chặng 3", title: "Cầu Bản lĩnh & Bục Vinh Quang", desc: "Cầu gỗ 60 × 55 cm, 2 sân độc lập: Đường Thử thách 5 thanh gờ, Trạm Thực nghiệm, Dốc Kiên trì 10° lên Đài Bảo vệ 100 mm, Dốc Thăng hoa lên Đỉnh 200 mm có Đèn Vinh Quang." },
+    { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 900 mm dọc hai mép, line đen 20 mm: Đường Danh vọng thẳng 1800 mm tới Checkpoint, Đường Thách thức ziczac 45°, vạch đích chữ T." },
+    { tag: "Chặng 2", title: "Cấu kiện & Bục Cơ hội", desc: "4 bóng pickleball Kiến thức Ø74 mm (2 Đỏ, 2 Xanh), Bục Cơ hội 400 × 400 mm cao 50 mm mang bóng Cơ hội vàng, 2 Trạm thành tựu 300 × 300 mm có gờ chặn ở hai cánh sân." },
+    { tag: "Chặng 3", title: "Cầu Bản lĩnh & Bục Vinh Quang", desc: "Cầu gỗ 600 × 550 mm, 2 sân độc lập: Đường Thử thách 5 thanh gờ, Trạm Thực nghiệm, Dốc Kiên trì 10° lên Đài Bảo vệ 100 mm, Dốc Thăng hoa lên Đỉnh 200 mm có Đèn Vinh Quang." },
   ];
   return (
     <section id="sa-ban-3d" className="bg-navy py-20 text-white md:py-28">
@@ -84,7 +84,7 @@ export function ArenaShowcase() {
             <p className="section-kicker !text-mech-gold">
               <span className="h-px w-8 bg-mech-gold" /> Sa bàn thi đấu
             </p>
-            <h2 className="section-title mt-3 !text-white">Sa bàn 4,8 × 4,8 m</h2>
+            <h2 className="section-title mt-3 !text-white">Sa bàn 4800 × 4800 mm</h2>
             <p className="mt-4 max-w-2xl text-white/75">
               Một sa bàn chung, ba vùng thi đấu nối tiếp nhau. Xoay, phóng to mô hình 3D để xem kích thước từng chi tiết.
             </p>

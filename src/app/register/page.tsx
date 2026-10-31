@@ -19,6 +19,8 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
   const { data: { user } } = await supabase.auth.getUser();
   const email = user?.email?.toLowerCase() ?? "";
   const validDomain = email.endsWith(`@${STUDENT_DOMAIN}`);
+  // Chỉ tân sinh viên K26 (email 26…) được tạo đội — khớp _validate_team
+  const k26 = email.startsWith("26");
 
   // Đã là đội trưởng hoặc được thêm vào đội → về trang quản lý đội
   if (user && validDomain) {
@@ -57,7 +59,16 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
       {user && validDomain && (
         <>
           <AccountBar email={email} />
-          {closed ? (
+          {!k26 ? (
+            <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 md:p-8">
+              <h2 className="font-display text-2xl uppercase text-navy">Chỉ dành cho K26</h2>
+              <p className="mt-2 text-slate-600">
+                Cuộc thi dành cho tân sinh viên khóa 2026: email đăng ký phải bắt đầu bằng <b>26</b> (MSSV@{STUDENT_DOMAIN}).
+                Bạn đang đăng nhập bằng <b>{email}</b>.
+              </p>
+              <div className="mt-5"><SignOutButton /></div>
+            </div>
+          ) : closed ? (
             <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 md:p-8">
               <h2 className="font-display text-2xl uppercase text-navy">Đã hết hạn đăng ký</h2>
               <p className="mt-2 text-slate-600">Cổng đăng ký đã đóng. Liên hệ BTC qua fanpage Khoa Cơ khí nếu cần hỗ trợ.</p>

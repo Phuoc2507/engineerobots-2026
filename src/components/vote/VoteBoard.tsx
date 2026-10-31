@@ -68,7 +68,7 @@ export default function VoteBoard({ teams, open }: { teams: PublicTeam[]; open: 
                     : <span className="grid h-12 w-12 place-items-center rounded-lg bg-navy font-display text-xl text-white">{t.team_name.slice(0, 1)}</span>}
                   <span className="min-w-0">
                     <span className="block truncate font-display text-lg uppercase text-navy">{t.team_name}</span>
-                    <span className="block truncate text-xs text-slate-500">{t.major}</span>
+                    {t.major && <span className="block truncate text-xs text-slate-500">{t.major}</span>}
                   </span>
                 </div>
                 <button disabled={!open || busy !== null || mine} onClick={() => vote(t.id)}

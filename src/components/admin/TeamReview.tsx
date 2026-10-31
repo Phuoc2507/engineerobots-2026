@@ -170,7 +170,7 @@ Gõ đúng tên đội để xác nhận:`);
                   <button onClick={() => setOpen(expanded ? null : t.id)} aria-expanded={expanded} className="flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left hover:bg-ice/60">
                     <span className="min-w-0 flex-1">
                       <b className="text-navy">{t.team_name}</b>
-                      <span className="block text-xs text-slate-500">{t.major} · {t.team_members.length} SV · nộp {fmt(t.created_at)}{t.updated_at ? ` · sửa ${fmt(t.updated_at)}` : ""}</span>
+                      <span className="block text-xs text-slate-500">{t.major ? `${t.major} · ` : ""}{t.team_members.length} SV · nộp {fmt(t.created_at)}{t.updated_at ? ` · sửa ${fmt(t.updated_at)}` : ""}</span>
                     </span>
                     {t.inspection_passed && <span className="inline-flex items-center gap-1 rounded-full bg-navy-600/10 px-2 py-0.5 text-xs font-bold text-navy-600"><ShieldCheck className="h-3.5 w-3.5" /> KT đạt</span>}
                     <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${st.tone}`}>{st.label}</span>

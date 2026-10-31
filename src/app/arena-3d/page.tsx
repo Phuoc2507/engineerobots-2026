@@ -6,7 +6,7 @@ import ArenaVideo from "@/components/landing/ArenaVideo";
 
 export const metadata: Metadata = {
   title: "Sa bàn 3D · ENGINEERING PATH 2026",
-  description: "Mô hình 3D sa bàn 4,8 × 4,8 m của ENGINEERING PATH 2026: xoay, phóng to để xem 3 chặng thi.",
+  description: "Mô hình 3D sa bàn 4800 × 4800 mm của ENGINEERING PATH 2026: xoay, phóng to để xem 3 chặng thi.",
 };
 
 export default function Arena3DPage() {

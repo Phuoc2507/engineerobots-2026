@@ -131,7 +131,7 @@ export default async function TeamDashboard() {
             <div className="min-w-0">
               <p className="section-kicker">{isLeader ? <><Crown className="h-4 w-4" /> Bạn là đội trưởng</> : <><MailCheck className="h-4 w-4" /> Bạn là {ROLE_LABEL[me?.role ?? "MEMBER"].toLowerCase()}</>}</p>
               <h2 className="mt-2 break-words font-display text-3xl uppercase tracking-wide text-navy">{team.team_name}</h2>
-              <p className="mt-1 text-sm text-slate-500">{team.major}</p>
+              {team.major && <p className="mt-1 text-sm text-slate-500">{team.major}</p>}
             </div>
             <span className={`rounded-full px-3 py-1 text-sm font-bold ${status.tone}`}>{status.label}</span>
           </div>

@@ -20,7 +20,7 @@ export const NAV_LINKS = [
 export const JOIN_STEPS = [
   { title: "Lập đội tối đa 5 người", desc: "Tân sinh viên khóa 2026 hệ chính quy HCM-UTE. Mỗi đội bắt buộc có 1 đội trưởng; mỗi bạn chỉ thuộc 1 đội." },
   { title: "Đăng ký bằng email trường", desc: "Đội trưởng đăng nhập Google @student.hcmute.edu.vn và điền MSSV các thành viên." },
-  { title: "Workshop & chạy thử", desc: "Dự 2 buổi tập huấn kỹ thuật (mỗi đội ít nhất 1 bạn), đăng ký lịch chạy thử trên sa bàn thật 4,8 × 4,8 m (mở trước ngày thi 1 tuần)." },
+  { title: "Workshop & chạy thử", desc: "Dự 2 buổi tập huấn kỹ thuật (mỗi đội ít nhất 1 bạn), đăng ký lịch chạy thử trên sa bàn thật 4800 × 4800 mm (mở trước ngày thi 1 tuần)." },
 ];
 
 // status: done | current | upcoming
@@ -55,7 +55,6 @@ export const WORKSHOPS = [
 ];
 
 export const STUDENT_DOMAIN = "student.hcmute.edu.vn";
-export const MAJORS = ["Cơ điện tử", "Chế tạo máy", "Kỹ thuật Ô tô", "Robot & Trí tuệ nhân tạo", "Tự động hóa", "Ngành khác"];
 
 // TODO(BTC): điền thông tin liên hệ thật — hiện ở footer, trang đăng nhập BTC và email gửi đội
 export const CONTACT = {
