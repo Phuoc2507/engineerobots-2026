@@ -18,8 +18,8 @@ const ul = "mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700";
 const TERMS = [
   ["Trạm khởi hành", "1.1 – 1.2", "Vị trí đặt robot trước khi trận đấu bắt đầu"],
   ["Chặng 1", "Chặng 1", "Khu vực thực hiện nhiệm vụ “Thích nghi”"],
-  ["Chặng 2", "Chặng 2", "Khu vực thực hiện nhiệm vụ “Tích lũy”"],
-  ["Chặng 3", "Chặng 3", "Khu vực thực hiện nhiệm vụ “Bản lĩnh”"],
+  ["Chặng 2", "Chặng 2", "Khu vực thực hiện nhiệm vụ “Bứt phá”"],
+  ["Chặng 3", "Chặng 3", "Khu vực thực hiện nhiệm vụ “Thành công”"],
   ["Vạch giới hạn", "Đường kẻ màu đen bao quanh các khu vực trong sân thi đấu", "Vạch giới hạn phạm vi của robot hoạt động trong sân thi đấu"],
   ["Vị trí Checkpoint", "Khung được ký hiệu “Checkpoint”", "Vị trí đánh dấu trên đoạn đường dò line; robot đi qua vạch sẽ được lưu vị trí retry tại đó ở Chặng 1"],
   ["Khu vực retry", "2.1 – 2.2 – 3.1 – 3.2", "Khu vực robot được đưa về khi đội thi yêu cầu quyền retry"],
@@ -39,30 +39,30 @@ const TERMS = [
 const SCORING = [
   { stage: "Chặng 1 · Thích nghi", task: "Dò line tự động qua vị trí Checkpoint", pts: "+10", cond: "Toàn bộ xe đi qua hoàn toàn vị trí Checkpoint" },
   { stage: "Chặng 1 · Thích nghi", task: "Dò line tự động hoàn thành quãng đường", pts: "+20", cond: "2 bánh xe cắt ngang vạch chữ T ở cuối đường line" },
-  { stage: "Chặng 2 · Tích lũy", task: "Thu thập 1 cấu kiện Kiến thức (màu đội mình) vào Trạm thành tựu", pts: "+15 / khối", cond: "Quả bóng được đưa vào nằm trọn trong Trạm thành tựu" },
-  { stage: "Chặng 2 · Tích lũy", task: "Tranh chấp và đưa cấu kiện Cơ hội vàng vào Trạm thành tựu", pts: "+30 · chỉ số ưu tiên khi hòa điểm", cond: "Quả bóng vàng được đưa vào nằm trọn trong Trạm thành tựu (chỉ Vòng Chung kết xếp hạng)" },
-  { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Cầu Bản lĩnh", pts: "+10", cond: "Toàn bộ thân xe đi qua được cầu (khi đã có 02 cấu kiện hợp lệ tại Chặng 2)" },
-  { stage: "Chặng 3 · Bản lĩnh", task: "Vượt Đường Thử thách", pts: "+20", cond: "Toàn bộ thân xe và bánh xe vượt qua hoàn toàn 5 thanh gờ của Đường Thử thách thuộc phần sân đội mình" },
-  { stage: "Chặng 3 · Bản lĩnh", task: "Đưa cấu kiện Đồ án vượt Dốc Kiên trì đặt lên đế nhỏ trong Ô Bảo vệ Đồ án trên Đài Bảo vệ (dùng càng đẩy, cuộn bóng, tay gắp…)", pts: "+25", cond: "Bóng Đồ án được đưa từ Trạm Thực nghiệm vượt qua Dốc Kiên trì lên Đài Bảo vệ và được đặt vững chắc lên chiếc đế nhỏ của Ô Bảo vệ Đồ án (3.9 Đỏ – 3.10 Xanh) tại góc trên của bậc" },
-  { stage: "Chặng 3 · Bản lĩnh", task: "Leo Dốc Thăng hoa lên Bục Vinh Quang và thắp sáng Đèn Vinh Quang", pts: "+40 (nhấn trước) / +25 (nhấn sau)", cond: "Cấu kiện Đồ án đã được đặt thành công lên đế nhỏ trong Ô Bảo vệ Đồ án; robot di chuyển từ Đài Bảo vệ leo Dốc Thăng hoa tiến vào Bục Vinh Quang ở trung tâm và nhấn vào nút trên vách ngăn làm Đèn Vinh Quang phát sáng" },
-  { stage: "Chặng 3 · Bản lĩnh", task: "Chiến thắng tuyệt đối (Tốt nghiệp Xuất sắc)", pts: "Thắng ngay lập tức (theo đủ điều kiện tại Mục VI.3.2)", cond: "Hoàn thành theo trình tự ở Mục VI.3.2 (nếu nhấn đèn trước mà chưa đủ điều kiện theo trình tự thì không đủ điều kiện để tạo ra chiến thắng tuyệt đối)" },
+  { stage: "Chặng 2 · Bứt phá", task: "Thu thập 1 cấu kiện Kiến thức (màu đội mình) vào Trạm thành tựu", pts: "+15 / khối", cond: "Quả bóng được đưa vào nằm trọn trong Trạm thành tựu" },
+  { stage: "Chặng 2 · Bứt phá", task: "Tranh chấp và đưa cấu kiện Cơ hội vàng vào Trạm thành tựu", pts: "+30 · chỉ số ưu tiên khi hòa điểm", cond: "Quả bóng vàng được đưa vào nằm trọn trong Trạm thành tựu (chỉ Vòng Chung kết xếp hạng)" },
+  { stage: "Chặng 3 · Thành công", task: "Vượt Cầu Bản lĩnh", pts: "+10", cond: "Toàn bộ thân xe đi qua được cầu (khi đã có 02 cấu kiện hợp lệ tại Chặng 2)" },
+  { stage: "Chặng 3 · Thành công", task: "Vượt Đường Thử thách", pts: "+20", cond: "Toàn bộ thân xe và bánh xe vượt qua hoàn toàn 5 thanh gờ của Đường Thử thách thuộc phần sân đội mình" },
+  { stage: "Chặng 3 · Thành công", task: "Đưa cấu kiện Đồ án vượt Dốc Kiên trì đặt lên đế nhỏ trong Ô Bảo vệ Đồ án trên Đài Bảo vệ (dùng càng đẩy, cuộn bóng, tay gắp…)", pts: "+25", cond: "Bóng Đồ án được đưa từ Trạm Thực nghiệm vượt qua Dốc Kiên trì lên Đài Bảo vệ và được đặt vững chắc lên chiếc đế nhỏ của Ô Bảo vệ Đồ án (3.9 Đỏ – 3.10 Xanh) tại góc trên của bậc" },
+  { stage: "Chặng 3 · Thành công", task: "Leo Dốc Thăng hoa lên Bục Vinh Quang và thắp sáng Đèn Vinh Quang", pts: "+40 (nhấn trước) / +25 (nhấn sau)", cond: "Cấu kiện Đồ án đã được đặt thành công lên đế nhỏ trong Ô Bảo vệ Đồ án; robot di chuyển từ Đài Bảo vệ leo Dốc Thăng hoa tiến vào Bục Vinh Quang ở trung tâm và nhấn vào nút trên vách ngăn làm Đèn Vinh Quang phát sáng" },
+  { stage: "Chặng 3 · Thành công", task: "Chiến thắng tuyệt đối (Tốt nghiệp Xuất sắc)", pts: "Thắng ngay lập tức (theo đủ điều kiện tại Mục VI.3.2)", cond: "Hoàn thành theo trình tự ở Mục VI.3.2 (nếu nhấn đèn trước mà chưa đủ điều kiện theo trình tự thì không đủ điều kiện để tạo ra chiến thắng tuyệt đối)" },
 ];
 
 const PENALTIES = [
   { stage: "Chặng 1 · Thích nghi", name: "Mất line", pts: "−5 / lần", cond: "Tất cả bánh xe của robot hoàn toàn ra khỏi đường line đen mà không thể tự phục hồi lộ trình" },
   { stage: "Chặng 1 · Thích nghi", name: "Đâm rào", pts: "−5 / lần", cond: "Robot di chuyển chạm / đâm vào rào chắn trên sân thi đấu" },
-  { stage: "Chặng 2 · Tích lũy", name: "Đâm húc phá hoại / Ép khóa cứng robot đối phương", pts: "−10 / lần", cond: "Cố ý lấy đà đâm húc tốc độ cao gây hư hại hoặc dùng cơ chế ép khóa cứng robot đối phương vào vách sân quá 05 giây khi không tranh chấp cấu kiện" },
-  { stage: "Chặng 2 · Tích lũy", name: "Rời khỏi khu vực", pts: "−10 / lần", cond: "Robot hoàn toàn ra khỏi khu vực thi đấu của Chặng 2" },
-  { stage: "Chặng 2 · Tích lũy", name: "Húc văng cấu kiện Kiến thức của đối phương ra ngoài sân", pts: "−10 / lần (đặt lại cấu kiện cho đối phương)", cond: "Cố ý đẩy / húc hoặc làm văng cấu kiện Kiến thức của đối phương ra ngoài biên Chặng 2" },
-  { stage: "Chặng 2 · Tích lũy", name: "Tự làm văng cấu kiện", pts: "−5 / lần (cấu kiện được đặt lại vị trí ban đầu)", cond: "Tự làm văng cấu kiện đội mình ra ngoài biên" },
-  { stage: "Chặng 2 · Tích lũy", name: "Cố ý tác động cấu kiện trong Trạm thành tựu đối phương", pts: "−20 / lần (phục hồi nguyên trạng cho đối phương)", cond: "Cố ý tác động cấu kiện trong Trạm thành tựu đối phương" },
-  { stage: "Chặng 2 · Tích lũy", name: "Cố ý thu thập cấu kiện Cơ hội vàng khi chưa đủ 2 Kiến thức (Chung kết)", pts: "−10 / lần (đặt lại cấu kiện về Bục Cơ hội)", cond: "Chỉ được tranh chấp Cơ hội vàng sau khi có đủ 2 cấu kiện Kiến thức trong Trạm thành tựu" },
-  { stage: "Chặng 2 · Tích lũy", name: "Giữ cấu kiện Kiến thức của đối phương", pts: "−10 / lần (đặt lại cấu kiện về vị trí ban đầu)", cond: "Cầm, giữ hoặc mang cấu kiện Kiến thức của đối phương" },
-  { stage: "Chặng 2 · Tích lũy", name: "Sang nửa sân đối phương (Vòng loại)", pts: "−15 / lần (bắt buộc retry)", cond: "Ở vòng loại, robot sang nửa sân của đối phương hoặc cản phá đối phương tại Chặng 2" },
-  { stage: "Chặng 3 · Bản lĩnh", name: "Chạm vạch giới hạn đoạn đường (Nhiệm vụ 1)", pts: "−5 / lần", cond: "Robot di chuyển chạm vào cạnh giới hạn của đoạn Đường Thử thách" },
-  { stage: "Chặng 3 · Bản lĩnh", name: "Làm rơi cấu kiện Đồ án (Nhiệm vụ 2)", pts: "−5 / lần (cấu kiện Đồ án được đưa về vị trí ban đầu)", cond: "Mỗi lần làm rơi cấu kiện Đồ án khỏi dốc hoặc khỏi Đài Bảo vệ" },
-  { stage: "Chặng 3 · Bản lĩnh", name: "Rời khỏi khu vực", pts: "−10 / lần", cond: "Robot ra khỏi khu vực Chặng 3" },
-  { stage: "Chặng 3 · Bản lĩnh", name: "Lấn sang sân đối phương", pts: "−15 / lần (bắt buộc retry)", cond: "Robot di chuyển sang phần sân của đối phương tại Chặng 3" },
+  { stage: "Chặng 2 · Bứt phá", name: "Đâm húc phá hoại / Ép khóa cứng robot đối phương", pts: "−10 / lần", cond: "Cố ý lấy đà đâm húc tốc độ cao gây hư hại hoặc dùng cơ chế ép khóa cứng robot đối phương vào vách sân quá 05 giây khi không tranh chấp cấu kiện" },
+  { stage: "Chặng 2 · Bứt phá", name: "Rời khỏi khu vực", pts: "−10 / lần", cond: "Robot hoàn toàn ra khỏi khu vực thi đấu của Chặng 2" },
+  { stage: "Chặng 2 · Bứt phá", name: "Húc văng cấu kiện Kiến thức của đối phương ra ngoài sân", pts: "−10 / lần (đặt lại cấu kiện cho đối phương)", cond: "Cố ý đẩy / húc hoặc làm văng cấu kiện Kiến thức của đối phương ra ngoài biên Chặng 2" },
+  { stage: "Chặng 2 · Bứt phá", name: "Tự làm văng cấu kiện", pts: "−5 / lần (cấu kiện được đặt lại vị trí ban đầu)", cond: "Tự làm văng cấu kiện đội mình ra ngoài biên" },
+  { stage: "Chặng 2 · Bứt phá", name: "Cố ý tác động cấu kiện trong Trạm thành tựu đối phương", pts: "−20 / lần (phục hồi nguyên trạng cho đối phương)", cond: "Cố ý tác động cấu kiện trong Trạm thành tựu đối phương" },
+  { stage: "Chặng 2 · Bứt phá", name: "Cố ý thu thập cấu kiện Cơ hội vàng khi chưa đủ 2 Kiến thức (Chung kết)", pts: "−10 / lần (đặt lại cấu kiện về Bục Cơ hội)", cond: "Chỉ được tranh chấp Cơ hội vàng sau khi có đủ 2 cấu kiện Kiến thức trong Trạm thành tựu" },
+  { stage: "Chặng 2 · Bứt phá", name: "Giữ cấu kiện Kiến thức của đối phương", pts: "−10 / lần (đặt lại cấu kiện về vị trí ban đầu)", cond: "Cầm, giữ hoặc mang cấu kiện Kiến thức của đối phương" },
+  { stage: "Chặng 2 · Bứt phá", name: "Sang nửa sân đối phương (Vòng loại)", pts: "−15 / lần (bắt buộc retry)", cond: "Ở vòng loại, robot sang nửa sân của đối phương hoặc cản phá đối phương tại Chặng 2" },
+  { stage: "Chặng 3 · Thành công", name: "Chạm vạch giới hạn đoạn đường (Nhiệm vụ 1)", pts: "−5 / lần", cond: "Robot di chuyển chạm vào cạnh giới hạn của đoạn Đường Thử thách" },
+  { stage: "Chặng 3 · Thành công", name: "Làm rơi cấu kiện Đồ án (Nhiệm vụ 2)", pts: "−5 / lần (cấu kiện Đồ án được đưa về vị trí ban đầu)", cond: "Mỗi lần làm rơi cấu kiện Đồ án khỏi dốc hoặc khỏi Đài Bảo vệ" },
+  { stage: "Chặng 3 · Thành công", name: "Rời khỏi khu vực", pts: "−10 / lần", cond: "Robot ra khỏi khu vực Chặng 3" },
+  { stage: "Chặng 3 · Thành công", name: "Lấn sang sân đối phương", pts: "−15 / lần (bắt buộc retry)", cond: "Robot di chuyển sang phần sân của đối phương tại Chặng 3" },
 ];
 
 const TIEBREAK_QUAL = [
@@ -127,9 +127,9 @@ export default function RulesPage() {
           <p className="mt-3 text-sm text-slate-700">Đấu trường được tái hiện như “Hành trình trưởng thành của một người Kỹ sư Cơ khí”: mỗi robot là hiện thân cho tâm huyết, bản lĩnh, sự sáng tạo và trí tuệ của người điều khiển; mỗi chặng thi là một cột mốc của kỹ sư tương lai. Các thử thách tăng dần từ dễ đến khó:</p>
           <h3 className="mt-4 font-bold text-team-red">Chặng 1 – “Thích nghi”</h3>
           <p className="mt-1 text-sm text-slate-700">Làm quen môi trường đại học. Robot tự động hoàn toàn (dò line, không can thiệp điều khiển): xuất phát từ Trạm khởi hành, qua Đường Danh vọng, vượt Checkpoint và xử lý các khúc cua của Đường Thách thức để về đích tại vạch ngang chữ T.</p>
-          <h3 className={h3}>Chặng 2 – “Tích lũy”</h3>
+          <h3 className={h3}>Chặng 2 – “Bứt phá”</h3>
           <p className="mt-1 text-sm text-slate-700">Học tập, tích lũy kiến thức và nắm bắt cơ hội. Đội điều khiển robot bằng tay cầm, dùng bất cứ cơ chế nào đưa các cấu kiện Kiến thức về Trạm thành tựu để mở khóa quyền tranh chấp cấu kiện Cơ hội vàng tại bục trung tâm.</p>
-          <h3 className="mt-4 font-bold text-team-blue">Chặng 3 – “Bản lĩnh”</h3>
+          <h3 className="mt-4 font-bold text-team-blue">Chặng 3 – “Thành công”</h3>
           <p className="mt-1 text-sm text-slate-700">Thực hiện và bảo vệ Đồ án tốt nghiệp. Hai robot thi đấu độc lập trên sân của đội mình: vượt Cầu Bản lĩnh, vượt Đường Thử thách, đưa cấu kiện Đồ án từ Trạm Thực nghiệm vượt Dốc Kiên trì vào Ô Bảo vệ Đồ án trên Đài Bảo vệ, rồi leo Dốc Thăng hoa vào Bục Vinh Quang nhấn nút thắp sáng Đèn Vinh Quang của đội mình.</p>
         </section>
 
@@ -185,7 +185,7 @@ export default function RulesPage() {
             <li>Vạch dẫn hướng màu đen rộng 20 mm. <b>Đường Danh vọng:</b> đoạn thẳng 1800 mm nối từ Trạm khởi hành. <b>Đường Thách thức:</b> ziczac dài 1940 mm, khúc cua 45°, kết thúc ở vạch ngang chữ T dài 300 mm.</li>
             <li><b>Checkpoint:</b> cuối Đường Danh vọng (mốc 1800 mm, trước khi vào Đường Thách thức).</li>
           </ul>
-          <h3 className={h3}>2. Chặng 2 · Tích lũy</h3>
+          <h3 className={h3}>2. Chặng 2 · Bứt phá</h3>
           <ul className={ul}>
             <li>Khu vực rộng 3000 mm, dài 1850 mm.</li>
             <li><b>Khu vực retry (2.1 – 2.2):</b> 410 × 360 mm ở 2 góc dưới (2.1 trái cho Đỏ, 2.2 phải cho Xanh), họa tiết gạch chéo 45°.</li>
@@ -193,7 +193,7 @@ export default function RulesPage() {
             <li><b>Bục Cơ hội (2.5):</b> bục dốc nghiêng 4 mặt đối xứng ở tâm Chặng 2, đáy 400 × 400 mm, đỉnh phẳng 300 × 300 mm, cao 50 mm; trên tâm đặt 01 bóng pickleball Ø74 mm màu vàng (Cơ hội vàng). <b>Chỉ xuất hiện ở Vòng Chung kết xếp hạng.</b></li>
             <li><b>Cấu kiện Kiến thức (2.6):</b> 04 bóng pickleball Ø74 mm (02 Đỏ ở cụm bên sân Đỏ, 02 Xanh ở cụm bên sân Xanh), ở hai bên phía dưới sân.</li>
           </ul>
-          <h3 className="mt-4 font-bold text-team-blue">3. Chặng 3 · Bản lĩnh</h3>
+          <h3 className="mt-4 font-bold text-team-blue">3. Chặng 3 · Thành công</h3>
           <ul className={ul}>
             <li>Khu vực rộng 3000 mm, dài 2400 mm, chia 2 sân độc lập đối xứng (Đỏ trái, Xanh phải) bởi <b>đường nét đứt màu xanh dương</b> ở giữa.</li>
             <li><b>Khu vực retry (3.1 – 3.2):</b> 410 × 360 mm sát hai mép vách biên ngoài, họa tiết gạch chéo 45°.</li>
@@ -239,7 +239,7 @@ export default function RulesPage() {
             <li><b>Mất line:</b> tất cả bánh xe ra khỏi line mà không tự phục hồi trong 05 giây: <b>−5 điểm/lần</b>. Khi đội yêu cầu retry (tính 01 lần): chưa qua Checkpoint thì về khu vực xuất phát; đã qua thì đặt lại tại Checkpoint.</li>
             <li><b>Va chạm vách biên:</b> chạm hoặc đâm rào chắn / vách biên làn đua: <b>−5 điểm/lần</b>.</li>
           </ul>
-          <h3 className={h3}>2. Chặng 2 · Tích lũy</h3>
+          <h3 className={h3}>2. Chặng 2 · Bứt phá</h3>
           <ul className={ul}>
             <li>Vượt qua Chặng 1, đội dùng tay cầm điều khiển thủ công vào Chặng 2. Gặp sự cố chuyển chế độ điều khiển: được retry (tính 01 lần) ngay tại vạch đích Chặng 1.</li>
             <li>Dùng bất cứ cơ chế nào đưa bóng Kiến thức màu đội mình lên Trạm thành tựu (2.3 – 2.4): <b>+15 điểm/cấu kiện</b>. Được bắn hoặc ném bóng vào trạm, miễn nằm trọn trong trạm; không giới hạn số bóng mang cùng lúc.</li>
@@ -254,7 +254,7 @@ export default function RulesPage() {
             <li><b>Vòng Chung kết:</b> chưa đủ 2 Kiến thức trong trạm mà chạm vào Cơ hội vàng: <b>−10 điểm/lần</b>, Trọng tài đặt lại về Bục Cơ hội. Bị đối phương đẩy vào bóng vàng không bị phạt (Trọng tài xem xét). Bóng vàng văng ra ngoài biên được đặt lại trên Bục Cơ hội.</li>
             <li>Được chặn đường đối phương nhưng không được cầm, giữ hoặc mang bóng Kiến thức của đối phương: <b>−10 điểm/lần</b>, Trọng tài đặt lại bóng về vị trí ban đầu.</li>
           </ul>
-          <h3 className="mt-4 font-bold text-team-blue">3. Chặng 3 · Bản lĩnh</h3>
+          <h3 className="mt-4 font-bold text-team-blue">3. Chặng 3 · Thành công</h3>
           <ul className={ul}>
             <li>Robot được xác nhận vào Chặng 3 khi đã đủ điều kiện ở Chặng 2, đi qua Cầu Bản lĩnh theo lộ trình và toàn bộ robot vượt qua vạch hết cầu phía Chặng 3. Hai robot thi đấu độc lập trên sân của đội mình; nghiêm cấm sang sân đối phương hoặc cản phá nhau.</li>
             <li>Vượt Cầu Bản lĩnh (3.8): <b>+10 điểm</b>.</li>

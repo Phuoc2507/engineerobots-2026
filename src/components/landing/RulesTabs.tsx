@@ -8,8 +8,8 @@ import { ROBOT_SPECS } from "@/lib/site";
 
 const TABS = [
   { id: "stage1", label: "Chặng 1 · Thích nghi", icon: Route },
-  { id: "stage2", label: "Chặng 2 · Tích lũy", icon: Boxes },
-  { id: "stage3", label: "Chặng 3 · Bản lĩnh", icon: Crown },
+  { id: "stage2", label: "Chặng 2 · Bứt phá", icon: Boxes },
+  { id: "stage3", label: "Chặng 3 · Thành công", icon: Crown },
   { id: "specs", label: "Quy chuẩn robot", icon: Cpu },
 ] as const;
 
@@ -76,7 +76,7 @@ export default function RulesTabs() {
 
           {tab === "stage2" && (
             <div>
-              <h3 className="font-display text-3xl uppercase text-navy">Tích lũy – Tranh chấp cấu kiện</h3>
+              <h3 className="font-display text-3xl uppercase text-navy">Bứt phá – Tranh chấp cấu kiện</h3>
               <p className="mt-4 text-slate-600">
                 Được điều khiển từ xa. Mỗi đội có 2 Cấu kiện Kiến thức là bóng pickleball Ø74 mm màu đội mình; robot dùng cơ cấu tự chọn
                 (càng đẩy, con lăn, tay gắp…) đưa bóng vượt gờ vào Trạm thành tựu 300 × 300 mm. Bóng ngoài trạm được tranh chấp;
@@ -95,7 +95,7 @@ export default function RulesTabs() {
 
           {tab === "stage3" && (
             <div>
-              <h3 className="font-display text-3xl uppercase text-navy">Bản lĩnh – Bảo vệ Đồ án</h3>
+              <h3 className="font-display text-3xl uppercase text-navy">Thành công – Bảo vệ Đồ án</h3>
               <p className="mt-4 text-slate-600">
                 Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Đường Thử thách 5 thanh gờ ống PVC cao 15 mm, đưa bóng Đồ án Ø74 mm từ Trạm
                 Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 120 × 120 mm trên Đài cao 100 mm, rồi leo Dốc
