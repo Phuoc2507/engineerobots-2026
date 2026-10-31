@@ -22,7 +22,7 @@ export function Intro() {
             </p>
             <h2 className="section-title mt-3">Sân chơi đầu tiên của kỹ sư K26</h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-600">
-              ENGINEERING PATH là cuộc thi học thuật thường niên do Khoa Cơ khí tổ chức, dành cho tân sinh viên
+              FME JOURNEY là cuộc thi học thuật thường niên do Khoa Cơ khí tổ chức, dành cho tân sinh viên
               khóa 2026 hệ chính quy toàn trường HCM-UTE. Chỉ với kiến thức cơ khí và lập trình cơ bản, các đội sẽ tự
               tay đi từ ý tưởng đến một robot thi đấu thực thụ.
             </p>

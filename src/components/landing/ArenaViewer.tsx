@@ -128,7 +128,7 @@ export default function ArenaViewer() {
           {
             ref,
             src: "/models/sa-ban-2026.glb",
-            alt: "Mô hình 3D sa bàn ENGINEERING PATH 2026 với hai robot mô phỏng",
+            alt: "Mô hình 3D sa bàn FME JOURNEY 2026 với hai robot mô phỏng",
             autoplay: true,
             "camera-controls": true,
             "auto-rotate": true,

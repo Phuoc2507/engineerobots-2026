@@ -10,7 +10,7 @@ export default function PortalShell({ title, subtitle, children }: { title: stri
       <header className="relative overflow-hidden bg-navy pb-24 pt-6 text-white">
         <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40" />
         <div className="relative mx-auto flex max-w-3xl items-center justify-between px-4">
-          <Link href="/" aria-label="ENGINEERING PATH 2026 – Trang chủ"><BrandMark /></Link>
+          <Link href="/" aria-label="FME JOURNEY 2026 – Trang chủ"><BrandMark /></Link>
           <Link href="/" className="inline-flex h-10 items-center gap-1.5 rounded-md px-2 text-sm font-semibold text-white/80 transition hover:text-mech-gold">
             <ArrowLeft className="h-4 w-4" /> Trang chủ
           </Link>

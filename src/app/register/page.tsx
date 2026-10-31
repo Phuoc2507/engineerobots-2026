@@ -7,7 +7,7 @@ import GoogleSignIn from "@/components/register/GoogleSignIn";
 import RegisterForm from "@/components/register/RegisterForm";
 import PortalShell, { AccountBar, SignOutButton } from "@/components/register/PortalShell";
 
-export const metadata: Metadata = { title: "Đăng ký đội thi · ENGINEERING PATH 2026" };
+export const metadata: Metadata = { title: "Đăng ký đội thi · FME JOURNEY 2026" };
 
 const ERRORS: Record<string, string> = {
   domain: `Chỉ chấp nhận tài khoản @${STUDENT_DOMAIN}. Vui lòng đăng nhập lại bằng email sinh viên.`,

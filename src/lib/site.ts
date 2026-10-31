@@ -1,7 +1,7 @@
 // Cấu hình nội dung Landing Page. Các mốc thời gian là DỰ KIẾN — chỉnh tại đây khi BTC chốt.
 
 export const SITE = {
-  name: "ENGINEERING PATH 2026",
+  name: "FME JOURNEY 2026",
   theme: "Hành trình Kỹ sư Cơ khí",
   faculty: "Khoa Cơ khí – HCM-UTE",
   organizer: "Đoàn – Hội Khoa Cơ khí & CLB NCKH CK (FMES)",

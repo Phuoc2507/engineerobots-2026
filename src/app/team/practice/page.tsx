@@ -7,7 +7,7 @@ import { STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
 import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBooking";
 
-export const metadata: Metadata = { title: "Đăng ký lịch chạy thử · ENGINEERING PATH 2026" };
+export const metadata: Metadata = { title: "Đăng ký lịch chạy thử · FME JOURNEY 2026" };
 
 // Trang riêng để đội đặt lịch chạy thử sa bàn. Mỗi slot chỉ 1 đội (khóa ở RPC book_practice_slot) nên không trùng lịch.
 export default async function PracticePage() {

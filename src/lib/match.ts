@@ -71,7 +71,7 @@ export function useMatchLive(matchId: string | null) {
 // Tên cứ điểm của thể lệ cũ (24/10) — chỉ để hiển thị sự kiện FLIP trong dữ liệu trận cũ
 const POINT_NAMES: Record<number, string> = { 1: "Năng động", 2: "Sáng tạo", 3: "Hội nhập", 4: "Bền vững", 5: "Cứ điểm Vinh quang" };
 
-// Lộ trình Chặng 3 (ENGINEERING PATH 2026): mỗi bước là 1 rule_key trọng tài ghi
+// Lộ trình Chặng 3 (FME JOURNEY 2026): mỗi bước là 1 rule_key trọng tài ghi
 export const STAGE3_STEPS = [
   { key: "STAGE3_BRIDGE", short: "Cầu" },
   { key: "STAGE3_TERRAIN", short: "Thử thách" },

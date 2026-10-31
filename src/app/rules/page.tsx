@@ -6,8 +6,8 @@ import { PRIZES, ROBOT_SPECS, WORKSHOPS } from "@/lib/site";
 import PortalShell from "@/components/register/PortalShell";
 
 export const metadata: Metadata = {
-  title: "Thể lệ · ENGINEERING PATH 2026",
-  description: "Thể lệ chính thức cuộc thi ENGINEERING PATH 2026 – Hành trình Kỹ sư Cơ khí: chủ đề, quy chuẩn robot, sa bàn, vòng đấu, luật 3 chặng, retry, lỗi vi phạm, khiếu nại và tập huấn.",
+  title: "Thể lệ · FME JOURNEY 2026",
+  description: "Thể lệ chính thức cuộc thi FME JOURNEY 2026 – Hành trình Kỹ sư Cơ khí: chủ đề, quy chuẩn robot, sa bàn, vòng đấu, luật 3 chặng, retry, lỗi vi phạm, khiếu nại và tập huấn.",
 };
 
 const card = "rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7";
@@ -100,7 +100,7 @@ function Table({ head, rows }: { head: string[]; rows: React.ReactNode[][] }) {
 
 export default function RulesPage() {
   return (
-    <PortalShell title="Thể lệ chính thức" subtitle="Cuộc thi “ENGINEERING PATH 2026” dành cho Tân sinh viên khóa 2026 · BCH Đoàn – Hội Khoa Cơ khí · tháng 11/2026.">
+    <PortalShell title="Thể lệ chính thức" subtitle="Cuộc thi “FME JOURNEY 2026” dành cho Tân sinh viên khóa 2026 · BCH Đoàn – Hội Khoa Cơ khí · tháng 11/2026.">
       <div className="space-y-6">
         <nav aria-label="Mục lục" className={`${card} text-sm`}>
           <p className="font-bold text-navy">Mục lục</p>
@@ -173,7 +173,7 @@ export default function RulesPage() {
         <section id="sa-ban" className={card}>
           <h2 className={h2}>IV. Sa bàn và chi tiết sân thi đấu</h2>
           <p className="mt-3 text-sm text-slate-700">Sa bàn 4800 × 4800 mm gia công theo bộ bản vẽ kỹ thuật 2D/3D chính thức của BTC, bao quanh bởi dây giăng cảnh báo. <b>Bản vẽ chi tiết sa bàn và đường line được công bố bên dưới</b> để các đội tự làm sa bàn tập luyện.</p>
-          <Image src="/images/sa-ban-2026.png" alt="Sơ đồ sa bàn ENGINEERING PATH 2026 theo thể lệ, đánh số 1.1–3.10" width={1319} height={1866} className="mt-4 h-auto w-full rounded-lg ring-1 ring-slate-200" />
+          <Image src="/images/sa-ban-2026.png" alt="Sơ đồ sa bàn FME JOURNEY 2026 theo thể lệ, đánh số 1.1–3.10" width={1319} height={1866} className="mt-4 h-auto w-full rounded-lg ring-1 ring-slate-200" />
           <div className="mt-3 flex flex-wrap gap-2 text-sm">
             <Link href="/arena-3d" className="inline-flex h-10 items-center gap-2 rounded-md bg-navy px-4 font-bold text-white"><Box className="h-4 w-4" /> Xem sa bàn 3D</Link>
             <a href="/models/ban-ve-sa-ban-2026.pdf" className="inline-flex h-10 items-center gap-2 rounded-md bg-ice px-4 font-bold text-navy"><Download className="h-4 w-4" /> Bản vẽ kỹ thuật (PDF)</a>

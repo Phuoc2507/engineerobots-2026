@@ -14,7 +14,7 @@ const sans = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "ENGINEERING PATH 2026 – Cuộc thi Robot Tân sinh viên HCMUTE",
+  title: "FME JOURNEY 2026 – Cuộc thi Robot Tân sinh viên HCMUTE",
   description:
     "Cuộc thi chế tạo robot dành cho tân sinh viên khóa 2026 HCM-UTE: Chặng 1 dò line tự hành, Chặng 2 tích lũy cấu kiện, Chặng 3 bảo vệ Đồ án và nhấn sáng Đèn Vinh Quang.",
 };

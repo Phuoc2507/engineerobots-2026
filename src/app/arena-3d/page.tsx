@@ -5,13 +5,13 @@ import ArenaViewer from "@/components/landing/ArenaViewer";
 import ArenaVideo from "@/components/landing/ArenaVideo";
 
 export const metadata: Metadata = {
-  title: "Sa bàn 3D · ENGINEERING PATH 2026",
-  description: "Mô hình 3D sa bàn 4800 × 4800 mm của ENGINEERING PATH 2026: xoay, phóng to để xem 3 chặng thi.",
+  title: "Sa bàn 3D · FME JOURNEY 2026",
+  description: "Mô hình 3D sa bàn 4800 × 4800 mm của FME JOURNEY 2026: xoay, phóng to để xem 3 chặng thi.",
 };
 
 export default function Arena3DPage() {
   return (
-    <PortalShell title="Sa bàn 3D" subtitle="Kéo để xoay, cuộn / chụm hai ngón để phóng to, chọn góc nhìn từng chặng. Mô hình dựng theo bản vẽ thể lệ ENGINEERING PATH 2026 (đơn vị thật, tỉ lệ 1:1).">
+    <PortalShell title="Sa bàn 3D" subtitle="Kéo để xoay, cuộn / chụm hai ngón để phóng to, chọn góc nhìn từng chặng. Mô hình dựng theo bản vẽ thể lệ FME JOURNEY 2026 (đơn vị thật, tỉ lệ 1:1).">
       <div className="rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
         <ArenaViewer />
         <ul className="mt-4 grid gap-2 px-1 text-sm text-slate-600 sm:grid-cols-3">
