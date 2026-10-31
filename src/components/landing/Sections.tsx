@@ -131,10 +131,17 @@ export function Prizes() {
         <h2 className="section-title mt-3">Giải thưởng hấp dẫn</h2>
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {PRIZES.map((p, i) => (
-            <li key={p.rank} className={`rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>
+            <li key={p.rank} className={`flex flex-col rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>
               <div className={`text-xs font-bold uppercase tracking-widest ${i === 0 ? "text-mech-gold" : "text-mech-red"}`}>{p.rank}</div>
-              <div className={`mt-2 font-display text-xl leading-tight ${i === 0 ? "" : "text-navy"}`}>{p.reward}</div>
-              {p.extra && <p className={`mt-1 text-sm ${i === 0 ? "text-white/75" : "text-slate-500"}`}>{p.extra}</p>}
+              {/* "Hiện kim + Giấy chứng nhận": tách 2 dòng để chữ lớn không bị ngắt giữa cụm từ */}
+              {p.reward.split(" + ").map((part, j) => (
+                <div key={part} className={j === 0
+                  ? `mt-2 font-display text-2xl uppercase leading-none tracking-wide ${i === 0 ? "" : "text-navy"}`
+                  : `mt-1.5 whitespace-nowrap text-sm font-semibold ${i === 0 ? "text-white/85" : "text-slate-600"}`}>
+                  {j > 0 && "+ "}{part}
+                </div>
+              ))}
+              {p.extra && <p className={`mt-auto pt-3 text-xs ${i === 0 ? "text-white/70" : "text-slate-500"}`}>{p.extra}</p>}
             </li>
           ))}
         </ul>
