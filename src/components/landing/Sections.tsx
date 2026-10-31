@@ -128,7 +128,7 @@ export function Prizes() {
         <p className="section-kicker">
           <span className="h-px w-8 bg-mech-red" /> Giải thưởng & hỗ trợ
         </p>
-        <h2 className="section-title mt-3">Tổng giải thưởng 4.500.000đ</h2>
+        <h2 className="section-title mt-3">Giải thưởng hấp dẫn</h2>
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {PRIZES.map((p, i) => (
             <li key={p.rank} className={`rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>

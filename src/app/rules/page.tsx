@@ -347,7 +347,7 @@ export default function RulesPage() {
 
         <section id="giai" className={card}>
           <h2 className={h2}>Giải thưởng & chạy thử sa bàn</h2>
-          <Table head={["Giải", "Tiền thưởng", "Kèm theo"]} rows={PRIZES.map((p) => [<b key="r" className="text-navy">{p.rank}</b>, p.reward, p.extra])} />
+          <Table head={["Giải", "Giải thưởng", "Kèm theo"]} rows={PRIZES.map((p) => [<b key="r" className="text-navy">{p.rank}</b>, p.reward, p.extra])} />
           <p className="mt-3 text-sm text-slate-700">100% thành viên thi đấu được cấp Giấy chứng nhận và đề xuất cộng điểm rèn luyện HK I năm học 2026–2027.</p>
           <p className="mt-3 text-sm text-slate-700"><b>Chạy thử sa bàn:</b> trên sa bàn thật trước ngày thi — <Link href="/team/dashboard" className="font-semibold text-navy-600 underline">đặt slot</Link>.</p>
         </section>

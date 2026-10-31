@@ -69,11 +69,11 @@ export const FAQ = [
 ];
 
 export const PRIZES = [
-  { rank: "Giải Nhất", reward: "1.500.000đ", extra: "Cúp Vô địch + Giấy khen BCN Khoa" },
-  { rank: "Giải Nhì", reward: "1.200.000đ", extra: "Huy chương Bạc + Giấy khen BCN Khoa" },
-  { rank: "Giải Ba", reward: "800.000đ", extra: "Huy chương Đồng + Giấy khen BCN Khoa" },
-  { rank: "Khuyến khích", reward: "500.000đ", extra: "Giấy chứng nhận BTC" },
-  { rank: "Được yêu thích nhất", reward: "500.000đ", extra: "Bình chọn qua Fanpage" },
+  { rank: "Giải Nhất", reward: "Hiện kim", extra: "Cúp Vô địch + Giấy khen BCN Khoa" },
+  { rank: "Giải Nhì", reward: "Hiện kim", extra: "Huy chương Bạc + Giấy khen BCN Khoa" },
+  { rank: "Giải Ba", reward: "Hiện kim", extra: "Huy chương Đồng + Giấy khen BCN Khoa" },
+  { rank: "Khuyến khích", reward: "Hiện kim", extra: "Giấy chứng nhận BTC" },
+  { rank: "Được yêu thích nhất", reward: "Hiện kim", extra: "Bình chọn qua Fanpage" },
 ];
 
 // TODO(BTC): điền ngày 2 buổi tập huấn (thể lệ để trống "ngày … tháng … năm 2026")
