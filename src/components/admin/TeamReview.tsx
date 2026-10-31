@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, CheckCircle2, ChevronDown, Download, Loader2, Pencil, Search, ShieldCheck, X, XCircle } from "lucide-react";
+import { Check, CheckCircle2, ChevronDown, Download, Loader2, Pencil, Search, ShieldCheck, Trash2, X, XCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input, useRpc } from "@/components/admin/ui";
 
 type Member = { id: string; student_id: string; full_name: string; email: string; phone: string | null; role: string; joined_at: string | null };
@@ -105,6 +106,22 @@ export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
     router.refresh();
   };
 
+  // Xóa hẳn đội: gõ đúng tên đội để xác nhận, tránh bấm nhầm
+  const remove = async (t: AdminTeam) => {
+    const typed = window.prompt(`Xóa hẳn đội "${t.team_name}" cùng ${t.team_members.length} thành viên, lịch chạy thử và phiếu bình chọn? Không khôi phục được.
+
+Gõ đúng tên đội để xác nhận:`);
+    if (typed === null) return;
+    if (typed.trim() !== t.team_name.trim()) { setError("Tên đội gõ không khớp, chưa xóa."); return; }
+    setBusy(t.id); setError(""); setFlash("");
+    const { error } = await createClient().rpc("admin_delete_team", { p_team_id: t.id });
+    setBusy(null);
+    if (error) { setError(error.message); return; }
+    setOpen(null);
+    setFlash(`Đã xóa đội ${t.team_name}.`);
+    router.refresh();
+  };
+
   const exportCsv = () => {
     const url = URL.createObjectURL(new Blob([toCsv(list)], { type: "text/csv;charset=utf-8" }));
     const a = Object.assign(document.createElement("a"), { href: url, download: `doi-thi-${filter.toLowerCase()}.csv` });
@@ -184,6 +201,7 @@ export default function TeamReview({ teams }: { teams: AdminTeam[] }) {
                         </button>
                         <button disabled={busy !== null} onClick={() => review(t, "REJECTED")} className={btnDanger}><XCircle className="h-4 w-4" /> Yêu cầu bổ sung</button>
                         {t.status !== "PENDING" && <button disabled={busy !== null} onClick={() => review(t, "PENDING")} className={btnGhost}>Đưa về chờ duyệt</button>}
+                        <button disabled={busy !== null} onClick={() => remove(t)} className={`${btnGhost} ml-auto !text-mech-red hover:!border-mech-red`}><Trash2 className="h-4 w-4" /> Xóa đội</button>
                       </div>
                     </div>
                   )}
