@@ -145,7 +145,10 @@ export function Prizes() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-sm text-slate-500">Tất cả thành viên của 16 đội lọt vào Chung kết xếp hạng được nhận Giấy chứng nhận.</p>
+        <div className="mt-4 space-y-1 text-sm text-slate-500">
+          <p>Tất cả thành viên của 16 đội lọt vào Chung kết xếp hạng được nhận Giấy chứng nhận.</p>
+          <p>Tất cả thành viên của đội thi tham gia từ vòng loại sẽ được cộng điểm rèn luyện theo quy định của nhà trường.</p>
+        </div>
         <div className="mt-12 grid gap-4 md:grid-cols-3">
           {WORKSHOPS.map((w) => (
             <div key={w.title} className="rounded-xl border-l-4 border-fmes bg-white p-5 shadow-sm">

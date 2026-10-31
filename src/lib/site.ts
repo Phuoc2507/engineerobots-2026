@@ -51,7 +51,7 @@ export const PRIZES = [
 // TODO(BTC): điền ngày 2 buổi tập huấn (thể lệ để trống "ngày … tháng … năm 2026")
 export const WORKSHOPS = [
   { title: "Buổi 1 · Cơ khí & Điện tử cơ bản", desc: "Thời gian BTC thông báo sau. Nền tảng thiết kế cơ khí, điện tử cơ bản, cách dùng cảm biến dò line; hỏi đáp kỹ thuật và thể lệ." },
-  { title: "Buổi 2 · Lập trình", desc: "8:00, ngày BTC thông báo sau. Điều khiển động cơ, thuật toán dò line PID, tích hợp điều khiển không dây; hỏi đáp trực tiếp." },
+  { title: "Buổi 2 · Lập trình", desc: "Thời gian BTC thông báo sau. Điều khiển động cơ, thuật toán dò line PID, tích hợp điều khiển không dây; hỏi đáp trực tiếp." },
 ];
 
 export const STUDENT_DOMAIN = "student.hcmute.edu.vn";
