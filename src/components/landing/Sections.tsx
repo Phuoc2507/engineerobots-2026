@@ -2,8 +2,8 @@ import { OrganizerLogos } from "@/components/brand/Logos";
 import Link from "next/link";
 import ArenaVideo from "@/components/landing/ArenaVideo";
 import Reveal from "@/components/landing/Reveal";
-import { ArrowRight, Box, CalendarClock, ChevronDown, Flag, Mail, MapPin, MessageCircle, Phone, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
-import { CONTACT, FAQ, JOIN_STEPS, NAV_LINKS, PRIZES, SITE, TIMELINE, WORKSHOPS } from "@/lib/site";
+import { ArrowRight, Box, CalendarClock, Flag, Mail, MapPin, MessageCircle, Phone, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
+import { CONTACT, JOIN_STEPS, NAV_LINKS, PRIZES, SITE, TIMELINE, WORKSHOPS } from "@/lib/site";
 
 export function Intro() {
   const stats = [
@@ -133,12 +133,12 @@ export function Prizes() {
           {PRIZES.map((p, i) => (
             <li key={p.rank} className={`rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>
               <div className={`text-xs font-bold uppercase tracking-widest ${i === 0 ? "text-mech-gold" : "text-mech-red"}`}>{p.rank}</div>
-              <div className={`mt-2 font-display text-3xl ${i === 0 ? "" : "text-navy"}`}>{p.reward}</div>
+              <div className={`mt-2 font-display text-xl leading-tight ${i === 0 ? "" : "text-navy"}`}>{p.reward}</div>
               <p className={`mt-1 text-sm ${i === 0 ? "text-white/75" : "text-slate-500"}`}>{p.extra}</p>
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-sm text-slate-500">Mọi thành viên tham gia nhận Giấy chứng nhận và điểm cộng hoạt động theo quy định của Khoa.</p>
+        <p className="mt-4 text-sm text-slate-500">Tất cả thành viên của 16 đội lọt vào Chung kết xếp hạng được nhận Giấy chứng nhận.</p>
         <div className="mt-12 grid gap-4 md:grid-cols-3">
           {WORKSHOPS.map((w) => (
             <div key={w.title} className="rounded-xl border-l-4 border-fmes bg-white p-5 shadow-sm">
@@ -223,33 +223,6 @@ export function Leaderboard() {
           >
             Xem bảng điểm <ArrowRight className="h-4 w-4" />
           </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function Faq() {
-  return (
-    <section id="hoi-dap" className="bg-ice py-20 md:py-28">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 md:px-6 lg:grid-cols-[1fr_2fr]">
-        <div>
-          <p className="section-kicker">
-            <span className="h-px w-8 bg-mech-red" /> Hỏi đáp
-          </p>
-          <h2 className="section-title mt-3">Câu hỏi thường gặp</h2>
-          <p className="mt-4 text-slate-600">Chưa thấy câu trả lời? Liên hệ BTC qua fanpage CLB NCKH CK (FMES).</p>
-        </div>
-        <div className="space-y-3">
-          {FAQ.map((f) => (
-            <details key={f.q} className="group rounded-xl border border-slate-200 bg-white open:shadow-md">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-bold text-navy [&::-webkit-details-marker]:hidden">
-                {f.q}
-                <ChevronDown className="h-5 w-5 shrink-0 text-mech-red transition group-open:rotate-180" />
-              </summary>
-              <p className="px-5 pb-5 leading-relaxed text-slate-600">{f.a}</p>
-            </details>
-          ))}
         </div>
       </div>
     </section>

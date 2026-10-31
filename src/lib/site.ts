@@ -15,20 +15,19 @@ export const NAV_LINKS = [
   { href: "#sa-ban-3d", label: "Sa bàn" },
   { href: "#giai-thuong", label: "Giải thưởng" },
   { href: "#lich-trinh", label: "Lịch trình" },
-  { href: "#hoi-dap", label: "Hỏi đáp" },
 ];
 
 export const JOIN_STEPS = [
   { title: "Lập đội tối đa 5 người", desc: "Tân sinh viên khóa 2026 hệ chính quy HCM-UTE. Mỗi đội bắt buộc có 1 đội trưởng; mỗi bạn chỉ thuộc 1 đội." },
   { title: "Đăng ký bằng email trường", desc: "Đội trưởng đăng nhập Google @student.hcmute.edu.vn và điền MSSV các thành viên." },
-  { title: "Workshop & chạy thử", desc: "Dự 2 buổi tập huấn kỹ thuật (mỗi đội ít nhất 1 bạn), đặt lịch chạy thử trên sa bàn thật 4,8 × 4,8 m." },
+  { title: "Workshop & chạy thử", desc: "Dự 2 buổi tập huấn kỹ thuật (mỗi đội ít nhất 1 bạn), đăng ký lịch chạy thử trên sa bàn thật 4,8 × 4,8 m (mở trước ngày thi 1 tuần)." },
 ];
 
 // status: done | current | upcoming
 export const TIMELINE = [
   { title: "Mở cổng đăng ký", date: "Tháng 10/2026", desc: "Đăng ký đội tối đa 5 thành viên K26 bằng email trường.", status: "current" },
   { title: "2 buổi tập huấn kỹ thuật", date: "Dự kiến 8:00", desc: "Buổi 1 cơ khí & điện tử cơ bản, Buổi 2 lập trình PID & điều khiển không dây.", status: "upcoming" },
-  { title: "Open Field Test", date: "Trước 2 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đặt slot qua hệ thống.", status: "upcoming" },
+  { title: "Open Field Test", date: "Trước 1 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đăng ký khung giờ trên web để không trùng lịch.", status: "upcoming" },
   { title: "Vòng loại", date: "Dự kiến", desc: "Mỗi đội 1 trận 180 giây, xếp hạng theo điểm số: Chặng 1 và 2 cấu kiện Kiến thức. Top 16 đi tiếp.", status: "upcoming" },
   { title: "Chung kết xếp hạng", date: "Dự kiến", desc: "300 giây/trận, 16 đội bốc thăm cặp đấu, đối kháng 1 vs 1 loại trực tiếp; tranh hạng ba 1 trận, chung kết Bo3. Trao giải & bình chọn khán giả.", status: "upcoming" },
 ] as const;
@@ -41,39 +40,12 @@ export const ROBOT_SPECS = [
   { label: "Điều khiển", value: "C1 tự hành · C2–3 từ xa" },
 ];
 
-export const FAQ = [
-  {
-    q: "Chưa biết lập trình hay cơ khí có tham gia được không?",
-    a: "Được. Cuộc thi dành cho tân sinh viên nên BTC tổ chức buổi họp kỹ thuật và tập huấn trước khi thi. Chỉ cần kiến thức cơ bản về Arduino/vi điều khiển là đủ để bắt đầu.",
-  },
-  {
-    q: "Có mất phí tham dự không?",
-    a: "Không. Cuộc thi miễn phí 100%, được tài trợ bởi Khoa Cơ khí và doanh nghiệp đồng hành.",
-  },
-  {
-    q: "Đội có thể ghép sinh viên khác ngành không?",
-    a: "Có. Thể lệ chỉ yêu cầu tất cả thành viên là tân sinh viên khóa 2026 hệ chính quy của HCM-UTE, không giới hạn ngành hay khoa.",
-  },
-  {
-    q: "Linh kiện lấy ở đâu? Có được dùng linh kiện tự mua không?",
-    a: "BTC phát bộ kit cơ bản sau buổi họp kỹ thuật. Đội được tự bổ sung linh kiện miễn là robot đạt quy chuẩn kích thước (không giới hạn riêng lúc xuất phát; khi bung toàn bộ cơ cấu tối đa 400 × 350 × 250 mm, dung sai +10 mm) và nguồn DC tối đa 12 V (dung sai +0,6 V). Cơ cấu thu thập bóng tùy chọn (càng đẩy, con lăn, tay gắp, ngàm kẹp…), bề mặt tiếp xúc phải mềm. Cấm nguồn AC.",
-  },
-  {
-    q: "Làm sao để thử robot trên sa bàn thật?",
-    a: "Sau khi được duyệt, đội trưởng đặt lịch Open Field Test (mở trước ngày thi 2 tuần tại Maker Space) theo slot 15–20 phút trong trang quản lý đội.",
-  },
-  {
-    q: "Robot có được điều khiển từ xa không?",
-    a: "Chặng 1 bắt buộc tự hành 100%, chỉ ấn nút khởi động một lần; tay cầm được kết nối sẵn nhưng phải đặt xuống đất suốt Chặng 1. Sau khi hoàn thành Chặng 1 được điều khiển từ xa (RF, Bluetooth, Wifi, gamepad không dây…). Cấm thiết bị gây nhiễu sóng.",
-  },
-];
-
 export const PRIZES = [
-  { rank: "Giải Nhất", reward: "Hiện kim", extra: "Cúp Vô địch + Giấy khen BCN Khoa" },
-  { rank: "Giải Nhì", reward: "Hiện kim", extra: "Huy chương Bạc + Giấy khen BCN Khoa" },
-  { rank: "Giải Ba", reward: "Hiện kim", extra: "Huy chương Đồng + Giấy khen BCN Khoa" },
-  { rank: "Khuyến khích", reward: "Hiện kim", extra: "Giấy chứng nhận BTC" },
-  { rank: "Được yêu thích nhất", reward: "Hiện kim", extra: "Bình chọn qua Fanpage" },
+  { rank: "Giải Nhất", reward: "Hiện kim + Giấy chứng nhận", extra: "Cúp Vô địch + Giấy khen BCN Khoa" },
+  { rank: "Giải Nhì", reward: "Hiện kim + Giấy chứng nhận", extra: "Huy chương Bạc + Giấy khen BCN Khoa" },
+  { rank: "Giải Ba", reward: "Hiện kim + Giấy chứng nhận", extra: "Huy chương Đồng + Giấy khen BCN Khoa" },
+  { rank: "Khuyến khích", reward: "Hiện kim + Giấy chứng nhận", extra: "" },
+  { rank: "Được yêu thích nhất", reward: "Hiện kim + Giấy chứng nhận", extra: "Bình chọn qua Fanpage" },
 ];
 
 // TODO(BTC): điền ngày 2 buổi tập huấn (thể lệ để trống "ngày … tháng … năm 2026")
