@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { AlertTriangle, CheckCircle2, Clock, Info, ShieldCheck, Users } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Clock, Info, Laptop, ShieldCheck, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { SITE, STUDENT_DOMAIN } from "@/lib/site";
+import { SITE, STUDENT_DOMAIN, isTestAccount } from "@/lib/site";
 import GoogleSignIn from "@/components/register/GoogleSignIn";
 import RegisterForm from "@/components/register/RegisterForm";
 import PortalShell, { AccountBar, SignOutButton } from "@/components/register/PortalShell";
@@ -20,7 +20,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
   const email = user?.email?.toLowerCase() ?? "";
   const validDomain = email.endsWith(`@${STUDENT_DOMAIN}`);
   // Chỉ tân sinh viên K26 (email 26…) được tạo đội — khớp _validate_team
-  const k26 = email.startsWith("26");
+  const k26 = email.startsWith("26") || isTestAccount(email);
 
   // Đã là đội trưởng hoặc được thêm vào đội → về trang quản lý đội
   if (user && validDomain) {
@@ -43,6 +43,11 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-navy-600" /> Đã rút hồ sơ / rời đội. Bạn có thể đăng ký đội mới hoặc chờ đội trưởng khác thêm bạn.
         </div>
       )}
+
+      <div className="mb-6 flex items-start gap-3 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+        <Laptop className="mt-0.5 h-5 w-5 shrink-0" />
+        <p><b>Khuyến khích dùng laptop / máy tính</b> để đăng ký và quản lý đội — form nhiều thông tin, màn hình lớn sẽ dễ điền và ít lỗi đăng nhập hơn điện thoại.</p>
+      </div>
 
       {!user && <SignInCard />}
 

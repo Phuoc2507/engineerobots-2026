@@ -57,6 +57,10 @@ export const WORKSHOPS = [
 export const STUDENT_DOMAIN = "student.hcmute.edu.vn";
 
 // TODO(BTC): điền thông tin liên hệ thật — hiện ở footer, trang đăng nhập BTC và email gửi đội
+// Tài khoản thử nghiệm của BTC: được đi hết luồng đăng ký dù không phải K26 — khớp is_test_account() trong DB
+export const TEST_ACCOUNTS = ["25134107@student.hcmute.edu.vn"];
+export const isTestAccount = (email: string) => TEST_ACCOUNTS.includes(email.toLowerCase());
+
 export const CONTACT = {
   email: "", // vd: engineerobots@hcmute.edu.vn
   phone: "", // vd: 0901 234 567 (Trưởng BTC)

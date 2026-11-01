@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Crown, Loader2, Plus, Save, Send, Trash2, UserRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { STUDENT_DOMAIN } from "@/lib/site";
+import { STUDENT_DOMAIN, isTestAccount } from "@/lib/site";
 
 // Các luật dưới đây trùng với hàm SQL _validate_team() — server vẫn là nơi kiểm tra cuối cùng
 const MSSV_RE = /^26\d{6}$/;
+const ANY_MSSV_RE = /^\d{8}$/; // tài khoản thử nghiệm của BTC: bỏ điều kiện K26
 const PHONE_RE = /^0\d{9}$/;
 const K26_EMAIL = (mail: string) => mail.startsWith("26") && mail.endsWith(`@${STUDENT_DOMAIN}`);
 const MIN_MEMBERS = 2; // + đội trưởng = 3
@@ -34,9 +35,12 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
   const router = useRouter();
   const editing = !!initial;
   const emailPrefix = email.split("@")[0];
+  const tester = isTestAccount(email);
+  const idOk = (id: string) => (tester ? ANY_MSSV_RE : MSSV_RE).test(id);
+  const mailOk = (mail: string) => (tester ? mail.endsWith(`@${STUDENT_DOMAIN}`) : K26_EMAIL(mail));
   const [team, setTeam] = useState(initial?.team ?? { team_name: "", major: "" });
   const [leader, setLeader] = useState(initial?.leader ?? {
-    student_id: MSSV_RE.test(emailPrefix) ? emailPrefix : "",
+    student_id: idOk(emailPrefix) ? emailPrefix : "",
     full_name: defaultName,
     phone: "",
   });
@@ -63,7 +67,7 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
     const e: Errors = {};
     const name = team.team_name.trim();
     if (name.length < 3 || name.length > 100) e.team_name = "Tên đội cần từ 3 đến 100 ký tự.";
-    if (!MSSV_RE.test(leader.student_id.trim())) e.leader_student_id = "MSSV gồm 8 số, bắt đầu bằng 26.";
+    if (!idOk(leader.student_id.trim())) e.leader_student_id = "MSSV gồm 8 số, bắt đầu bằng 26.";
     if (!leader.full_name.trim()) e.leader_full_name = "Nhập họ tên.";
     if (!PHONE_RE.test(leader.phone.trim())) e.leader_phone = "10 số, bắt đầu bằng 0.";
 
@@ -72,10 +76,10 @@ export default function RegisterForm({ email, defaultName = "", initial, onCance
     members.forEach((m, i) => {
       const id = m.student_id.trim();
       const mail = m.email.trim().toLowerCase();
-      if (!MSSV_RE.test(id)) e[`m${i}_student_id`] = "MSSV gồm 8 số, bắt đầu bằng 26.";
+      if (!idOk(id)) e[`m${i}_student_id`] = "MSSV gồm 8 số, bắt đầu bằng 26.";
       else if (ids.includes(id)) e[`m${i}_student_id`] = "MSSV bị trùng.";
       if (!m.full_name.trim()) e[`m${i}_full_name`] = "Nhập họ tên.";
-      if (!K26_EMAIL(mail)) e[`m${i}_email`] = `Email phải bắt đầu bằng 26 và có đuôi @${STUDENT_DOMAIN}.`;
+      if (!mailOk(mail)) e[`m${i}_email`] = `Email phải bắt đầu bằng 26 và có đuôi @${STUDENT_DOMAIN}.`;
       else if (mails.includes(mail)) e[`m${i}_email`] = "Email bị trùng.";
       if (m.phone.trim() && !PHONE_RE.test(m.phone.trim())) e[`m${i}_phone`] = "10 số, bắt đầu bằng 0.";
       ids.push(id);
