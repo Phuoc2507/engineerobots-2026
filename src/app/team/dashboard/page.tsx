@@ -7,7 +7,7 @@ import { CONTACT, SITE, STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
 import TeamManager from "@/components/team/TeamManager";
 import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBooking";
-import TeamAppeals, { type AppealMatch, type MyAppeal } from "@/components/team/TeamAppeals";
+import MemberPhoto from "@/components/team/MemberPhoto";
 import Link from "next/link";
 
 export const metadata: Metadata = { title: "Đội của tôi · FME JOURNEY 2026" };
@@ -59,25 +59,13 @@ export default async function TeamDashboard() {
   const { data: slotData } = approved ? await supabase.rpc("list_practice_slots") : { data: null };
   const slots = (slotData ?? []) as PracticeSlot[];
 
-  // Trận đã kết thúc của đội + khiếu nại đã gửi
-  type FinishedRow = { id: string; match_code: string | null; stage: string; finished_at: string | null; red_team_id: string; red_score: number; blue_score: number };
-  const [{ data: fin }, { data: apData }, { data: win }, { data: sched }] = approved
-    ? await Promise.all([
-        supabase.from("matches").select("id, match_code, stage, finished_at, red_team_id, red_score, blue_score")
-          .eq("status", "FINISHED").or(`red_team_id.eq.${team.id},blue_team_id.eq.${team.id}`).order("finished_at", { ascending: false }).limit(10),
-        supabase.from("match_appeals").select("match_id, reason, status, resolution_notes, created_at").eq("team_id", team.id),
-        supabase.from("app_settings").select("value").eq("key", "appeal_window_minutes").maybeSingle(),
-        supabase.rpc("get_schedule"),
-      ])
-    : [{ data: null }, { data: null }, { data: null }, { data: null }];
-  const names = new Map(((sched ?? []) as { id: string; red_team: string | null; blue_team: string | null }[]).map((r) => [r.id, r]));
-  const appealMatches: AppealMatch[] = ((fin ?? []) as FinishedRow[]).map((m) => {
-    const red = m.red_team_id === team.id;
-    const n = names.get(m.id);
-    return { id: m.id, match_code: m.match_code, stage: m.stage, finished_at: m.finished_at, my_color: red ? "RED" : "BLUE",
-      my_score: red ? m.red_score : m.blue_score, opp_score: red ? m.blue_score : m.red_score, opponent: (red ? n?.blue_team : n?.red_team) ?? null };
-  });
-  const windowMinutes = Number((win as { value: unknown } | null)?.value ?? 5) || 5;
+  // Ảnh rõ mặt của thành viên (bucket riêng tư → link ký tạm 1 giờ)
+  const { data: photoRows } = await supabase.from("member_photos").select("email, path").eq("team_id", team.id);
+  const photoPaths = ((photoRows ?? []) as { email: string; path: string }[]);
+  const { data: signed } = photoPaths.length
+    ? await supabase.storage.from("member-photos").createSignedUrls(photoPaths.map((p) => p.path), 3600)
+    : { data: [] };
+  const photoUrl = new Map(photoPaths.map((p, i) => [p.email, signed?.[i]?.signedUrl ?? null]));
 
   const members = [...team.team_members].sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
   const me = members.find((m) => m.email.toLowerCase() === email);
@@ -155,12 +143,18 @@ export default async function TeamDashboard() {
             <h2 className="font-display text-xl uppercase tracking-wide text-navy">Thành viên</h2>
             <span className="rounded-full bg-navy px-3 py-1 text-xs font-bold text-white">{members.length}/5 người</span>
           </header>
+          <p className="mt-2 text-sm text-slate-600">
+            Mỗi thành viên cần một <b className="text-navy">ảnh chân dung rõ mặt</b> để BTC đối chiếu khi điểm danh
+            ({members.filter((m) => photoUrl.get(m.email.toLowerCase())).length}/{members.length} đã có ảnh).
+            {isLeader ? " Bấm vào khung ảnh để tải lên hoặc chụp mới." : " Đội trưởng cập nhật ảnh cho cả đội."}
+          </p>
           <ul className="mt-4 divide-y divide-slate-100 rounded-lg ring-1 ring-slate-200">
             {members.map((m) => {
               const isMe = m.email.toLowerCase() === email;
               return (
                 <li key={m.student_id} className={`flex flex-wrap items-center justify-between gap-2 px-4 py-3 ${isMe ? "bg-navy-600/5" : ""}`}>
-                  <span className="min-w-0">
+                  <MemberPhoto teamId={team.id} email={m.email.toLowerCase()} name={m.full_name} url={photoUrl.get(m.email.toLowerCase()) ?? null} canEdit={isLeader} />
+                  <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-2 font-semibold text-navy">
                       {m.full_name}
                       {isMe && <span className="rounded bg-navy-600 px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">Bạn</span>}
@@ -238,7 +232,6 @@ export default async function TeamDashboard() {
         </section>
 
         <PracticeBooking slots={slots} approved={approved} />
-        {approved && <TeamAppeals matches={appealMatches} appeals={(apData ?? []) as MyAppeal[]} windowMinutes={windowMinutes} />}
       </TeamManager>
     </PortalShell>
   );

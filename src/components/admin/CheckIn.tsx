@@ -7,7 +7,7 @@ import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input } from "@/compon
 
 type Lookup = {
   team: { id: string; team_name: string; major: string | null; status: string; inspection_passed: boolean; inspection_data: Inspection | null; inspection_at: string | null };
-  members: { full_name: string; student_id: string; role: string }[];
+  members: { full_name: string; student_id: string; role: string; photo_path: string | null; photo_url?: string | null }[];
   bookings: { id: string; starts_at: string; ends_at: string; location: string | null; status: string; check_in_at: string | null }[];
   next_match: { id: string; match_code: string; stage: string; start_time: string; color: string } | null;
 };
@@ -42,10 +42,18 @@ export default function CheckIn() {
     const v = tk.trim();
     if (!v) return;
     setBusy("lookup"); setError(""); setMsg("");
-    const { data: d, error: e } = await createClient().rpc("staff_lookup_team_by_qr", { p_token: v });
-    setBusy(null);
-    if (e) { setError(e.message); setData(null); return; }
+    const supabase = createClient();
+    const { data: d, error: e } = await supabase.rpc("staff_lookup_team_by_qr", { p_token: v });
+    if (e) { setBusy(null); setError(e.message); setData(null); return; }
     const r = d as Lookup;
+    // Ảnh rõ mặt để đối chiếu khi điểm danh (bucket riêng tư → link ký tạm)
+    const paths = r.members.map((m) => m.photo_path).filter((p): p is string => !!p);
+    if (paths.length) {
+      const { data: signed } = await supabase.storage.from("member-photos").createSignedUrls(paths, 3600);
+      const urls = new Map((signed ?? []).map((s) => [s.path, s.signedUrl]));
+      r.members = r.members.map((m) => ({ ...m, photo_url: m.photo_path ? urls.get(m.photo_path) ?? null : null }));
+    }
+    setBusy(null);
     setData(r);
     setToken(v);
     setInsp(r.team.inspection_data ?? {});
@@ -126,7 +134,17 @@ export default function CheckIn() {
             {data.team.status !== "APPROVED" && <p className="mt-3 rounded bg-red-50 p-3 text-sm font-semibold text-mech-red">Hồ sơ đội chưa được duyệt ({data.team.status}).</p>}
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
               {data.members.map((m) => (
-                <li key={m.student_id} className="rounded-lg bg-ice px-3 py-2 text-sm"><b className="text-navy">{m.full_name}</b> <span className="text-slate-500">· {m.student_id}{m.role === "LEADER" ? " · Đội trưởng" : ""}</span></li>
+                <li key={m.student_id} className="flex items-center gap-3 rounded-lg bg-ice p-2 text-sm">
+                  {m.photo_url ? (
+                    <a href={m.photo_url} target="_blank" rel="noopener noreferrer" className="shrink-0">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={m.photo_url} alt={`Ảnh của ${m.full_name}`} className="h-20 w-20 rounded-lg object-cover ring-1 ring-slate-200" />
+                    </a>
+                  ) : (
+                    <span className="grid h-20 w-20 shrink-0 place-items-center rounded-lg bg-white text-center text-[11px] font-semibold text-mech-red ring-1 ring-mech-red/30">Chưa có ảnh</span>
+                  )}
+                  <span><b className="text-navy">{m.full_name}</b><span className="block text-slate-500">{m.student_id}{m.role === "LEADER" ? " · Đội trưởng" : ""}</span></span>
+                </li>
               ))}
             </ul>
             {data.next_match && (

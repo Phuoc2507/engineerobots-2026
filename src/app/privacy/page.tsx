@@ -11,6 +11,7 @@ const SECTIONS = [
     items: [
       `Từ tài khoản Google @${STUDENT_DOMAIN}: địa chỉ email, họ tên và ảnh đại diện — chỉ để xác thực bạn là sinh viên HCMUTE.`,
       "Thông tin đội do đội trưởng khai báo: tên đội, ngành; họ tên, MSSV, email trường và số điện thoại (không bắt buộc) của các thành viên.",
+      "Ảnh chân dung rõ mặt của từng thành viên do đội trưởng tải lên — chỉ thành viên trong đội và BTC xem được, dùng để đối chiếu khi điểm danh.",
       "Kết quả thi đấu, lịch thử sa bàn và khiếu nại phát sinh trong giải.",
     ],
   },

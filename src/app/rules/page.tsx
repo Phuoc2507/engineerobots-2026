@@ -324,7 +324,7 @@ export default function RulesPage() {
           <p className="mt-1 text-xs text-slate-500">Tổng điểm của đội trong trận đấu có thể là số âm.</p>
           <h3 className={h3}>Điều khoản khiếu nại</h3>
           <ul className={ul}>
-            <li>Chỉ tiếp nhận <b>trong vòng 03 phút</b> kể từ khi có kết quả và trước khi ký biên bản; sau đó mọi khiếu nại vô giá trị. Gửi qua <Link href="/team/dashboard" className="font-semibold text-navy-600 underline">trang đội thi</Link>.</li>
+            <li>Chỉ tiếp nhận <b>trong vòng 03 phút</b> kể từ khi có kết quả và trước khi ký biên bản; sau đó mọi khiếu nại vô giá trị.</li>
             <li>Chỉ 01 người đại diện được khiếu nại với Tổ trọng tài; thành viên khác, phụ huynh, khóa trên, cổ động viên không được can thiệp. Gây áp lực tập thể bị xử thua ngay.</li>
             <li>BTC chỉ dùng camera giám sát sa bàn do BTC đặt; video điện thoại của khán giả chỉ để tham khảo.</li>
             <li>Quyết định cuối cùng thuộc về BTC và Tổ trọng tài; các đội bắt buộc chấp hành.</li>
