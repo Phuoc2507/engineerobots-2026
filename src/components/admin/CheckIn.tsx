@@ -11,14 +11,13 @@ type Lookup = {
   bookings: { id: string; starts_at: string; ends_at: string; location: string | null; status: string; check_in_at: string | null }[];
   next_match: { id: string; match_code: string; stage: string; start_time: string; color: string } | null;
 };
-type Inspection = { size?: boolean; voltage?: boolean; arm?: boolean; start?: boolean; safety?: boolean; notes?: string };
+type Inspection = { size?: boolean; voltage?: boolean; arm?: boolean; safety?: boolean; notes?: string };
 
 // Mục kiểm tra kỹ thuật theo thể lệ — sửa ở đây nếu BTC đổi thông số
 const CHECKS: { key: keyof Inspection; label: string }[] = [
   { key: "size", label: "Kích thước tối đa khi bung cơ cấu ≤ 300 × 250 × 200 mm (dung sai +10 mm), khối lượng ≤ 2,5 kg cả pin (+100 g)" },
   { key: "voltage", label: "Nguồn DC ≤ 12.6 V, pin cố định chắc chắn — cấm điện AC / > 14.8 V" },
   { key: "arm", label: "Cơ cấu thu thập có bề mặt tiếp xúc mềm, không vật sắc nhọn (được bắn / ném bóng)" },
-  { key: "start", label: "Chế độ tự hành Chặng 1 khởi động bằng đúng 1 nút; tay điều khiển 2.4 GHz" },
   { key: "safety", label: "Không thiết bị gây nhiễu, không keo / chất lỏng / vũ khí" },
 ];
 

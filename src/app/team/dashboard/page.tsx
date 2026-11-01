@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import QRCode from "react-qr-code";
+import TeamQrCard from "@/components/team/TeamQrCard";
 import { AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, Circle, Crown, Heart, Lock, MailCheck, MessageCircle, QrCode, Swords } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CONTACT, SITE, STUDENT_DOMAIN } from "@/lib/site";
@@ -194,9 +194,7 @@ export default async function TeamDashboard() {
           <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
             <h2 className="flex items-center gap-2 font-display text-xl uppercase tracking-wide text-navy"><QrCode className="h-5 w-5 text-mech-red" /> Thẻ đội</h2>
             {team.status === "APPROVED" && team.qr_code_token ? (
-              <div className="mt-4 rounded-lg bg-white p-3 ring-1 ring-slate-200">
-                <QRCode value={team.qr_code_token} size={176} fgColor="#06305E" />
-              </div>
+              <TeamQrCard token={team.qr_code_token} teamName={team.team_name} />
             ) : (
               <div className="mt-4 grid h-[200px] w-[200px] place-items-center rounded-lg bg-ice text-center text-xs text-slate-500">
                 <span><Lock className="mx-auto mb-2 h-6 w-6" />QR check-in hiện<br />khi BTC duyệt đội</span>
