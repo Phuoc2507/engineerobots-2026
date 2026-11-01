@@ -14,9 +14,11 @@ export default function GoogleSignIn({ next = "/register", staff = false }: { ne
   const [error, setError] = useState("");
   const [inApp, setInApp] = useState<null | "android" | "ios">(null);
   const [copied, setCopied] = useState(false);
+  const [android, setAndroid] = useState(false);
 
   useEffect(() => {
     const ua = navigator.userAgent;
+    setAndroid(/Android/i.test(ua));
     if (IN_APP_UA.test(ua)) setInApp(/Android/i.test(ua) ? "android" : "ios");
   }, []);
 
@@ -82,6 +84,13 @@ export default function GoogleSignIn({ next = "/register", staff = false }: { ne
         Đăng nhập với Google
       </button>
       {error && <p className="mt-2 text-sm text-mech-red">{error}</p>}
+      {/* Chrome Android thêm tài khoản Workspace trường vào máy → trường bắt quản lý thiết bị → "Không thiết lập được thiết bị" */}
+      {android && !staff && (
+        <p className="mt-3 rounded-md bg-slate-50 p-3 text-xs text-slate-600 ring-1 ring-slate-200">
+          Điện thoại Android báo <b>“Không thiết lập được thiết bị”</b>? Đó là do máy đòi thêm tài khoản trường vào điện thoại. Hãy mở trang
+          này trong <b>tab ẩn danh</b> của Chrome (⋮ → Thẻ ẩn danh mới) hoặc một trình duyệt khác rồi đăng nhập lại.
+        </p>
+      )}
     </div>
   );
 }
