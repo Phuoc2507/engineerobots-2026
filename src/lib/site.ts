@@ -5,8 +5,9 @@ export const SITE = {
   theme: "Hành trình Kỹ sư Cơ khí",
   faculty: "Khoa Cơ khí – HCM-UTE",
   organizer: "Đoàn – Hội Khoa Cơ khí & CLB NCKH CK (FMES)",
-  // TODO(BTC): chốt hạn đóng cổng đăng ký
-  registrationDeadline: "2026-11-15T23:59:59+07:00",
+  // Thời gian đăng ký chính thức; hạn đóng khớp registration_open() trong DB
+  registrationStart: "2026-11-02T00:00:00+07:00",
+  registrationDeadline: "2026-11-11T23:59:59+07:00",
 };
 
 export const NAV_LINKS = [
@@ -25,7 +26,7 @@ export const JOIN_STEPS = [
 
 // status: done | current | upcoming
 export const TIMELINE = [
-  { title: "Mở cổng đăng ký", date: "Tháng 10/2026", desc: "Đăng ký đội tối đa 5 thành viên K26 bằng email trường.", status: "current" },
+  { title: "Mở cổng đăng ký", date: "02/11 – 11/11/2026", desc: "Đăng ký đội tối đa 5 thành viên K26 bằng email trường.", status: "current" },
   { title: "2 buổi tập huấn kỹ thuật", date: "BTC thông báo sau", desc: "Buổi 1 cơ khí & điện tử cơ bản, Buổi 2 lập trình PID & điều khiển không dây.", status: "upcoming" },
   { title: "Open Field Test", date: "Trước 1 tuần", desc: "Chạy thử trên sa bàn thật tại Maker Space, đăng ký khung giờ trên web để không trùng lịch.", status: "upcoming", href: "/team/practice", cta: "Đặt lịch thử" },
   { title: "Vòng loại", date: "Dự kiến", desc: "Mỗi đội 1 trận 180 giây, xếp hạng theo điểm số: Chặng 1 và 2 cấu kiện Kiến thức. Top 16 đi tiếp.", status: "upcoming" },
@@ -75,8 +76,6 @@ export const STAFF_ROLES: Record<string, string> = { BTC: "Ban tổ chức", HEA
 // Hạng mục bình chọn khán giả (khớp CHECK trong cast_vote)
 export const VOTE_CATEGORIES = [
   { key: "FAN_FAVORITE", label: "Đội được yêu thích nhất" },
-  { key: "MOST_CREATIVE_ROBOT", label: "Robot sáng tạo nhất" },
-  { key: "BEST_DESIGN", label: "Thiết kế đẹp nhất" },
 ];
 
 export const MATCH_STATUS: Record<string, string> = {

@@ -12,17 +12,28 @@ function diff(target: number) {
   };
 }
 
-export default function Countdown({ deadline }: { deadline: string }) {
-  const target = new Date(deadline).getTime();
+// Trước giờ mở: đếm tới lúc mở cổng; đang mở: đếm tới hạn đóng; quá hạn: báo đã đóng
+function phase(start: number, end: number) {
+  const now = Date.now();
+  if (now < start) return { label: "Cổng đăng ký mở sau", target: start };
+  if (now <= end) return { label: "Cổng đăng ký đóng sau", target: end };
+  return { label: "Cổng đăng ký đã đóng", target: end };
+}
+
+export default function Countdown({ start, deadline, note }: { start: string; deadline: string; note?: string }) {
+  const s = new Date(start).getTime();
+  const e = new Date(deadline).getTime();
   // null cho lần render server để tránh lệch hydration
-  const [left, setLeft] = useState<ReturnType<typeof diff> | null>(null);
+  const [state, setState] = useState<{ label: string; left: ReturnType<typeof diff> } | null>(null);
 
   useEffect(() => {
-    setLeft(diff(target));
-    const id = setInterval(() => setLeft(diff(target)), 1000);
+    const tick = () => { const p = phase(s, e); setState({ label: p.label, left: diff(p.target) }); };
+    tick();
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [target]);
+  }, [s, e]);
 
+  const left = state?.left;
   const units = [
     { label: "Ngày", value: left?.days },
     { label: "Giờ", value: left?.hours },
@@ -31,20 +42,26 @@ export default function Countdown({ deadline }: { deadline: string }) {
   ];
 
   return (
-    <div className="flex gap-2 sm:gap-3" aria-live="off">
-      {units.map((u) => (
-        <div
-          key={u.label}
-          className="w-16 rounded-md border border-white/15 bg-white/5 py-2 text-center backdrop-blur sm:w-20"
-        >
-          <div className="font-display text-3xl tabular-nums text-white sm:text-4xl">
-            {u.value === undefined ? "--" : String(u.value).padStart(2, "0")}
+    <div>
+      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
+        {state?.label ?? "Cổng đăng ký"}
+      </p>
+      <div className="flex gap-2 sm:gap-3" aria-live="off">
+        {units.map((u) => (
+          <div
+            key={u.label}
+            className="w-16 rounded-md border border-white/15 bg-white/5 py-2 text-center backdrop-blur sm:w-20"
+          >
+            <div className="font-display text-3xl tabular-nums text-white sm:text-4xl">
+              {u.value === undefined ? "--" : String(u.value).padStart(2, "0")}
+            </div>
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-mech-gold">
+              {u.label}
+            </div>
           </div>
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-mech-gold">
-            {u.label}
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
+      {note && <p className="mt-3 text-sm text-white/75">{note}</p>}
     </div>
   );
 }

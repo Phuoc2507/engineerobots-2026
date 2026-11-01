@@ -47,10 +47,7 @@ export default function Hero() {
           </ul>
 
           <div className="mt-8">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
-              Cổng đăng ký đóng sau
-            </p>
-            <Countdown deadline={SITE.registrationDeadline} />
+            <Countdown start={SITE.registrationStart} deadline={SITE.registrationDeadline} note="Thời gian đăng ký: 02/11 – hết ngày 11/11/2026" />
           </div>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
