@@ -1,4 +1,3 @@
-import { OrganizerLogos } from "@/components/brand/Logos";
 import Link from "next/link";
 import ArenaVideo from "@/components/landing/ArenaVideo";
 import Reveal from "@/components/landing/Reveal";
@@ -304,11 +303,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/10 px-4 pt-8 md:flex-row md:items-center md:justify-between md:px-6">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-white">Đồng hành tổ chức</p>
-        <OrganizerLogos size={56} labels className="!gap-6" />
-      </div>
-      <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 px-4 pt-6 text-xs md:px-6">
+      <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 px-4 pt-6 text-xs md:px-6">
         © 2026 {SITE.name} · {SITE.faculty} ·{" "}
         <Link href="/privacy" className="hover:text-mech-gold">Chính sách quyền riêng tư</Link>
       </div>
