@@ -83,8 +83,8 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
               <div className="mb-6 flex items-start gap-3 rounded-lg border border-navy-600/20 bg-white p-4 text-sm text-slate-600">
                 <Info className="mt-0.5 h-5 w-5 shrink-0 text-navy-600" />
                 <p>
-                  <b className="text-navy">Bạn là thành viên, không phải đội trưởng?</b> Không cần điền form — chờ đội trưởng thêm email{" "}
-                  <b className="text-navy">{email}</b> vào đội, rồi tải lại trang này là thấy đội của mình.
+                  <b className="text-navy">Đội trưởng</b> mới có thể sửa đổi thông tin của đội thi.{" "}
+                  <b className="text-navy">Thành viên</b> chỉ được xem thông tin của đội thi.
                 </p>
               </div>
               <RegisterForm email={email} defaultName={(user.user_metadata?.full_name as string | undefined) ?? ""} />

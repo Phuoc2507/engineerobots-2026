@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ArenaVideo from "@/components/landing/ArenaVideo";
 import Reveal from "@/components/landing/Reveal";
-import { ArrowRight, Box, CalendarClock, Flag, Mail, MapPin, Phone, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
+import { ArrowRight, Box, CalendarClock, Flag, Mail, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
 import { CONTACT, JOIN_STEPS, NAV_LINKS, PRIZES, SITE, TIMELINE, WORKSHOPS } from "@/lib/site";
 
 export function Intro() {
@@ -294,12 +294,13 @@ export function Footer() {
         <div className="text-sm">
           <div className="font-bold uppercase tracking-wider text-white">Liên hệ</div>
           {/* Điền thông tin trong CONTACT (src/lib/site.ts) — mục trống sẽ tự ẩn */}
+          <p className="mt-2">
+            Mọi thắc mắc xin liên hệ: {CONTACT.person} – SĐT:{" "}
+            <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="font-semibold text-white hover:text-mech-gold">{CONTACT.phone}</a>
+          </p>
           <ul className="mt-2 space-y-1.5">
             {CONTACT.email && <li><a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Mail className="h-4 w-4 shrink-0" /> {CONTACT.email}</a></li>}
-            {CONTACT.phone && <li><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Phone className="h-4 w-4 shrink-0" /> {CONTACT.phone}</a></li>}
             {CONTACT.fanpage && <li><a href={CONTACT.fanpage} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><ThumbsUp className="h-4 w-4 shrink-0" /> Fanpage</a></li>}
-            {CONTACT.address && <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0" /> {CONTACT.address}</li>}
-            {!CONTACT.email && !CONTACT.phone && !CONTACT.fanpage && <li className="inline-flex items-center gap-2"><Mail className="h-4 w-4" /> Kênh liên hệ đang cập nhật</li>}
           </ul>
         </div>
       </div>

@@ -190,7 +190,7 @@ export default async function TeamDashboard() {
             )}
             <div className="text-center sm:text-left">
               <h2 className="flex items-center justify-center gap-2 font-display text-xl uppercase tracking-wide text-navy sm:justify-start"><MessageCircle className="h-5 w-5 text-mech-red" /> Nhóm Zalo cuộc thi</h2>
-              <p className="mt-1 text-sm text-slate-600">Tất cả thành viên vào nhóm để nhận thông báo, lịch thi và hỏi đáp với Ban tổ chức.</p>
+              <p className="mt-1 text-sm text-slate-600">Chỉ duy nhất Đội trưởng vào nhóm Zalo để nhận thông báo và hỏi đáp với BTC.</p>
               <a href={CONTACT.zaloGroup} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-bold text-white hover:bg-navy-600">Tham gia nhóm Zalo <ArrowRight className="h-4 w-4" /></a>
             </div>
           </section>

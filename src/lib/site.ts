@@ -62,12 +62,12 @@ export const TEST_ACCOUNTS = ["25134107@student.hcmute.edu.vn"];
 export const isTestAccount = (email: string) => TEST_ACCOUNTS.includes(email.toLowerCase());
 
 export const CONTACT = {
+  person: "Đ/c Đoàn Thanh Toàn – UV BCH LCH Khoa", // người giải đáp thắc mắc, hiện ở footer cùng SĐT
   email: "", // vd: engineerobots@hcmute.edu.vn
-  phone: "", // vd: 0901 234 567 (Trưởng BTC)
+  phone: "0822678499",
   fanpage: "", // vd: https://facebook.com/...
   zaloGroup: "https://zalo.me/g/d8mlxexbfrsficbfqxmr", // nhóm Zalo cuộc thi — chỉ hiện cho đội đã đăng ký (trang đội, email duyệt)
   zaloQr: "/images/zalo-group.png",
-  address: "Khoa Cơ khí – HCMUTE, 1 Võ Văn Ngân, Thủ Đức, TP.HCM",
 };
 
 export const STAFF_ROLES: Record<string, string> = { BTC: "Ban tổ chức", HEAD_REFEREE: "Trọng tài chính", REFEREE: "Trọng tài" };
