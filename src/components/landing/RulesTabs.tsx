@@ -79,16 +79,28 @@ export default function RulesTabs() {
               <h3 className="font-display text-3xl uppercase text-navy">Bứt phá – Tranh chấp cấu kiện</h3>
               <p className="mt-4 text-slate-600">
                 Được điều khiển từ xa. Mỗi đội có 2 Cấu kiện Kiến thức là bóng pickleball Ø74 mm màu đội mình; robot dùng cơ cấu tự chọn
-                (càng đẩy, con lăn, tay gắp…) đưa bóng vượt gờ vào Trạm thành tựu 300 × 300 mm. Bóng ngoài trạm được tranh chấp;
-                bóng nằm trọn trong trạm là bất khả xâm phạm. Chỉ ở Vòng Chung kết xếp hạng, sau khi đủ 2 Kiến thức, đội mới được đưa
-                bóng Cơ hội vàng trên Bục Cơ hội về trạm. Cần ≥ 2 Kiến thức trong trạm để sang Chặng 3.
+                (càng đẩy, con lăn, tay gắp…) đưa bóng vượt gờ vào Trạm thành tựu 300 × 300 mm.
               </p>
+              <ul className="mt-6 space-y-3 text-slate-700">
+                <li><strong>Tranh chấp:</strong> bóng ngoài trạm được tranh chấp; bóng nằm trọn trong trạm là bất khả xâm phạm.</li>
+                <li><strong>Cơ hội vàng:</strong> chỉ ở Vòng Chung kết xếp hạng, sau khi đủ 2 Kiến thức, đội mới được đưa bóng Cơ hội vàng trên Bục Cơ hội về trạm.</li>
+                <li><strong>Sang Chặng 3:</strong> cần ≥ 2 Kiến thức trong trạm.</li>
+              </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Fact k="Kiến thức" v="+15đ / bóng" />
                 <Fact k="Cơ hội vàng" v="+30đ" />
               </div>
               <div className="mt-4 rounded-lg border-l-4 border-mech-red bg-white p-4 text-sm text-slate-700">
-                Đâm húc phá hoại hoặc ép khóa cứng robot đối phương vào vách sân quá 5 giây khi không tranh chấp cấu kiện: <b>−10đ</b>/lần. Ra khỏi khu vực Chặng 2: <b>−10đ</b> (đi qua Cầu khi đã đủ điều kiện lên Chặng 3 không tính). Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng). Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần. Cố ý thu thập bóng vàng khi chưa đủ 2 Kiến thức: <b>−10đ</b>/lần. Được chặn đường, nhưng cầm/giữ bóng Kiến thức của đối phương: <b>−10đ</b>/lần. Vòng loại sang nửa sân đối phương: <b>−15đ</b> và Retry.
+                <strong className="text-navy">Lỗi phạt</strong>
+                <ul className="mt-2 list-disc space-y-1.5 pl-5">
+                  <li>Đâm húc phá hoại hoặc ép khóa cứng robot đối phương vào vách sân quá 5 giây khi không tranh chấp cấu kiện: <b>−10đ</b>/lần.</li>
+                  <li>Ra khỏi khu vực Chặng 2: <b>−10đ</b> (đi qua Cầu khi đã đủ điều kiện lên Chặng 3 không tính).</li>
+                  <li>Cố ý húc văng bóng Kiến thức của đối phương ra ngoài sân: <b>−10đ</b>/lần (đặt lại bóng); tự làm văng bóng đội mình: <b>−5đ</b>/lần (đặt lại bóng).</li>
+                  <li>Tác động bóng trong trạm đối thủ: <b>−20đ</b>/lần.</li>
+                  <li>Cố ý thu thập bóng vàng khi chưa đủ 2 Kiến thức: <b>−10đ</b>/lần.</li>
+                  <li>Được chặn đường, nhưng cầm/giữ bóng Kiến thức của đối phương: <b>−10đ</b>/lần.</li>
+                  <li>Vòng loại sang nửa sân đối phương: <b>−15đ</b> và Retry.</li>
+                </ul>
               </div>
             </div>
           )}
@@ -97,11 +109,14 @@ export default function RulesTabs() {
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Thành công – Bảo vệ Đồ án</h3>
               <p className="mt-4 text-slate-600">
-                Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng: vượt Đường Thử thách 5 thanh gờ ống PVC cao 15 mm, đưa bóng Đồ án Ø74 mm từ Trạm
-                Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 120 × 120 mm trên Đài cao 100 mm, rồi leo Dốc
-                Thăng hoa lên Bục Vinh Quang 200 mm nhấn nút Đèn trên vách ngăn (đội nhấn trước +40đ, nhấn sau +25đ). Chạm vạch giới hạn Đường Thử thách hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ;
-                lấn sang sân đối phương: −15đ và Retry.
+                Qua Cầu Bản lĩnh, mỗi đội thi trên nửa sân riêng và hoàn thành lần lượt các thử thách:
               </p>
+              <ul className="mt-6 space-y-3 text-slate-700">
+                <li><strong>Đường Thử thách:</strong> vượt 5 thanh gờ ống PVC cao 15 mm.</li>
+                <li><strong>Bảo vệ Đồ án:</strong> đưa bóng Đồ án Ø74 mm từ Trạm Thực nghiệm lên Dốc Kiên trì (10°), đặt vững trên đế nhỏ trong Ô Bảo vệ 120 × 120 mm trên Đài cao 100 mm.</li>
+                <li><strong>Đèn Vinh Quang:</strong> leo Dốc Thăng hoa lên Bục Vinh Quang 200 mm, nhấn nút Đèn trên vách ngăn (đội nhấn trước +40đ, nhấn sau +25đ).</li>
+                <li><strong>Lỗi phạt:</strong> chạm vạch giới hạn Đường Thử thách hoặc làm rơi Đồ án: −5đ/lần; ra khỏi khu vực: −10đ; lấn sang sân đối phương: −15đ và Retry.</li>
+              </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Fact k="Cầu Bản lĩnh" v="+10đ" />
                 <Fact k="Đường Thử thách" v="+20đ" />
@@ -119,10 +134,13 @@ export default function RulesTabs() {
           {tab === "specs" && (
             <div>
               <h3 className="font-display text-3xl uppercase text-navy">Quy chuẩn kỹ thuật robot</h3>
-              <p className="mt-4 text-slate-600">
-                Robot được kiểm định tại bàn kỹ thuật (quét QR đội) trước mỗi trận, không tính vào thời gian chuẩn bị (Bo3 chỉ kiểm định ván đầu); không đạt là thua trận, không có thời gian sửa. Được dùng robot dự phòng nếu robot đó cũng đạt kiểm định. Cấm vũ khí, thiết bị gây nhiễu,
-                chất lỏng. Cơ cấu thu thập tự do (càng đẩy, con lăn, tay gắp, ngàm kẹp…); bề mặt tiếp xúc bóng và nút đèn phải mềm.
-              </p>
+              <ul className="mt-4 space-y-3 text-slate-700">
+                <li><strong>Kiểm định:</strong> tại bàn kỹ thuật (quét QR đội) trước mỗi trận, không tính vào thời gian chuẩn bị (Bo3 chỉ kiểm định ván đầu).</li>
+                <li><strong>Không đạt:</strong> thua trận, không có thời gian sửa.</li>
+                <li><strong>Robot dự phòng:</strong> được dùng nếu robot đó cũng đạt kiểm định.</li>
+                <li><strong>Cấm:</strong> vũ khí, thiết bị gây nhiễu, chất lỏng.</li>
+                <li><strong>Cơ cấu thu thập:</strong> tự do (càng đẩy, con lăn, tay gắp, ngàm kẹp…); bề mặt tiếp xúc bóng và nút đèn phải mềm.</li>
+              </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 {ROBOT_SPECS.map((s) => (
                   <Fact key={s.label} k={s.label} v={s.value} />

@@ -22,9 +22,9 @@ export function Intro() {
             </p>
             <h2 className="section-title mt-3">Sân chơi đầu tiên của kỹ sư K26</h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-600">
-              FME JOURNEY là cuộc thi học thuật thường niên do Khoa Cơ khí tổ chức, dành cho tân sinh viên
-              khóa 2026 hệ chính quy toàn trường HCM-UTE. Chỉ với kiến thức cơ khí và lập trình cơ bản, các đội sẽ tự
-              tay đi từ ý tưởng đến một robot thi đấu thực thụ.
+              FME JOURNEY 2026 là một đấu trường robot mô phỏng “Hành trình trưởng thành của một kỹ sư Cơ khí”. Nơi mỗi
+              thử thách là một cột mốc quan trọng, giúp những tân binh Cơ khí phát triển tư duy, kỹ năng và bản lĩnh để chinh
+              phục những giới hạn mới.
             </p>
             <p className="mt-4 text-slate-600">
               Tổ chức bởi <strong className="text-navy">{SITE.organizer}</strong>.
