@@ -142,7 +142,7 @@ export default function RulesPage() {
           </dl>
           <h3 className={h3}>1. Kích thước</h3>
           <ul className={ul}>
-            <li>Toàn bộ thân robot khi đã bung toàn bộ cơ cấu phải nằm gọn trong <b>400 (Dài) × 350 (Rộng) × 250 (Cao) mm</b> suốt trận đấu, dung sai +10 mm; không chi tiết nào được tràn ra ngoài.</li>
+            <li>Toàn bộ thân robot khi đã bung toàn bộ cơ cấu phải nằm gọn trong <b>300 (Dài) × 250 (Rộng) × 200 (Cao) mm</b> suốt trận đấu, dung sai +10 mm; không chi tiết nào được tràn ra ngoài.</li>
             <li><b>Cơ chế tự do:</b> càng đẩy, trục cuộn bóng / con lăn cuốn, tay gắp, ngàm kẹp… để thu thập, dẫn hướng hoặc đưa bóng về vị trí quy định (Trạm thành tựu, Ô Bảo vệ Đồ án) và nhấn nút Đèn Vinh Quang.</li>
           </ul>
           <h3 className={h3}>2. Khối lượng</h3>

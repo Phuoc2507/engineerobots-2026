@@ -33,7 +33,7 @@ export const TIMELINE = [
 ] as const;
 
 export const ROBOT_SPECS = [
-  { label: "Kích thước tối đa (khi bung)", value: "≤ 400 × 350 × 250 mm (+10)" },
+  { label: "Kích thước tối đa (khi bung)", value: "≤ 300 × 250 × 200 mm (+10)" },
   { label: "Nguồn DC", value: "12 V (+0,6 V)" },
   { label: "Cơ cấu", value: "Tự do: càng đẩy, con lăn, tay gắp…" },
   { label: "Khối lượng", value: "≤ 2,5 kg (cả pin, +100 g)" },
