@@ -19,7 +19,6 @@ export default async function AdminSettings() {
     <AdminShell staff={staff} active="/admin/settings" title="Cài đặt">
       <SettingsEditor
         votingOpen={get("voting_open") === true}
-        appealMinutes={Number(get("appeal_window_minutes") ?? 5)}
         votes={(votes ?? []) as VoteRow[]}
         emailReady={!!process.env.RESEND_API_KEY}
       />

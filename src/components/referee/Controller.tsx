@@ -96,7 +96,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
                   {spin(`ko${c}`) || <Crown className="h-5 w-5" />} Thắng tuyệt đối {c === "RED" ? "Đỏ" : "Xanh"}
                 </button>
               ))}
-              <button onClick={() => rpc("finish", "head_finish", p, `Kết thúc trận? Tỉ số ${m.red_score}–${m.blue_score}. Các đội có thời hạn khiếu nại sau khi kết thúc.`)} disabled={busy !== null} className={`${big} col-span-2 bg-white text-navy md:col-span-4`}>
+              <button onClick={() => rpc("finish", "head_finish", p, `Kết thúc trận? Tỉ số ${m.red_score}–${m.blue_score}.`)} disabled={busy !== null} className={`${big} col-span-2 bg-white text-navy md:col-span-4`}>
                 {spin("finish") || <Flag className="h-5 w-5" />} Kết thúc trận
               </button>
             </>

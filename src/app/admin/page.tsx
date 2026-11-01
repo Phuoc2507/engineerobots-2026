@@ -11,7 +11,7 @@ import { serviceAccount } from "@/lib/googleSheets";
 export const metadata: Metadata = { title: "Quản trị · Tổng quan" };
 export const dynamic = "force-dynamic";
 
-type Team = { id: string; team_name: string; status: string; inspection_passed: boolean; created_at: string; team_members: { id: string }[] };
+type Team = { id: string; team_name: string; status: string; inspection_passed: boolean; created_at: string; team_members: { id: string; email: string }[] };
 type Match = { id: string; match_code: string | null; stage: string; status: string; start_time: string | null; red_team_id: string | null; blue_team_id: string | null; red_score: number; blue_score: number };
 type Standing = { stage: string; team_id: string; team_name: string; played: number; won: number; points: number; score_for: number };
 type Vote = { team_name: string; votes: number };
@@ -35,12 +35,12 @@ function Stat({ label, value, sub, href }: { label: string; value: number | stri
 export default async function AdminOverview() {
   const staff = await requireStaff(["BTC"]);
   const supabase = createClient();
-  const [{ data: teamsData }, { data: matchesData }, { data: appeals }, { data: bookings }, { data: votesData }, { data: standingsData }, { data: sheet }] =
+  const [{ data: teamsData }, { data: matchesData }, { data: photosData }, { data: bookings }, { data: votesData }, { data: standingsData }, { data: sheet }] =
     await Promise.all([
-      supabase.from("teams").select("id, team_name, status, inspection_passed, created_at, team_members(id)"),
+      supabase.from("teams").select("id, team_name, status, inspection_passed, created_at, team_members(id, email)"),
       supabase.from("matches").select("id, match_code, stage, status, start_time, red_team_id, blue_team_id, red_score, blue_score")
         .order("start_time", { ascending: true, nullsFirst: false }),
-      supabase.from("match_appeals").select("id, status"),
+      supabase.from("member_photos").select("team_id, email"),
       supabase.from("practice_arena_bookings").select("id, status, check_in_at"),
       supabase.rpc("vote_results"),
       supabase.rpc("get_standings"),
@@ -60,7 +60,8 @@ export default async function AdminOverview() {
   const live = matches.filter((m) => m.status === "RUNNING" || m.status === "PAUSED");
   const finished = matches.filter((m) => m.status === "FINISHED").length;
   const upcoming = matches.filter((m) => m.status === "SCHEDULED" || m.status === "READY");
-  const pendingAppeals = (appeals ?? []).filter((a) => a.status === "PENDING").length;
+  const photoKeys = new Set(((photosData ?? []) as { team_id: string; email: string }[]).map((p) => `${p.team_id}/${p.email}`));
+  const withPhoto = teams.reduce((n, t) => n + t.team_members.filter((m) => photoKeys.has(`${t.id}/${m.email.toLowerCase()}`)).length, 0);
   const activeBookings = (bookings ?? []).filter((b) => b.status !== "CANCELLED");
   const totalVotes = votes.reduce((n, v) => n + v.votes, 0);
 
@@ -79,7 +80,7 @@ export default async function AdminOverview() {
         <Stat label="Đội đăng ký" value={teams.length} sub={`${members} thành viên`} href="/admin/teams" />
         <Stat label="Chờ duyệt" value={byStatus("PENDING")} sub={`${byStatus("REJECTED")} cần bổ sung`} href="/admin/teams" />
         <Stat label="Đã duyệt" value={approved} sub={`${inspected}/${approved} đạt kiểm tra KT`} href="/admin/checkin" />
-        <Stat label="Khiếu nại chờ" value={pendingAppeals} sub={`${(appeals ?? []).length} tổng`} href="/admin/appeals" />
+        <Stat label="Ảnh chân dung" value={`${withPhoto}/${members}`} sub={`${members - withPhoto} thành viên chưa có ảnh`} href="/admin/teams" />
         <Stat label="Trận đã đấu" value={`${finished}/${matches.length}`} sub={live.length ? `${live.length} đang diễn ra` : "Không có trận đang diễn ra"} href="/admin/matches" />
         <Stat label="Trận sắp tới" value={upcoming.length} href="/admin/matches" />
         <Stat label="Lượt thử sa bàn" value={activeBookings.length} sub={`${activeBookings.filter((b) => b.check_in_at).length} đã check-in`} href="/admin/practice" />

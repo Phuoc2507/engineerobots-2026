@@ -12,7 +12,6 @@ const TABS = [
   { href: "/referee", label: "Điều khiển trận", roles: ["BTC", "HEAD_REFEREE", "REFEREE"] },
   { href: "/admin/checkin", label: "Check-in & Kỹ thuật", roles: ["BTC", "HEAD_REFEREE", "REFEREE"] },
   { href: "/admin/practice", label: "Thử sa bàn", roles: ["BTC"] },
-  { href: "/admin/appeals", label: "Khiếu nại", roles: ["BTC", "HEAD_REFEREE"] },
   { href: "/admin/rules", label: "Barem điểm", roles: ["BTC"] },
   { href: "/admin/staff", label: "Nhân sự", roles: ["BTC"] },
   { href: "/admin/settings", label: "Cài đặt", roles: ["BTC"] },

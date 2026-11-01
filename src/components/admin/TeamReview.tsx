@@ -6,7 +6,7 @@ import { Check, CheckCircle2, ChevronDown, Download, Loader2, Pencil, Search, Sh
 import { createClient } from "@/lib/supabase/client";
 import { ErrorBox, btnDanger, btnGhost, btnPrimary, card, input, useRpc } from "@/components/admin/ui";
 
-type Member = { id: string; student_id: string; full_name: string; email: string; phone: string | null; role: string; joined_at: string | null };
+type Member = { id: string; student_id: string; full_name: string; email: string; phone: string | null; role: string; joined_at: string | null; photo_url?: string | null };
 export type AdminTeam = {
   id: string; team_name: string; major: string; cohort: string | null;
   status: string; review_note: string | null; leader_email: string; leader_phone: string; inspection_passed: boolean;
@@ -30,6 +30,17 @@ function toCsv(teams: AdminTeam[]) {
   return "﻿" + rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\r\n");
 }
 
+// Ảnh chân dung để BTC kiểm tra rõ mặt; bấm để xem cỡ lớn
+function Photo({ m }: { m: Member }) {
+  if (!m.photo_url) return <span className="grid h-14 w-14 place-items-center rounded-lg bg-white text-center text-[10px] font-semibold leading-tight text-mech-red ring-1 ring-mech-red/30">Chưa có ảnh</span>;
+  return (
+    <a href={m.photo_url} target="_blank" rel="noopener noreferrer" className="block h-14 w-14" title={`Xem ảnh ${m.full_name}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={m.photo_url} alt={`Ảnh của ${m.full_name}`} loading="lazy" className="h-14 w-14 rounded-lg object-cover ring-1 ring-slate-200 transition hover:ring-2 hover:ring-navy-600" />
+    </a>
+  );
+}
+
 // Một dòng thành viên; BTC bấm bút chì để sửa khi đội báo khai nhầm
 function MemberRow({ m }: { m: Member }) {
   const { busy, error, call } = useRpc();
@@ -44,7 +55,8 @@ function MemberRow({ m }: { m: Member }) {
   };
   if (!edit) return (
     <tr className="border-t border-slate-200">
-      <td className="py-1.5 pr-3">{ROLE[m.role] ?? m.role}</td><td className="pr-3 font-mono">{m.student_id}</td>
+      <td className="py-1.5 pr-3"><Photo m={m} /></td>
+      <td className="pr-3">{ROLE[m.role] ?? m.role}</td><td className="pr-3 font-mono">{m.student_id}</td>
       <td className="pr-3 font-semibold text-navy">{m.full_name}</td><td className="pr-3">{m.email}</td><td className="pr-3">{m.phone}</td>
       <td className="text-right">
         <button onClick={() => setEdit(true)} className="rounded p-1 text-slate-400 hover:bg-white hover:text-navy" aria-label={`Sửa ${m.full_name}`}><Pencil className="h-4 w-4" /></button>
@@ -57,7 +69,8 @@ function MemberRow({ m }: { m: Member }) {
   return (
     <>
       <tr className="border-t border-slate-200 bg-white">
-        <td className="py-1.5 pr-3">{ROLE[m.role] ?? m.role}</td>
+        <td className="py-1.5 pr-3"><Photo m={m} /></td>
+        <td className="pr-3">{ROLE[m.role] ?? m.role}</td>
         <td className="pr-2">{field("student_id", "MSSV")}</td>
         <td className="pr-2">{field("full_name", "Họ tên")}</td>
         <td className="pr-2">{field("email", "Email")}</td>
@@ -70,7 +83,7 @@ function MemberRow({ m }: { m: Member }) {
             className="rounded p-1 text-slate-500 hover:bg-slate-100" aria-label="Hủy"><X className="h-4 w-4" /></button>
         </td>
       </tr>
-      {error && <tr><td colSpan={6} className="pb-2 text-xs text-mech-red">{error}</td></tr>}
+      {error && <tr><td colSpan={7} className="pb-2 text-xs text-mech-red">{error}</td></tr>}
     </>
   );
 }
@@ -165,12 +178,16 @@ Gõ đúng tên đội để xác nhận:`);
             {list.map((t) => {
               const st = STATUS[t.status] ?? { label: t.status, tone: "bg-slate-100" };
               const expanded = open === t.id;
+              const withPhoto = t.team_members.filter((m) => m.photo_url).length;
               return (
                 <li key={t.id}>
                   <button onClick={() => setOpen(expanded ? null : t.id)} aria-expanded={expanded} className="flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left hover:bg-ice/60">
                     <span className="min-w-0 flex-1">
                       <b className="text-navy">{t.team_name}</b>
                       <span className="block text-xs text-slate-500">{t.major ? `${t.major} · ` : ""}{t.team_members.length} SV · nộp {fmt(t.created_at)}{t.updated_at ? ` · sửa ${fmt(t.updated_at)}` : ""}</span>
+                    </span>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${withPhoto === t.team_members.length ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-mech-red"}`} title="Số thành viên đã có ảnh chân dung">
+                      Ảnh {withPhoto}/{t.team_members.length}
                     </span>
                     {t.inspection_passed && <span className="inline-flex items-center gap-1 rounded-full bg-navy-600/10 px-2 py-0.5 text-xs font-bold text-navy-600"><ShieldCheck className="h-3.5 w-3.5" /> KT đạt</span>}
                     <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${st.tone}`}>{st.label}</span>
@@ -182,7 +199,7 @@ Gõ đúng tên đội để xác nhận:`);
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[560px] text-sm">
                           <thead className="text-left text-xs uppercase tracking-wider text-slate-500">
-                            <tr><th className="py-1.5 pr-3">Vai trò</th><th className="pr-3">MSSV</th><th className="pr-3">Họ tên</th><th className="pr-3">Email</th><th className="pr-3">SĐT</th><th /></tr>
+                            <tr><th className="py-1.5 pr-3">Ảnh</th><th className="pr-3">Vai trò</th><th className="pr-3">MSSV</th><th className="pr-3">Họ tên</th><th className="pr-3">Email</th><th className="pr-3">SĐT</th><th /></tr>
                           </thead>
                           <tbody>
                             {t.team_members.map((m) => <MemberRow key={m.id} m={m} />)}

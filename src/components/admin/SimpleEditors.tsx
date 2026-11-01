@@ -61,7 +61,7 @@ export function StaffEditor({ rows, me }: { rows: StaffRow[]; me: string }) {
         <h2 className="flex items-center gap-2 font-display text-xl uppercase text-navy"><UserPlus className="h-5 w-5 text-mech-red" /> Thêm / đổi vai trò</h2>
         <p className="mt-1 text-sm text-slate-500">
           Người được thêm đăng nhập ở <b>/referee/login</b> bằng đúng email Google này (Gmail cá nhân cũng được).
-          BTC: toàn quyền · Trọng tài chính: điều khiển trận, xử lý khiếu nại · Trọng tài: chấm điểm, check-in.
+          BTC: toàn quyền · Trọng tài chính: điều khiển trận, chỉnh điểm · Trọng tài: chấm điểm, check-in.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-[2fr_2fr_1fr_auto]">
           <input type="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} placeholder="email@gmail.com" aria-label="Email" className={input} />
@@ -103,9 +103,8 @@ export function StaffEditor({ rows, me }: { rows: StaffRow[]; me: string }) {
 // ───────── Cài đặt + kết quả bình chọn ─────────
 export type VoteRow = { vote_category: string; team_id: string; team_name: string; votes: number };
 
-export function SettingsEditor({ votingOpen, appealMinutes, votes, emailReady }: { votingOpen: boolean; appealMinutes: number; votes: VoteRow[]; emailReady: boolean }) {
+export function SettingsEditor({ votingOpen, votes, emailReady }: { votingOpen: boolean; votes: VoteRow[]; emailReady: boolean }) {
   const { busy, error, call } = useRpc();
-  const [minutes, setMinutes] = useState(appealMinutes);
   return (
     <div className="space-y-6">
       <section className={card}>
@@ -117,13 +116,6 @@ export function SettingsEditor({ votingOpen, appealMinutes, votes, emailReady }:
             <button onClick={() => call("vote", "admin_set_setting", { p_key: "voting_open", p_value: !votingOpen })} disabled={busy !== null} className={votingOpen ? btnDanger : btnPrimary}>
               {busy === "vote" && <Loader2 className="h-4 w-4 animate-spin" />} {votingOpen ? "Đóng bình chọn" : "Mở bình chọn"}
             </button>
-          </div>
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-ice p-4">
-            <span><b className="text-navy">Hạn khiếu nại sau trận</b><span className="block text-sm text-slate-500">Thể lệ: 3 phút kể từ khi công bố kết quả, trước khi ký biên bản.</span></span>
-            <span className="flex items-center gap-2">
-              <input type="number" min={1} max={60} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} aria-label="Số phút" className={`${input} w-20 text-right`} /> phút
-              <button onClick={() => call("appeal", "admin_set_setting", { p_key: "appeal_window_minutes", p_value: minutes })} disabled={busy !== null || minutes === appealMinutes} className={btnPrimary}>Lưu</button>
-            </span>
           </div>
           <p className={`flex items-start gap-2 rounded-lg p-4 text-sm ${emailReady ? "bg-emerald-50 text-emerald-800" : "bg-mech-gold/10 text-amber-900"}`}>
             <Mail className="mt-0.5 h-4 w-4 shrink-0" />
