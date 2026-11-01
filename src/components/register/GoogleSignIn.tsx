@@ -1,14 +1,58 @@
 "use client";
 
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, Copy, ExternalLink, Loader2, TriangleAlert } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { STUDENT_DOMAIN } from "@/lib/site";
+
+// Google chặn đăng nhập OAuth trong trình duyệt nhúng (Zalo, Facebook, Messenger…) với lỗi 403 disallowed_useragent
+const IN_APP_UA = /Zalo|FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Line\/|musical_ly|BytedanceWebview|TikTok|; wv\)/i;
 
 // staff: không ép domain trường (BTC/trọng tài có thể dùng Gmail cá nhân đã được cấp quyền)
 export default function GoogleSignIn({ next = "/register", staff = false }: { next?: string; staff?: boolean }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [inApp, setInApp] = useState<null | "android" | "ios">(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    if (IN_APP_UA.test(ua)) setInApp(/Android/i.test(ua) ? "android" : "ios");
+  }, []);
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+    } catch {
+      window.prompt("Sao chép link này rồi dán vào Chrome / Safari:", window.location.href);
+    }
+  };
+
+  if (inApp) {
+    const { host, pathname, search } = window.location;
+    const chromeIntent = `intent://${host}${pathname}${search}#Intent;scheme=https;package=com.android.chrome;end`;
+    return (
+      <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-slate-700">
+        <p className="flex items-center gap-2 font-bold text-navy"><TriangleAlert className="h-5 w-5 shrink-0 text-amber-500" /> Hãy mở trang bằng Chrome hoặc Safari</p>
+        <p className="mt-2">
+          Google không cho đăng nhập trong trình duyệt của Zalo / Facebook. {inApp === "ios"
+            ? <>Bấm nút <b>⋯</b> ở góc trên, chọn <b>Mở bằng trình duyệt</b> (hoặc Safari), rồi đăng nhập lại.</>
+            : <>Bấm nút bên dưới, hoặc bấm <b>⋮</b> ở góc trên và chọn <b>Mở bằng trình duyệt</b>.</>}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {inApp === "android" && (
+            <a href={chromeIntent} className="inline-flex h-10 items-center gap-2 rounded-md bg-navy px-4 font-semibold text-white">
+              <ExternalLink className="h-4 w-4" /> Mở bằng Chrome
+            </a>
+          )}
+          <button onClick={copyLink} className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 font-semibold text-navy">
+            {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />} {copied ? "Đã sao chép link" : "Sao chép link"}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const signIn = async () => {
     setLoading(true);
