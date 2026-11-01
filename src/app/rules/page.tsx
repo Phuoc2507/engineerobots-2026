@@ -188,7 +188,7 @@ export default function RulesPage() {
           <h3 className={h3}>2. Chặng 2 · Bứt phá</h3>
           <ul className={ul}>
             <li>Khu vực rộng 3000 mm, dài 1850 mm.</li>
-            <li><b>Khu vực retry (2.1 – 2.2):</b> 410 × 360 mm ở 2 góc dưới (2.1 trái cho Đỏ, 2.2 phải cho Xanh), họa tiết gạch chéo 45°.</li>
+            <li><b>Khu vực retry (2.1 – 2.2):</b> 310 × 260 mm ở 2 góc dưới (2.1 trái cho Đỏ, 2.2 phải cho Xanh), họa tiết gạch chéo 45°.</li>
             <li><b>Trạm thành tựu (2.3 – 2.4):</b> 300 × 300 mm phía trên sân (Đỏ trái, Xanh phải), họa tiết lưới ô vuông màu đội; gờ chặn hãm bóng cao 10 mm quanh chu vi.</li>
             <li><b>Bục Cơ hội (2.5):</b> bục dốc nghiêng 4 mặt đối xứng ở tâm Chặng 2, đáy 400 × 400 mm, đỉnh phẳng 300 × 300 mm, cao 50 mm; trên tâm đặt 01 bóng pickleball Ø74 mm màu vàng (Cơ hội vàng). <b>Chỉ xuất hiện ở Vòng Chung kết xếp hạng.</b></li>
             <li><b>Cấu kiện Kiến thức (2.6):</b> 04 bóng pickleball Ø74 mm (02 Đỏ ở cụm bên sân Đỏ, 02 Xanh ở cụm bên sân Xanh), ở hai bên phía dưới sân.</li>
@@ -196,7 +196,7 @@ export default function RulesPage() {
           <h3 className="mt-4 font-bold text-team-blue">3. Chặng 3 · Thành công</h3>
           <ul className={ul}>
             <li>Khu vực rộng 3000 mm, dài 2400 mm, chia 2 sân độc lập đối xứng (Đỏ trái, Xanh phải) bởi <b>đường nét đứt màu xanh dương</b> ở giữa.</li>
-            <li><b>Khu vực retry (3.1 – 3.2):</b> 410 × 360 mm sát hai mép vách biên ngoài, họa tiết gạch chéo 45°.</li>
+            <li><b>Khu vực retry (3.1 – 3.2):</b> 310 × 260 mm sát hai mép vách biên ngoài, họa tiết gạch chéo 45°.</li>
             <li><b>Đường Thử thách (3.3 – 3.4):</b> mỗi khu 600 (Dài) × 400 (Rộng) mm, gồm 05 thanh gờ ống PVC cao 15 mm đặt ngang liên tiếp, <b>mỗi thanh cách nhau 100 mm</b>.</li>
             <li><b>Trạm Thực nghiệm (3.5 – 3.6):</b> ngay sau Đường Thử thách; tâm trạm đặt 01 bóng Đồ án Ø74 mm (Đỏ bên sân Đỏ, Xanh bên sân Xanh).</li>
             <li><b>Tổ hợp Bục Vinh Quang (3.7)</b>, 2 bậc liên hoàn: <i>Dốc Kiên trì</i> 550 × 450 mm, nghiêng 10°, thẳng hàng phía trên Trạm Thực nghiệm, lên <i>Đài Bảo vệ</i> (Bậc 1, cao 100 mm, sát mép trên sa bàn); 02 <i>Dốc Thăng hoa</i> 500 × 450 mm, nghiêng 10°, đặt ngang hai bên (Đỏ leo trái sang phải, Xanh leo phải sang trái) lên <i>Bục Vinh Quang</i> (Bậc 2) 400 × 450 mm, cao 200 mm ở trung tâm; vách ngăn giữa bục gắn 02 nút nhấn Đèn Vinh Quang độc lập, vuông góc với hướng robot leo tới.</li>
