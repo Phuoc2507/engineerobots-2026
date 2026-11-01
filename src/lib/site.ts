@@ -61,7 +61,8 @@ export const CONTACT = {
   email: "", // vd: engineerobots@hcmute.edu.vn
   phone: "", // vd: 0901 234 567 (Trưởng BTC)
   fanpage: "", // vd: https://facebook.com/...
-  zaloGroup: "", // link nhóm Zalo các đội trưởng
+  zaloGroup: "https://zalo.me/g/d8mlxexbfrsficbfqxmr", // nhóm Zalo cuộc thi
+  zaloQr: "/images/zalo-group.png",
   address: "Khoa Cơ khí – HCMUTE, 1 Võ Văn Ngân, Thủ Đức, TP.HCM",
 };
 

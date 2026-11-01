@@ -299,10 +299,16 @@ export function Footer() {
             {CONTACT.email && <li><a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Mail className="h-4 w-4 shrink-0" /> {CONTACT.email}</a></li>}
             {CONTACT.phone && <li><a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Phone className="h-4 w-4 shrink-0" /> {CONTACT.phone}</a></li>}
             {CONTACT.fanpage && <li><a href={CONTACT.fanpage} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><ThumbsUp className="h-4 w-4 shrink-0" /> Fanpage</a></li>}
-            {CONTACT.zaloGroup && <li><a href={CONTACT.zaloGroup} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><MessageCircle className="h-4 w-4 shrink-0" /> Nhóm Zalo đội trưởng</a></li>}
+            {CONTACT.zaloGroup && <li><a href={CONTACT.zaloGroup} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><MessageCircle className="h-4 w-4 shrink-0" /> Nhóm Zalo cuộc thi</a></li>}
             {CONTACT.address && <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0" /> {CONTACT.address}</li>}
-            {!CONTACT.email && !CONTACT.phone && !CONTACT.fanpage && <li className="inline-flex items-center gap-2"><Mail className="h-4 w-4" /> Kênh liên hệ đang cập nhật</li>}
+            {!CONTACT.email && !CONTACT.phone && !CONTACT.fanpage && !CONTACT.zaloGroup && <li className="inline-flex items-center gap-2"><Mail className="h-4 w-4" /> Kênh liên hệ đang cập nhật</li>}
           </ul>
+          {CONTACT.zaloGroup && CONTACT.zaloQr && (
+            <a href={CONTACT.zaloGroup} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-lg bg-white p-2" title="Quét mã để vào nhóm Zalo cuộc thi">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={CONTACT.zaloQr} alt="Mã QR nhóm Zalo FME JOURNEY 2026" width={128} height={128} className="h-32 w-32 object-cover" />
+            </a>
+          )}
         </div>
       </div>
       <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/10 px-4 pt-8 md:flex-row md:items-center md:justify-between md:px-6">

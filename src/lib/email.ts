@@ -31,7 +31,7 @@ export function reviewEmail(teamName: string, status: string, note: string | nul
     : `<p>Hồ sơ đội <b>${esc(teamName)}</b> cần bổ sung trước khi được duyệt.</p>
        <p><b>Ghi chú của BTC:</b> ${esc(note ?? "")}</p>
        <p>Đội trưởng cập nhật hồ sơ rồi liên hệ BTC để được duyệt lại.</p>`;
-  const contact = [CONTACT.email && `Email: ${esc(CONTACT.email)}`, CONTACT.phone && `Hotline: ${esc(CONTACT.phone)}`].filter(Boolean).join(" · ");
+  const contact = [CONTACT.email && `Email: ${esc(CONTACT.email)}`, CONTACT.phone && `Hotline: ${esc(CONTACT.phone)}`, CONTACT.zaloGroup && `Nhóm Zalo: <a href="${CONTACT.zaloGroup}">${CONTACT.zaloGroup}</a>`].filter(Boolean).join(" · ");
   const html = `<div style="font-family:Arial,sans-serif;max-width:560px;color:#0f172a">
     <h2 style="color:#06305E">${SITE.name}</h2>${body}
     <p><a href="${dashboardUrl}" style="display:inline-block;background:#D7262F;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:bold">Mở trang Đội của tôi</a></p>

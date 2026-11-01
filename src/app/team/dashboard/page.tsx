@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import QRCode from "react-qr-code";
-import { AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, Circle, Crown, Heart, Lock, MailCheck, QrCode, Swords } from "lucide-react";
+import { AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, Circle, Crown, Heart, Lock, MailCheck, MessageCircle, QrCode, Swords } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CONTACT, SITE, STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
@@ -181,6 +181,20 @@ export default async function TeamDashboard() {
             Khai nhầm thông tin thành viên (tên, MSSV, email, SĐT)? Báo Ban tổ chức{CONTACT.email ? <> qua <a href={`mailto:${CONTACT.email}`} className="font-semibold text-navy-600 hover:underline">{CONTACT.email}</a></> : null} để được sửa.
           </p>
         </section>
+
+        {CONTACT.zaloGroup && (
+          <section className="flex flex-col items-center gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 sm:flex-row">
+            {CONTACT.zaloQr && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={CONTACT.zaloQr} alt="Mã QR nhóm Zalo FME JOURNEY 2026" width={112} height={112} className="h-28 w-28 shrink-0 rounded-lg ring-1 ring-slate-200" />
+            )}
+            <div className="text-center sm:text-left">
+              <h2 className="flex items-center justify-center gap-2 font-display text-xl uppercase tracking-wide text-navy sm:justify-start"><MessageCircle className="h-5 w-5 text-mech-red" /> Nhóm Zalo cuộc thi</h2>
+              <p className="mt-1 text-sm text-slate-600">Tất cả thành viên vào nhóm để nhận thông báo, lịch thi và hỏi đáp với Ban tổ chức.</p>
+              <a href={CONTACT.zaloGroup} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-bold text-white hover:bg-navy-600">Tham gia nhóm Zalo <ArrowRight className="h-4 w-4" /></a>
+            </div>
+          </section>
+        )}
 
         <section className="grid gap-6 md:grid-cols-[auto_1fr]">
           <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
