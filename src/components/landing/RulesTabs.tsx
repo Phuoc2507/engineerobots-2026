@@ -58,7 +58,7 @@ export default function RulesTabs() {
               <h3 className="font-display text-3xl uppercase text-navy">Thích nghi – Dò line tự hành</h3>
               <p className="mt-4 text-slate-600">
                 Mỗi đội một làn line riêng rộng 900 mm dọc hai mép sa bàn. Robot xuất phát từ Trạm khởi hành 410 × 360 mm, bám line đen
-                rộng 20 mm qua Đường Danh vọng thẳng 1800 mm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 1940 mm về vạch chữ T.
+                rộng 20 mm qua Đường Danh vọng thẳng 1800 mm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 2040 mm về vạch chữ T.
               </p>
               <ul className="mt-6 space-y-3 text-slate-700">
                 <li><strong>Tự hành 100%:</strong> chỉ ấn nút khởi động một lần, tay cầm đặt xuống đất suốt Chặng 1; về đích xong robot tự chuyển sang điều khiển từ xa.</li>
