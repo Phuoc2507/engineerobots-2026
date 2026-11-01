@@ -31,7 +31,7 @@ export default function Hero() {
             Chủ đề <strong className="text-white">&ldquo;{SITE.theme}&rdquo;</strong>. Thiết kế, chế tạo và lập
             trình robot tự hành <strong className="text-white">dò line</strong>, tích lũy{" "}
             <strong className="text-white">Cấu kiện tri thức</strong> rồi vượt địa hình, bảo vệ{" "}
-            <strong className="text-white">Đồ án</strong> và nhấn sáng <strong className="text-white">Đèn Vinh Quang</strong> trong 180 giây (Chung kết 300 giây).
+            <strong className="text-white">Đồ án</strong> và nhấn sáng <strong className="text-white">Đèn Vinh Quang</strong>.
           </p>
 
           <ul className="mt-6 flex flex-wrap gap-2 text-sm font-semibold">
