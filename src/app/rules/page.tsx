@@ -181,7 +181,7 @@ export default function RulesPage() {
           <h3 className="mt-4 font-bold text-team-red">1. Chặng 1 · Thích nghi</h3>
           <ul className={ul}>
             <li>Nền trắng, line đen. 2 làn biên độc lập 4800 (Dài) × 900 (Rộng) mm: Đội Đỏ cánh trái, Đội Xanh cánh phải.</li>
-            <li><b>Trạm khởi hành (1.1 – 1.2):</b> ô 410 × 360 mm ở góc trên cùng mỗi làn; ô màu Đỏ (1.1) cho đội Đỏ, ô màu Xanh (1.2) cho đội Xanh.</li>
+            <li><b>Trạm khởi hành (1.1 – 1.2):</b> ô 310 × 260 mm ở góc trên cùng mỗi làn; ô màu Đỏ (1.1) cho đội Đỏ, ô màu Xanh (1.2) cho đội Xanh.</li>
             <li>Vạch dẫn hướng màu đen rộng 20 mm. <b>Đường Danh vọng:</b> đoạn thẳng 1800 mm nối từ Trạm khởi hành. <b>Đường Thách thức:</b> ziczac dài 2040 mm, khúc cua 45°, kết thúc ở vạch ngang chữ T dài 300 mm.</li>
             <li><b>Checkpoint:</b> cuối Đường Danh vọng (mốc 1800 mm, trước khi vào Đường Thách thức).</li>
           </ul>
