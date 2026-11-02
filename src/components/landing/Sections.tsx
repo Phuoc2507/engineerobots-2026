@@ -96,7 +96,7 @@ export function ArenaShowcase() {
           <Reveal>
             <div className="relative overflow-hidden rounded-xl border border-white/10 shadow-2xl shadow-black/30">
               <ArenaVideo />
-              <span className="pointer-events-none absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-navy-900/70 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest backdrop-blur">
+              <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-navy-900/70 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest backdrop-blur">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-mech-red" /> Mô phỏng trận đấu
               </span>
             </div>
