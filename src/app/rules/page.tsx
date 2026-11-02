@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Box, Download } from "lucide-react";
+import { Box, Download, FileText } from "lucide-react";
 import { PRIZES, ROBOT_SPECS, WORKSHOPS } from "@/lib/site";
 import PortalShell from "@/components/register/PortalShell";
 
@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description: "Thể lệ chính thức cuộc thi FME JOURNEY 2026 – Hành trình Kỹ sư Cơ khí: chủ đề, quy chuẩn robot, sa bàn, vòng đấu, luật 3 chặng, retry, lỗi vi phạm, khiếu nại và tập huấn.",
 };
 
+const RULES_PDF = "/docs/the-le-fme-journey-2026.pdf";
 const card = "rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7";
 const h2 = "font-display text-2xl uppercase tracking-wide text-navy";
 const h3 = "mt-4 font-bold text-navy";
@@ -102,6 +103,20 @@ export default function RulesPage() {
   return (
     <PortalShell title="Thể lệ chính thức" subtitle="Cuộc thi “FME JOURNEY 2026” dành cho Tân sinh viên khóa 2026 · BCH Đoàn – Hội Khoa Cơ khí · tháng 11/2026.">
       <div className="space-y-6">
+        <section aria-label="Tải thể lệ" className={`${card} flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between`}>
+          <div className="flex items-start gap-3">
+            <FileText className="mt-0.5 h-8 w-8 shrink-0 text-mech-red" aria-hidden />
+            <div>
+              <p className="font-bold text-navy">Văn bản thể lệ chính thức (PDF)</p>
+              <p className="text-sm text-slate-600">Các đội tải về để đọc kỹ và lưu lại khi chuẩn bị robot.</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 text-sm">
+            <a href={RULES_PDF} download="The-le-FME-JOURNEY-2026.pdf" className="inline-flex h-10 items-center gap-2 rounded-md bg-navy px-4 font-bold text-white hover:bg-navy-600"><Download className="h-4 w-4" /> Tải thể lệ (PDF)</a>
+            <a href={RULES_PDF} target="_blank" rel="noopener" className="inline-flex h-10 items-center gap-2 rounded-md bg-ice px-4 font-bold text-navy">Xem trực tuyến</a>
+          </div>
+        </section>
+
         <nav aria-label="Mục lục" className={`${card} text-sm`}>
           <p className="font-bold text-navy">Mục lục</p>
           <ol className="mt-2 grid list-[upper-roman] gap-1 pl-6 text-navy-600 sm:grid-cols-2">
