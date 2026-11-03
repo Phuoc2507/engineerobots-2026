@@ -4,13 +4,6 @@ import { DEFAULT_CONTENT, type Content } from "@/lib/content";
 type Brand = Content["brand"];
 const DEF = DEFAULT_CONTENT.brand;
 
-// Logo đơn vị: ảnh gốc (mặc định trong public/brand hoặc BTC thay ở /admin/content), không đổi màu / kéo giãn
-export const organizers = (b: Brand = DEF) =>
-  [
-    { src: b.logoMain, alt: b.logoMainAlt, short: b.logoMainShort },
-    { src: b.logoSecond, alt: b.logoSecondAlt, short: b.logoSecondShort },
-  ].filter((o) => o.src);
-
 // Dấu nhận diện dùng ở thanh điều hướng: bộ logo (hoặc logo chính) + tên giải
 export function BrandMark({ b = DEF, subtitle }: { b?: Brand; subtitle?: string }) {
   return (
@@ -27,19 +20,5 @@ export function BrandMark({ b = DEF, subtitle }: { b?: Brand; subtitle?: string 
         <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-mech-gold sm:tracking-[0.25em]">{subtitle ?? b.markSubtitle}</span>
       </span>
     </span>
-  );
-}
-
-export function OrganizerLogos({ b = DEF, size = 56, labels = false, className = "" }: { b?: Brand; size?: number; labels?: boolean; className?: string }) {
-  return (
-    <ul className={`flex flex-wrap items-center gap-4 ${className}`}>
-      {organizers(b).map((o) => (
-        <li key={o.src} className="flex flex-col items-center gap-1.5">
-          <img src={o.src} alt={o.alt} title={o.alt} width={size} height={size}
-            style={{ width: size, height: size }} className="object-contain" />
-          {labels && <span className="text-[11px] font-bold tracking-[0.2em] text-white/70">{o.short}</span>}
-        </li>
-      ))}
-    </ul>
   );
 }

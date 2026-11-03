@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ArenaVideo from "@/components/landing/ArenaVideo";
 import Reveal from "@/components/landing/Reveal";
-import { ArrowRight, Box, CalendarClock, Flag, Mail, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
+import { ArrowRight, Box, CalendarClock, Flag, Globe, Mail, Phone, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
 import type { Content } from "@/lib/content";
 import Rich from "@/components/content/Rich";
 
@@ -279,13 +279,13 @@ export function Footer({ c }: { c: Content }) {
         </nav>
         <div className="text-sm">
           <div className="font-bold uppercase tracking-wider text-white">{F.facultyTitle}</div>
-          <p className="mt-2">{SITE.faculty}</p>
+          <Units units={F.facultyUnits} />
           <div className="mt-4 font-bold uppercase tracking-wider text-white">{F.organizerTitle}</div>
-          <p className="mt-2">{SITE.organizer}</p>
+          <Units units={F.organizerUnits} />
         </div>
         <div className="text-sm">
           <div className="font-bold uppercase tracking-wider text-white">{F.contactTitle}</div>
-          {/* Sửa ở /admin/content → Liên hệ; mục trống sẽ tự ẩn */}
+          {/* Sửa ở /admin/content → Liên hệ và Chân trang; mục trống sẽ tự ẩn */}
           {(CONTACT.person || CONTACT.phone) && (
             <p className="mt-2">
               {F.contactPrefix} {CONTACT.person}{CONTACT.phone && <> – SĐT:{" "}
@@ -293,15 +293,57 @@ export function Footer({ c }: { c: Content }) {
             </p>
           )}
           <ul className="mt-2 space-y-1.5">
-            {CONTACT.email && <li><a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Mail className="h-4 w-4 shrink-0" /> {CONTACT.email}</a></li>}
-            {CONTACT.fanpage && <li><a href={CONTACT.fanpage} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><ThumbsUp className="h-4 w-4 shrink-0" /> Fanpage</a></li>}
+            {CONTACT.email && <li><ContactLink url={CONTACT.email} label={CONTACT.email} /></li>}
+            {CONTACT.fanpage && <li><ContactLink url={CONTACT.fanpage} label="Fanpage" /></li>}
+            {F.contactLinks.filter((l) => l.url.trim()).map((l, i) => (
+              <li key={`${i}${l.url}`}><ContactLink url={l.url} label={l.label || l.url} /></li>
+            ))}
           </ul>
         </div>
       </div>
       <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 px-4 pt-6 text-xs md:px-6">
-        {F.copyright} ·{" "}
+        {F.copyright}{F.owner.trim() && <> · {F.owner}</>} ·{" "}
         <Link href="/privacy" className="hover:text-mech-gold">{F.privacyLabel}</Link>
       </div>
     </footer>
+  );
+}
+
+// Link liên hệ: tự nhận email / số điện thoại / trang web để chọn biểu tượng và kiểu liên kết
+function contactHref(raw: string) {
+  const v = raw.trim();
+  if (/^mailto:|^tel:/i.test(v)) return v;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return `mailto:${v}`;
+  if (/^\+?[\d\s.]{8,}$/.test(v)) return `tel:${v.replace(/[\s.]/g, "")}`;
+  if (/^https?:\/\//i.test(v)) return v;
+  return `https://${v}`;
+}
+
+function ContactLink({ url, label }: { url: string; label: string }) {
+  const href = contactHref(url);
+  const Icon = href.startsWith("mailto:") ? Mail : href.startsWith("tel:") ? Phone : /facebook\.com|fb\.com|fb\.me/i.test(href) ? ThumbsUp : Globe;
+  const ext = /^https?:/i.test(href);
+  return (
+    <a href={href} {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="inline-flex items-start gap-2 break-all hover:text-mech-gold">
+      <Icon className="mt-0.5 h-4 w-4 shrink-0" /> {label}
+    </a>
+  );
+}
+
+function Units({ units }: { units: { name: string; fanpage: string; email: string }[] }) {
+  return (
+    <ul className="mt-2 space-y-2">
+      {units.filter((u) => u.name.trim()).map((u, i) => (
+        <li key={`${i}${u.name}`}>
+          <p>{u.name}</p>
+          {(u.fanpage.trim() || u.email.trim()) && (
+            <p className="mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs">
+              {u.fanpage.trim() && <ContactLink url={u.fanpage} label="Fanpage" />}
+              {u.email.trim() && <ContactLink url={u.email} label={u.email.trim()} />}
+            </p>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 }

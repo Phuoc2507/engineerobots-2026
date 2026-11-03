@@ -5,12 +5,11 @@ import Rich from "@/components/content/Rich";
 import AnnounceBar from "@/components/content/AnnounceBar";
 import Countdown from "./Countdown";
 import DominationGrid from "./DominationGrid";
-import { OrganizerLogos } from "@/components/brand/Logos";
 
 export default function Hero({ c }: { c: Content }) {
   const h = c.hero;
   return (
-    <section className="relative overflow-hidden bg-navy bg-tech-grid bg-grid-40 pt-28 pb-20 text-white md:pt-36 md:pb-28">
+    <section className="relative overflow-hidden bg-navy bg-tech-grid bg-grid-40 pt-24 pb-20 text-white md:pt-28 md:pb-28">
       {c.brand.heroBackground && (
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -26,14 +25,6 @@ export default function Hero({ c }: { c: Content }) {
       </div>
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 md:px-6 lg:grid-cols-[1.2fr_1fr]">
         <div>
-          <div className="mb-7 inline-flex items-center gap-4 rounded-full bg-white/5 py-1.5 pl-1.5 pr-5 ring-1 ring-white/10">
-            <OrganizerLogos b={c.brand} size={40} className="!gap-2" />
-            {c.brand.logosText.trim() && (
-              <span className="hidden text-[11px] font-semibold uppercase leading-tight tracking-[0.2em] text-white/70 sm:block">
-                <Rich text={c.brand.logosText} />
-              </span>
-            )}
-          </div>
           <p className="section-kicker !text-mech-gold">
             <span className="h-px w-8 bg-mech-gold" />
             {h.kicker}
