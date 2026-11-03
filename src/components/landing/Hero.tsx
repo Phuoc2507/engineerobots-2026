@@ -11,6 +11,13 @@ export default function Hero({ c }: { c: Content }) {
   const h = c.hero;
   return (
     <section className="relative overflow-hidden bg-navy bg-tech-grid bg-grid-40 pt-28 pb-20 text-white md:pt-36 md:pb-28">
+      {c.brand.heroBackground && (
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={c.brand.heroBackground} alt="" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-navy/80" />
+        </div>
+      )}
       <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-mech-red/30 blur-[120px]" />
       <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-fmes/40 blur-[120px]" />
 
@@ -20,10 +27,12 @@ export default function Hero({ c }: { c: Content }) {
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 md:px-6 lg:grid-cols-[1.2fr_1fr]">
         <div>
           <div className="mb-7 inline-flex items-center gap-4 rounded-full bg-white/5 py-1.5 pl-1.5 pr-5 ring-1 ring-white/10">
-            <OrganizerLogos size={40} className="!gap-2" />
-            <span className="hidden text-[11px] font-semibold uppercase leading-tight tracking-[0.2em] text-white/70 sm:block">
-              Khoa Cơ khí<br />&amp; FMES Club
-            </span>
+            <OrganizerLogos b={c.brand} size={40} className="!gap-2" />
+            {c.brand.logosText.trim() && (
+              <span className="hidden text-[11px] font-semibold uppercase leading-tight tracking-[0.2em] text-white/70 sm:block">
+                <Rich text={c.brand.logosText} />
+              </span>
+            )}
           </div>
           <p className="section-kicker !text-mech-gold">
             <span className="h-px w-8 bg-mech-gold" />
@@ -49,7 +58,8 @@ export default function Hero({ c }: { c: Content }) {
           </ul>
 
           <div className="mt-8">
-            <Countdown start={c.site.registrationStart} deadline={c.site.registrationDeadline} note={c.site.countdownNote} />
+            <Countdown start={c.site.registrationStart} deadline={c.site.registrationDeadline} note={c.site.countdownNote}
+              labels={{ before: c.home.countdownBefore, during: c.home.countdownDuring, after: c.home.countdownAfter }} />
           </div>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -62,7 +72,12 @@ export default function Hero({ c }: { c: Content }) {
           </div>
         </div>
 
-        <DominationGrid />
+        {c.brand.heroVisual ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={c.brand.heroVisual} alt={c.site.name} className="mx-auto max-h-[560px] w-full rounded-2xl object-contain shadow-2xl shadow-black/30" />
+        ) : (
+          <DominationGrid />
+        )}
       </div>
     </section>
   );

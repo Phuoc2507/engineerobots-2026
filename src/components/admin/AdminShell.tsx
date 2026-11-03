@@ -32,7 +32,7 @@ export default async function AdminShell({ staff, active, title, children, actio
       <header className="relative overflow-hidden bg-navy text-white">
         <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40" />
         <div className="relative mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
-          <Link href="/" aria-label={`${c.site.name} – Trang chủ`}><BrandMark /></Link>
+          <Link href="/" aria-label={`${c.site.name} – Trang chủ`}><BrandMark b={c.brand} /></Link>
           <div className="flex items-center gap-3 text-sm">
             <Link href="/stage" target="_blank" className="hidden items-center gap-1.5 font-semibold text-white/80 hover:text-mech-gold sm:inline-flex">
               <MonitorPlay className="h-4 w-4" /> Màn hình chiếu

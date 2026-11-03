@@ -64,7 +64,7 @@ export default async function SchedulePage() {
   const stages = Array.from(new Set(matches.map((m) => m.stage)));
 
   return (
-    <PortalShell title="Lịch thi" subtitle={`Các mốc của ${c.site.name} và lịch từng trận, cập nhật trực tiếp từ BTC.`}>
+    <PortalShell title={c.pages.scheduleTitle} subtitle={c.pages.scheduleSubtitle}>
       <section className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7">
         <h2 className="font-display text-xl uppercase tracking-wide text-navy">Các mốc của giải</h2>
         <ol className="mt-5 space-y-4 border-l-2 border-slate-200 pl-6">

@@ -5,6 +5,7 @@ import { ArrowLeft, Info } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { STUDENT_DOMAIN } from "@/lib/site";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
+import { getContent } from "@/lib/content-server";
 import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBooking";
 
 export const metadata: Metadata = { title: "Đăng ký lịch chạy thử · FME JOURNEY 2026" };
@@ -26,8 +27,9 @@ export default async function PracticePage() {
   const approved = team.status === "APPROVED";
   const { data: slotData } = approved ? await supabase.rpc("list_practice_slots") : { data: null };
 
+  const { pages: P } = await getContent();
   return (
-    <PortalShell title="Đăng ký lịch chạy thử" subtitle="Chạy thử trên sa bàn thật trước ngày thi 1 tuần. Mỗi khung giờ chỉ dành cho 1 đội, đặt trước để không trùng lịch.">
+    <PortalShell title={P.practiceTitle} subtitle={P.practiceSubtitle}>
       <AccountBar email={email} />
       <div className="mb-6 flex items-start gap-3 rounded-xl bg-white p-5 text-sm text-slate-600 shadow-sm ring-1 ring-slate-200">
         <Info className="mt-0.5 h-5 w-5 shrink-0 text-navy-600" />

@@ -2,9 +2,10 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowDown, ArrowUp, Check, Copy, ExternalLink, FileText, FolderOpen, Loader2, Plus, RotateCcw, Save, Trash2, Upload, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, ChevronDown, ChevronRight, Copy, ExternalLink, FileText, FolderOpen, Loader2, Plus, RotateCcw, Save, Trash2, Upload, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { CONTENT_SECTIONS, DEFAULT_CONTENT, type Content, type ContentKey, type Field, type ListField } from "@/lib/content";
+import { CONTENT_SECTIONS, DEFAULT_CONTENT, GROUPS, type Content, type ContentKey, type Field, type ListField } from "@/lib/content";
+import MinutesDoc, { SAMPLE_MINUTES } from "@/components/referee/MinutesDoc";
 import { ErrorBox, btn, btnGhost, btnPrimary, card, input } from "@/components/admin/ui";
 
 const BUCKET = "site-assets";
@@ -30,10 +31,11 @@ async function upload(file: File, folder: string) {
 }
 
 // Trang sửa nội dung & giao diện: chọn mục bên trái, sửa form bên phải, Lưu áp dụng ngay cho web
-export default function ContentEditor({ content, edited }: { content: Content; edited: string[] }) {
+export default function ContentEditor({ content, edited, initial }: { content: Content; edited: string[]; initial?: string }) {
   const router = useRouter();
-  const [key, setKey] = useState<ContentKey | "library">("site");
-  const [draft, setDraft] = useState<Obj>(structuredClone(content.site) as Obj);
+  const start = (CONTENT_SECTIONS.find((s) => s.key === initial)?.key ?? "site") as ContentKey;
+  const [key, setKey] = useState<ContentKey | "library">(start);
+  const [draft, setDraft] = useState<Obj>(structuredClone(content[start]) as Obj);
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState("");
@@ -70,7 +72,9 @@ export default function ContentEditor({ content, edited }: { content: Content; e
     <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
       <nav aria-label="Các mục nội dung" className="lg:sticky lg:top-4 lg:self-start">
         <ul className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible">
-          {CONTENT_SECTIONS.map((s) => (
+          {GROUPS.flatMap((g) => [
+            <li key={`g-${g}`} className="hidden px-3 pb-1 pt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 first:pt-0 lg:block">{g}</li>,
+            ...CONTENT_SECTIONS.filter((s) => s.group === g).map((s) => (
             <li key={s.key}>
               <button onClick={() => open(s.key)} aria-current={key === s.key ? "page" : undefined}
                 className={`flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-md px-3 py-2 text-left text-sm font-bold transition ${key === s.key ? "bg-navy text-white" : "text-navy hover:bg-white"}`}>
@@ -78,7 +82,7 @@ export default function ContentEditor({ content, edited }: { content: Content; e
                 {edited.includes(s.key) && <span title="BTC đã chỉnh" className={`h-2 w-2 shrink-0 rounded-full ${key === s.key ? "bg-mech-gold" : "bg-mech-red"}`} />}
               </button>
             </li>
-          ))}
+          ))])}
           <li className="lg:mt-3 lg:border-t lg:border-slate-200 lg:pt-3">
             <button onClick={() => open("library")} aria-current={key === "library" ? "page" : undefined}
               className={`flex w-full items-center gap-2 whitespace-nowrap rounded-md px-3 py-2 text-left text-sm font-bold transition ${key === "library" ? "bg-navy text-white" : "text-navy hover:bg-white"}`}>
@@ -108,6 +112,15 @@ export default function ContentEditor({ content, edited }: { content: Content; e
               ? <ListInput key={f.k} f={f} value={(draft[f.k] as Obj[]) ?? []} section={section.key} onChange={(v) => set(f.k, v)} />
               : <FieldInput key={f.k} f={f} value={draft[f.k]} def={(DEFAULT_CONTENT[section.key] as Obj)[f.k]} section={section.key} onChange={(v) => set(f.k, v)} />)}
           </div>
+
+          {section.key === "minutes" && (
+            <div className="mt-8">
+              <p className="text-sm font-bold text-navy">Xem trước (dữ liệu mẫu, cập nhật theo nội dung đang sửa)</p>
+              <div className="mt-2 max-h-[80vh] overflow-auto rounded-lg bg-slate-100 p-3 ring-1 ring-slate-200">
+                <div className="min-w-[680px]"><MinutesDoc t={draft as Content["minutes"]} d={SAMPLE_MINUTES} /></div>
+              </div>
+            </div>
+          )}
 
           <div className="sticky bottom-0 -mx-5 mt-6 flex flex-wrap items-center gap-3 border-t border-slate-200 bg-white/95 px-5 py-3 backdrop-blur md:-mx-7 md:px-7">
             <p className="flex-1 text-sm">
@@ -153,6 +166,8 @@ function FieldInput({ f, value, def, section, onChange, compact }: { f: Field; v
       {label}
       {f.type === "textarea" ? (
         <textarea id={id} value={str} onChange={(e) => onChange(e.target.value)} rows={compact ? 2 : 4} className={`${input} mt-1 h-auto py-2`} />
+      ) : f.type === "doc" ? (
+        <textarea id={id} value={str} onChange={(e) => onChange(e.target.value)} rows={compact ? 14 : 18} spellCheck={false} className={`${input} mt-1 h-auto py-2 font-mono text-[13px] leading-relaxed`} />
       ) : f.type === "select" ? (
         <select id={id} value={str} onChange={(e) => onChange(e.target.value)} className={`${input} mt-1`}>
           {f.options?.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -207,6 +222,9 @@ function FileInput({ url, accept, folder, onChange }: { url: string; accept?: st
 }
 
 function ListInput({ f, value, section, onChange }: { f: ListField; value: Obj[]; section: string; onChange: (v: Obj[]) => void }) {
+  // Danh sách có nội dung dài (văn bản) thu gọn từng dòng, bấm tên để mở
+  const long = f.item.some((x) => x.type === "doc");
+  const [openRow, setOpenRow] = useState<number | null>(null);
   const update = (i: number, k: string, v: unknown) => onChange(value.map((row, j) => (j === i ? { ...row, [k]: v } : row)));
   const move = (i: number, d: number) => {
     const n = [...value];
@@ -222,13 +240,25 @@ function ListInput({ f, value, section, onChange }: { f: ListField; value: Obj[]
         {value.map((row, i) => (
           <li key={i} className="flex gap-2 rounded-lg bg-ice p-3">
             <span className="mt-1 w-5 shrink-0 font-display text-lg text-slate-400">{i + 1}</span>
+            {long && openRow !== i ? (
+              <button type="button" onClick={() => setOpenRow(i)} className="flex min-w-0 flex-1 items-center gap-2 text-left font-bold text-navy hover:text-navy-600">
+                <ChevronRight className="h-4 w-4 shrink-0" />
+                <span className="truncate">{String(row[f.item[0].k] ?? "") || "(chưa đặt tên)"}</span>
+              </button>
+            ) : (
             <div className={`grid min-w-0 flex-1 gap-2 ${f.item.length > 2 ? "md:grid-cols-2" : f.item.length === 2 ? "sm:grid-cols-2" : ""}`}>
+              {long && (
+                <button type="button" onClick={() => setOpenRow(null)} className="flex items-center gap-1 text-left text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-navy md:col-span-2">
+                  <ChevronDown className="h-4 w-4" /> Thu gọn
+                </button>
+              )}
               {f.item.map((x) => (
-                <div key={x.k} className={x.type === "textarea" && f.item.length > 2 ? "md:col-span-2" : ""}>
+                <div key={x.k} className={(x.type === "textarea" || x.type === "doc") && f.item.length > 2 ? "md:col-span-2" : ""}>
                   <FieldInput f={x} value={row[x.k] ?? ""} section={section} onChange={(v) => update(i, x.k, v)} compact />
                 </div>
               ))}
             </div>
+            )}
             <div className="flex shrink-0 flex-col gap-1">
               <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Lên" className="rounded p-1 text-slate-400 hover:bg-white hover:text-navy disabled:opacity-30"><ArrowUp className="h-4 w-4" /></button>
               <button type="button" onClick={() => move(i, 1)} disabled={i === value.length - 1} aria-label="Xuống" className="rounded p-1 text-slate-400 hover:bg-white hover:text-navy disabled:opacity-30"><ArrowDown className="h-4 w-4" /></button>
@@ -237,7 +267,7 @@ function ListInput({ f, value, section, onChange }: { f: ListField; value: Obj[]
           </li>
         ))}
       </ol>
-      <button type="button" onClick={() => onChange([...value, { ...blank }])} className={`${btn} mt-2 h-9 border border-dashed border-slate-300 text-navy hover:border-navy-600`}>
+      <button type="button" onClick={() => { onChange([...value, { ...blank }]); setOpenRow(value.length); }} className={`${btn} mt-2 h-9 border border-dashed border-slate-300 text-navy hover:border-navy-600`}>
         <Plus className="h-4 w-4" /> Thêm dòng
       </button>
     </fieldset>

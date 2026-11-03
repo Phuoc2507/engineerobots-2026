@@ -2,7 +2,6 @@ import Link from "next/link";
 import ArenaVideo from "@/components/landing/ArenaVideo";
 import Reveal from "@/components/landing/Reveal";
 import { ArrowRight, Box, CalendarClock, Flag, Mail, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
-import { NAV_LINKS } from "@/lib/site";
 import type { Content } from "@/lib/content";
 import Rich from "@/components/content/Rich";
 
@@ -24,7 +23,7 @@ export function Intro({ c }: { c: Content }) {
               <Rich text={it.body} strongClass="text-navy" />
             </p>
             <p className="mt-4 text-slate-600">
-              Tổ chức bởi <strong className="text-navy">{c.site.organizer}</strong>.
+              {c.home.organizerPrefix} <strong className="text-navy">{c.site.organizer}</strong>.
             </p>
           </div>
           <dl className="grid grid-cols-2 gap-4">
@@ -45,7 +44,7 @@ export function Intro({ c }: { c: Content }) {
               {it.stepsTitle} <span className="text-mech-gold">{it.stepsHighlight}</span>
             </h3>
             <Link href="/register" className="btn-primary shrink-0">
-              Bắt đầu đăng ký <ArrowRight className="h-5 w-5" />
+              {c.home.stepsButton} <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
           <ol className="mt-8 grid gap-4 md:grid-cols-3">
@@ -82,7 +81,7 @@ export function ArenaShowcase({ c }: { c: Content }) {
             <p className="mt-4 max-w-2xl text-white/75">{a.text}</p>
           </div>
           <Link href="/arena-3d" className="btn-primary shrink-0">
-            <Box className="h-5 w-5" /> Khám phá sa bàn 3D
+            <Box className="h-5 w-5" /> {c.home.arenaButton}
           </Link>
         </div>
         <div className="mt-12 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
@@ -185,7 +184,7 @@ export function Timeline({ c }: { c: Content }) {
                   </span>
                   {current && (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-mech-red px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
-                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" /> Đang mở
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" /> {c.home.timelineBadge}
                     </span>
                   )}
                 </div>
@@ -204,33 +203,32 @@ export function Timeline({ c }: { c: Content }) {
           })}
         </ol>
         <Link href="/lich-thi" className="mt-8 inline-flex items-center gap-2 font-bold text-navy-600 hover:text-mech-red">
-          Xem lịch thi đấu chi tiết <ArrowRight className="h-4 w-4" />
+          {c.home.timelineLink} <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </section>
   );
 }
 
-export function Leaderboard() {
+export function Leaderboard({ c }: { c: Content }) {
+  const h = c.home;
+  if (!h.liveOn) return null;
   return (
     <section id="bang-vang" className="bg-ice pb-20 md:pb-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        {/* TODO(Giai đoạn 3): đọc bảng matches qua Supabase Realtime */}
         <div className="flex flex-col items-start gap-5 rounded-2xl border border-slate-200 bg-white p-6 md:flex-row md:items-center md:p-8">
           <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-navy text-mech-gold">
             <Radio className="h-7 w-7" />
           </span>
           <div className="flex-1">
-            <div className="font-display text-2xl uppercase text-navy">Bảng điểm trực tiếp</div>
-            <p className="mt-1 text-slate-600">
-              Mở khi giải khởi tranh – điểm số và tiến độ Chặng 3 của từng trận cập nhật theo thời gian thực.
-            </p>
+            <div className="font-display text-2xl uppercase text-navy">{h.liveTitle}</div>
+            <p className="mt-1 text-slate-600">{h.liveText}</p>
           </div>
           <Link
-            href="/matches"
+            href={h.liveHref || "/lich-thi"}
             className="inline-flex items-center gap-2 font-bold uppercase tracking-wide text-navy-600 hover:text-mech-red"
           >
-            Xem bảng điểm <ArrowRight className="h-4 w-4" />
+            {h.liveButton} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
@@ -261,6 +259,7 @@ export function RegisterCta({ c }: { c: Content }) {
 export function Footer({ c }: { c: Content }) {
   const SITE = c.site;
   const CONTACT = c.contact;
+  const F = c.footer;
   return (
     <footer className="bg-navy-900 pb-24 pt-12 text-white/75 sm:pb-12">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 md:grid-cols-4 md:px-6">
@@ -269,30 +268,27 @@ export function Footer({ c }: { c: Content }) {
           <p className="mt-2 text-sm">&ldquo;{SITE.theme}&rdquo;</p>
         </div>
         <nav className="text-sm" aria-label="Liên kết nhanh">
-          <div className="font-bold uppercase tracking-wider text-white">Liên kết nhanh</div>
+          <div className="font-bold uppercase tracking-wider text-white">{F.linksTitle}</div>
           <ul className="mt-2 space-y-1.5">
-            {NAV_LINKS.map((l) => (
-              <li key={l.href}>
+            {F.links.filter((l) => l.label.trim() && l.href.trim()).map((l, i) => (
+              <li key={`${i}${l.href}`}>
                 <a href={l.href} className="hover:text-mech-gold">{l.label}</a>
               </li>
             ))}
-            <li><Link href="/rules" className="hover:text-mech-gold">Thể lệ chi tiết</Link></li>
-            <li><Link href="/lich-thi" className="hover:text-mech-gold">Lịch thi & bảng xếp hạng</Link></li>
-            <li><Link href="/vote" className="hover:text-mech-gold">Bình chọn khán giả</Link></li>
           </ul>
         </nav>
         <div className="text-sm">
-          <div className="font-bold uppercase tracking-wider text-white">Đơn vị chỉ đạo</div>
+          <div className="font-bold uppercase tracking-wider text-white">{F.facultyTitle}</div>
           <p className="mt-2">{SITE.faculty}</p>
-          <div className="mt-4 font-bold uppercase tracking-wider text-white">Đơn vị tổ chức</div>
+          <div className="mt-4 font-bold uppercase tracking-wider text-white">{F.organizerTitle}</div>
           <p className="mt-2">{SITE.organizer}</p>
         </div>
         <div className="text-sm">
-          <div className="font-bold uppercase tracking-wider text-white">Liên hệ</div>
+          <div className="font-bold uppercase tracking-wider text-white">{F.contactTitle}</div>
           {/* Sửa ở /admin/content → Liên hệ; mục trống sẽ tự ẩn */}
           {(CONTACT.person || CONTACT.phone) && (
             <p className="mt-2">
-              Mọi thắc mắc xin liên hệ: {CONTACT.person}{CONTACT.phone && <> – SĐT:{" "}
+              {F.contactPrefix} {CONTACT.person}{CONTACT.phone && <> – SĐT:{" "}
               <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="font-semibold text-white hover:text-mech-gold">{CONTACT.phone}</a></>}
             </p>
           )}
@@ -303,8 +299,8 @@ export function Footer({ c }: { c: Content }) {
         </div>
       </div>
       <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 px-4 pt-6 text-xs md:px-6">
-        © 2026 {SITE.name} · {SITE.faculty} ·{" "}
-        <Link href="/privacy" className="hover:text-mech-gold">Chính sách quyền riêng tư</Link>
+        {F.copyright} ·{" "}
+        <Link href="/privacy" className="hover:text-mech-gold">{F.privacyLabel}</Link>
       </div>
     </footer>
   );

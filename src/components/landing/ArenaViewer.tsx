@@ -42,7 +42,7 @@ const HOTSPOTS = [
   { id: "lamp", pos: "2.4m 0.25m -4.52m", label: "Đèn Vinh quang", tone: "bg-navy-600" },
 ] as const;
 
-export default function ArenaViewer() {
+export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model = "/models/sa-ban-2026.glb" }: { preview?: string; model?: string }) {
   const ref = useRef<ModelViewerEl | null>(null);
   const [ready, setReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -121,13 +121,13 @@ export default function ArenaViewer() {
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gradient-to-b from-navy-900 to-navy md:aspect-[16/10]">
         <Script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js" onReady={() => setReady(true)} />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/sa-ban-3d.webp" alt="Ảnh render sa bàn 3D"
+        <img src={preview} alt="Ảnh render sa bàn 3D"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${loaded ? "pointer-events-none opacity-0" : "opacity-100"}`} />
         {createElement(
           "model-viewer",
           {
             ref,
-            src: "/models/sa-ban-2026.glb",
+            src: model,
             alt: "Mô hình 3D sa bàn FME JOURNEY 2026 với hai robot mô phỏng",
             autoplay: true,
             "camera-controls": true,

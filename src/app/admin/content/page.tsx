@@ -10,7 +10,7 @@ import ContentEditor from "@/components/admin/ContentEditor";
 export const metadata: Metadata = { title: "Quản trị · Giao diện & nội dung" };
 export const dynamic = "force-dynamic";
 
-export default async function AdminContent() {
+export default async function AdminContent({ searchParams }: { searchParams: { muc?: string } }) {
   const staff = await requireStaff(["BTC"]);
   // Đọc thẳng DB (không qua cache) để form luôn khớp bản vừa lưu
   const { data } = await createClient().from("site_content").select("key, value");
@@ -18,7 +18,7 @@ export default async function AdminContent() {
   return (
     <AdminShell staff={staff} active="/admin/content" title="Giao diện & nội dung"
       actions={<Link href="/" target="_blank" className="inline-flex items-center gap-1 text-sm font-bold text-navy-600 hover:text-mech-red"><ExternalLink className="h-4 w-4" /> Xem trang chủ</Link>}>
-      <ContentEditor content={mergeContent(rows)} edited={rows.map((r) => r.key)} />
+      <ContentEditor content={mergeContent(rows)} edited={rows.map((r) => r.key)} initial={searchParams.muc} />
     </AdminShell>
   );
 }

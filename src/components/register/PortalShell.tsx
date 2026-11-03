@@ -11,11 +11,11 @@ export default async function PortalShell({ title, subtitle, children }: { title
     <div className="min-h-screen">
       <AnnounceBar a={c.announce} />
       <header className="relative overflow-hidden bg-navy pb-24 pt-6 text-white">
-        <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40" />
+        {c.brand.headerBackground ? <HeaderImage src={c.brand.headerBackground} /> : <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40" />}
         <div className="relative mx-auto flex max-w-3xl items-center justify-between px-4">
-          <Link href="/" aria-label="FME JOURNEY 2026 – Trang chủ"><BrandMark /></Link>
+          <Link href="/" aria-label={`${c.site.name} – Trang chủ`}><BrandMark b={c.brand} /></Link>
           <Link href="/" className="inline-flex h-10 items-center gap-1.5 rounded-md px-2 text-sm font-semibold text-white/80 transition hover:text-mech-gold">
-            <ArrowLeft className="h-4 w-4" /> Trang chủ
+            <ArrowLeft className="h-4 w-4" /> {c.nav.backHome}
           </Link>
         </div>
         <div className="relative mx-auto mt-10 max-w-3xl px-4">
@@ -25,6 +25,17 @@ export default async function PortalShell({ title, subtitle, children }: { title
         </div>
       </header>
       <main className="relative mx-auto -mt-16 max-w-3xl px-4 pb-20">{children}</main>
+    </div>
+  );
+}
+
+// Ảnh nền BTC chọn cho đầu trang, phủ navy để chữ trắng dễ đọc
+export function HeaderImage({ src }: { src: string }) {
+  return (
+    <div className="pointer-events-none absolute inset-0" aria-hidden>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" className="h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-navy/75" />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { AlertTriangle, Gavel } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getStaff } from "@/lib/staff";
-import { CONTACT } from "@/lib/site";
+import { getContent } from "@/lib/content-server";
 import GoogleSignIn from "@/components/register/GoogleSignIn";
 import PortalShell, { SignOutButton } from "@/components/register/PortalShell";
 
@@ -14,9 +14,11 @@ export default async function StaffLogin({ searchParams }: { searchParams: { err
   if (staff) redirect(staff.role === "BTC" ? "/admin" : "/referee");
   const { data: { user } } = await createClient().auth.getUser();
   const notStaff = searchParams.error === "not_staff" || !!user;
+  const c = await getContent();
+  const CONTACT = c.contact;
 
   return (
-    <PortalShell title="BTC / Trọng tài" subtitle="Khu vực dành cho Ban tổ chức và trọng tài. Đăng nhập bằng tài khoản Google đã được BTC cấp quyền.">
+    <PortalShell title={c.pages.staffTitle} subtitle={c.pages.staffSubtitle}>
       {notStaff && (
         <div role="alert" className="mb-6 flex items-start gap-3 rounded-lg border border-mech-red/30 bg-red-50 p-4 text-sm text-mech-red">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
@@ -30,7 +32,7 @@ export default async function StaffLogin({ searchParams }: { searchParams: { err
         <h2 className="flex items-center gap-2 font-display text-2xl uppercase text-navy">
           <Gavel className="h-6 w-6 text-mech-red" /> Đăng nhập
         </h2>
-        <p className="mt-2 text-sm text-slate-600">Dùng được cả Gmail cá nhân, miễn là email đã được thêm vào danh sách nhân sự.</p>
+        <p className="mt-2 text-sm text-slate-600">{c.pages.staffNote}</p>
         <div className="mt-5 max-w-sm">
           {user ? <SignOutButton to="/referee/login" /> : <GoogleSignIn staff next="/admin" />}
         </div>

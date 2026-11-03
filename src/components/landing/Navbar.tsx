@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Gavel, GraduationCap, LogIn, Menu, X } from "lucide-react";
-import { NAV_LINKS } from "@/lib/site";
 import { BrandMark } from "@/components/brand/Logos";
+import type { Content } from "@/lib/content";
 
-const LOGIN_OPTIONS = [
-  { href: "/team/dashboard", icon: GraduationCap, title: "Sinh viên K26", hint: "Email @student.hcmute.edu.vn", tone: "text-navy-600" },
-  { href: "/referee/login", icon: Gavel, title: "Trọng tài / BTC", hint: "Tài khoản do BTC cấp", tone: "text-mech-red" },
-];
-
-export default function Navbar() {
+export default function Navbar({ nav, brand, siteName }: { nav: Content["nav"]; brand: Content["brand"]; siteName: string }) {
+  const NAV_LINKS = nav.links.filter((l) => l.label.trim() && l.href.trim());
+  const LOGIN_OPTIONS = [
+    { href: "/team/dashboard", icon: GraduationCap, title: nav.studentLogin, hint: nav.studentHint, tone: "text-navy-600" },
+    { href: "/referee/login", icon: Gavel, title: nav.staffLogin, hint: nav.staffHint, tone: "text-mech-red" },
+  ];
   const [open, setOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -27,14 +27,15 @@ export default function Navbar() {
 
   // Tô sáng mục menu ứng với section đang xem
   useEffect(() => {
-    const sections = NAV_LINKS.map((l) => document.querySelector(l.href)).filter(Boolean) as Element[];
+    const sections = NAV_LINKS.filter((l) => /^#[\w-]+$/.test(l.href)).map((l) => document.querySelector(l.href)).filter(Boolean) as Element[];
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && setActive(`#${e.target.id}`)),
       { rootMargin: "-45% 0px -50% 0px" },
     );
     sections.forEach((s) => io.observe(s));
     return () => io.disconnect();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nav.links]);
 
   useEffect(() => {
     if (!loginOpen && !open) return;
@@ -62,8 +63,8 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
-        <Link href="/" className="text-white" aria-label="FME JOURNEY 2026 – Trang chủ">
-          <BrandMark />
+        <Link href="/" className="text-white" aria-label={`${siteName} – Trang chủ`}>
+          <BrandMark b={brand} />
         </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">
@@ -90,7 +91,7 @@ export default function Navbar() {
               aria-expanded={loginOpen}
               aria-haspopup="menu"
             >
-              <LogIn className="h-4 w-4" /> Đăng nhập
+              <LogIn className="h-4 w-4" /> {nav.loginLabel}
             </button>
             {loginOpen && (
               <div role="menu" className="absolute right-0 mt-2 w-64 overflow-hidden rounded-lg bg-white text-navy shadow-2xl ring-1 ring-black/5">
@@ -115,7 +116,7 @@ export default function Navbar() {
             href="/register"
             className="inline-flex h-10 items-center gap-1.5 rounded-md bg-mech-red px-4 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
           >
-            Đăng ký <ArrowRight className="hidden h-4 w-4 sm:block" />
+            {nav.registerButton} <ArrowRight className="hidden h-4 w-4 sm:block" />
           </Link>
           <button
             onClick={() => setOpen((v) => !v)}
@@ -153,7 +154,7 @@ export default function Navbar() {
                 className="flex items-center gap-3 rounded-lg bg-white/5 px-4 py-3 text-white"
               >
                 <o.icon className="h-5 w-5 text-mech-gold" />
-                <span className="text-sm font-semibold">Đăng nhập · {o.title}</span>
+                <span className="text-sm font-semibold">{nav.loginLabel} · {o.title}</span>
               </Link>
             ))}
           </div>

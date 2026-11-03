@@ -17,7 +17,7 @@ type Signer = { role: string; label: string; name: string; image: string | null 
 const COLORS: Color[] = ["RED", "BLUE"];
 
 // Lập biên bản chỉnh điểm: chọn sự kiện cần xóa, thêm mục điểm / điều chỉnh tay, các bên ký trực tiếp trên màn hình
-export default function ReviseMatch({ match, events, rules, myName }: { match: ReviseInfo; events: MinutesEvent[]; rules: PadRule[]; myName: string }) {
+export default function ReviseMatch({ match, events, rules, myName, labels = {} }: { match: ReviseInfo; events: MinutesEvent[]; rules: PadRule[]; myName: string; labels?: Record<string, string> }) {
   const router = useRouter();
   const [type, setType] = useState("INPUT_ERROR");
   const [reason, setReason] = useState("");
@@ -26,7 +26,7 @@ export default function ReviseMatch({ match, events, rules, myName }: { match: R
   const [pick, setPick] = useState<Record<Color, string>>({ RED: "", BLUE: "" });
   const [manual, setManual] = useState<Record<Color, { delta: number; notes: string }>>({ RED: { delta: 0, notes: "" }, BLUE: { delta: 0, notes: "" } });
   const [signers, setSigners] = useState<Signer[]>(
-    SIGNER_ROLES.map((s) => ({ ...s, name: s.role === "HEAD_REFEREE" ? myName : "", image: null })),
+    SIGNER_ROLES.map((s) => ({ ...s, label: labels[s.role] || s.label, name: s.role === "HEAD_REFEREE" ? myName : "", image: null })),
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");

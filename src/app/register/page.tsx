@@ -30,10 +30,11 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
   }
 
   const error = searchParams.error ? ERRORS[searchParams.error] : null;
-  const closed = Date.now() > new Date((await getContent()).site.registrationDeadline).getTime();
+  const c = await getContent();
+  const closed = Date.now() > new Date(c.site.registrationDeadline).getTime();
 
   return (
-    <PortalShell title="Đăng ký đội thi" subtitle="Đội tối đa 5 tân sinh viên K26 HCM-UTE. Đội trưởng đăng nhập bằng email trường và khai báo cho cả đội.">
+    <PortalShell title={c.pages.registerTitle} subtitle={c.pages.registerSubtitle}>
       {error && (
         <div role="alert" className="mb-6 flex items-start gap-3 rounded-lg border border-mech-red/30 bg-red-50 p-4 text-sm text-mech-red">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" /> {error}

@@ -5,9 +5,11 @@ import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/staff";
 import { MATCH_STATUS } from "@/lib/site";
-import { minutesCode, REASON_TYPES, type MinutesEvent } from "@/lib/minutes";
+import { minutesCode, REASON_TYPES, SIGNER_ROLES, type MinutesEvent } from "@/lib/minutes";
 import AdminShell from "@/components/admin/AdminShell";
 import ReviseMatch from "@/components/referee/ReviseMatch";
+import { getContent } from "@/lib/content-server";
+import { signerName } from "@/components/referee/MinutesDoc";
 import type { PadRule } from "@/components/referee/ScoringPad";
 
 export const metadata: Metadata = { title: "Lập biên bản chỉnh điểm" };
@@ -19,6 +21,7 @@ export default async function RevisePage({ params }: { params: { matchId: string
   const { data: m } = await supabase.from("matches")
     .select("id, match_code, stage, status, red_score, blue_score, red_team_id, blue_team_id").eq("id", params.matchId).maybeSingle();
   if (!m) notFound();
+  const { minutes: minutesTpl } = await getContent();
   const [{ data: teams }, { data: events }, { data: rules }, { data: minutes }] = await Promise.all([
     supabase.from("teams").select("id, team_name").in("id", [m.red_team_id, m.blue_team_id].filter(Boolean) as string[]),
     supabase.from("match_events").select("id, team_color, event_type, point_value, notes, match_timestamp_seconds")
@@ -52,6 +55,7 @@ export default async function RevisePage({ params }: { params: { matchId: string
         <ReviseMatch
           match={{ id: m.id, code: m.match_code ?? "", stage: m.stage, status: m.status, red_score: m.red_score, blue_score: m.blue_score, red_name: team(m.red_team_id), blue_name: team(m.blue_team_id) }}
           events={(events ?? []) as MinutesEvent[]} rules={(rules ?? []) as PadRule[]} myName={staff.full_name ?? ""}
+          labels={Object.fromEntries(SIGNER_ROLES.map((s) => [s.role, signerName(minutesTpl, s.role)]))}
         />
       ) : (
         <p className="rounded-xl bg-white p-6 text-center text-slate-600 ring-1 ring-slate-200">Trận chưa bắt đầu nên chưa có điểm để chỉnh.</p>

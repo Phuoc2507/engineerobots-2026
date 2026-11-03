@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 
 // Thanh CTA dính đáy màn hình trên mobile: hiện sau khi lướt qua Hero, ẩn khi tới section Đăng ký
-export default function MobileCta() {
+export default function MobileCta({ label }: { label: string }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function MobileCta() {
       aria-hidden={!show}
     >
       <Link href="/register" tabIndex={show ? 0 : -1} className="btn-primary w-full">
-        Đăng ký đội thi <ArrowRight className="h-5 w-5" />
+        {label} <ArrowRight className="h-5 w-5" />
       </Link>
     </div>
   );

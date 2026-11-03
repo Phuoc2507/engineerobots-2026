@@ -68,7 +68,7 @@ export default async function TeamDashboard() {
     : { data: [] };
   const photoUrl = new Map(photoPaths.map((p, i) => [p.email, signed?.[i]?.signedUrl ?? null]));
 
-  const { contact: CONTACT, site: live } = await getContent();
+  const { contact: CONTACT, site: live, pages: P } = await getContent();
   const members = [...team.team_members].sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
   const me = members.find((m) => m.email.toLowerCase() === email);
   const isLeader = team.leader_email.toLowerCase() === email;
@@ -89,7 +89,7 @@ export default async function TeamDashboard() {
   ];
 
   return (
-    <PortalShell title="Đội của tôi" subtitle={isLeader ? "Quản lý hồ sơ, thành viên và theo dõi trạng thái duyệt của đội." : "Bạn đã được đội trưởng thêm vào đội. Theo dõi hồ sơ và lịch thi đấu tại đây."}>
+    <PortalShell title={P.teamTitle} subtitle={isLeader ? P.teamSubtitleLeader : P.teamSubtitleMember}>
       <AccountBar email={email} />
       <TeamManager
         email={email}

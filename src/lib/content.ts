@@ -1,8 +1,147 @@
 // Nội dung & giao diện trang mà BTC tự sửa ở /admin/content.
 // Mặc định lấy từ site.ts; bản BTC đã sửa lưu ở bảng site_content (mỗi mục 1 dòng, ghi đè từng trường).
-import { CONTACT, JOIN_STEPS, PRIZES, ROBOT_SPECS, SITE, TIMELINE, WORKSHOPS } from "@/lib/site";
+import { CONTACT, JOIN_STEPS, NAV_LINKS, PRIZES, ROBOT_SPECS, SITE, STUDENT_DOMAIN, TIMELINE, WORKSHOPS } from "@/lib/site";
+import { HOME_RULE_TABS, HOME_SPECS_TAB, PRIVACY_DOC, PRIVACY_FOOTER, RULES_SECTIONS } from "@/lib/content-docs";
+import { DOC_HINT } from "@/components/content/Doc";
 
 export const DEFAULT_CONTENT = {
+  brand: {
+    logoMain: "/brand/fme.png",
+    logoMainAlt: "Khoa Cơ khí – HCMUTE",
+    logoMainShort: "FME",
+    logoSecond: "/brand/fmes.png",
+    logoSecondAlt: "CLB Nghiên cứu Khoa học Cơ khí FMES",
+    logoSecondShort: "FMES",
+    markTitle: "FME JOURNEY",
+    markSubtitle: "Khoa Cơ khí",
+    logosText: "Khoa Cơ khí\n& FMES Club",
+    metaTitle: "FME JOURNEY 2026 – Cuộc thi Robot Tân sinh viên HCMUTE",
+    metaDescription: "Cuộc thi chế tạo robot dành cho tân sinh viên khóa 2026 HCM-UTE: Chặng 1 dò line tự hành, Chặng 2 tích lũy cấu kiện, Chặng 3 bảo vệ Đồ án và nhấn sáng Đèn Vinh Quang.",
+    shareImage: "",
+    favicon: "",
+    heroBackground: "",
+    heroVisual: "",
+    headerBackground: "",
+  },
+  nav: {
+    links: NAV_LINKS.map((l) => ({ ...l })),
+    loginLabel: "Đăng nhập",
+    studentLogin: "Sinh viên K26",
+    studentHint: `Email @${STUDENT_DOMAIN}`,
+    staffLogin: "Trọng tài / BTC",
+    staffHint: "Tài khoản do BTC cấp",
+    registerButton: "Đăng ký",
+    mobileCta: "Đăng ký đội thi",
+    backHome: "Trang chủ",
+  },
+  home: {
+    organizerPrefix: "Tổ chức bởi",
+    stepsButton: "Bắt đầu đăng ký",
+    countdownBefore: "Cổng đăng ký mở sau",
+    countdownDuring: "Cổng đăng ký đóng sau",
+    countdownAfter: "Cổng đăng ký đã đóng",
+    rulesKicker: "Thể lệ thi đấu",
+    rulesTitle: "Ba chặng – 180 / 300 giây – Một hành trình kỹ sư",
+    rulesTabs: HOME_RULE_TABS.map((t) => ({ ...t })),
+    specsLabel: HOME_SPECS_TAB.label,
+    specsTitle: HOME_SPECS_TAB.title,
+    specsBody: HOME_SPECS_TAB.body,
+    rulesImageCaption: "Sơ đồ sa bàn 4800 × 4800 mm",
+    rulesImageLink: "Thể lệ chi tiết →",
+    liveOn: true,
+    liveTitle: "Bảng điểm trực tiếp",
+    liveText: "Mở khi giải khởi tranh – điểm số và tiến độ Chặng 3 của từng trận cập nhật theo thời gian thực.",
+    liveButton: "Xem bảng điểm",
+    liveHref: "/lich-thi",
+    arenaButton: "Khám phá sa bàn 3D",
+    timelineBadge: "Đang mở",
+    timelineLink: "Xem lịch thi đấu chi tiết",
+  },
+  footer: {
+    linksTitle: "Liên kết nhanh",
+    links: [
+      ...NAV_LINKS.map((l) => ({ label: l.label, href: `/${l.href}` })),
+      { label: "Thể lệ chi tiết", href: "/rules" },
+      { label: "Lịch thi & bảng xếp hạng", href: "/lich-thi" },
+      { label: "Bình chọn khán giả", href: "/vote" },
+    ],
+    facultyTitle: "Đơn vị chỉ đạo",
+    organizerTitle: "Đơn vị tổ chức",
+    contactTitle: "Liên hệ",
+    contactPrefix: "Mọi thắc mắc xin liên hệ:",
+    copyright: `© 2026 ${SITE.name} · ${SITE.faculty}`,
+    privacyLabel: "Chính sách quyền riêng tư",
+  },
+  pages: {
+    rulesTitle: "Thể lệ chính thức",
+    rulesSubtitle: "Cuộc thi “FME JOURNEY 2026” dành cho Tân sinh viên khóa 2026 · BCH Đoàn – Hội Khoa Cơ khí · tháng 11/2026.",
+    rulesPdfTitle: "Văn bản thể lệ chính thức (PDF)",
+    rulesPdfText: "Các đội tải về để đọc kỹ và lưu lại khi chuẩn bị robot.",
+    rulesPdfButton: "Tải thể lệ (PDF)",
+    rulesPdfView: "Xem trực tuyến",
+    rulesTocTitle: "Mục lục",
+    arenaTitle: "Sa bàn 3D",
+    arenaSubtitle: "Kéo để xoay, cuộn / chụm hai ngón để phóng to, chọn góc nhìn từng chặng. Mô hình dựng theo bản vẽ thể lệ FME JOURNEY 2026 (đơn vị thật, tỉ lệ 1:1).",
+    arenaNotes: "- **Chặng 1** · 2 làn dò line hai bên biên\n- **Chặng 2** · 6 Cấu kiện Kiến thức + Bục Cơ hội\n- **Chặng 3** · Cầu Bản lĩnh, Địa hình + Bục Vinh Quang",
+    arenaPreview: "/images/sa-ban-3d.webp",
+    arenaModel: "/models/sa-ban-2026.glb",
+    arenaVideoTitle: "Video mô phỏng một lượt thi",
+    arenaVideoText: "Robot đỏ và xanh dò line Chặng 1, đưa Cấu kiện Kiến thức về Trạm thành tựu, tranh Cơ hội vàng, vượt Cầu Bản lĩnh rồi leo Bục Vinh Quang nhấn đèn ở Chặng 3. Chỉ minh hoạ, không phải chiến thuật bắt buộc.",
+    scheduleTitle: "Lịch thi",
+    scheduleSubtitle: `Các mốc của ${SITE.name} và lịch từng trận, cập nhật trực tiếp từ BTC.`,
+    drawTitle: "Kết quả bốc thăm",
+    drawSubtitle: "Vị trí của các đội trong bảng đấu, cập nhật trực tiếp trong lúc bốc thăm.",
+    drawEmpty: "BTC chưa tổ chức bốc thăm.",
+    voteTitle: "Bình chọn khán giả",
+    voteSubtitle: `Chọn đội bạn yêu thích nhất tại ${SITE.name}.`,
+    registerTitle: "Đăng ký đội thi",
+    registerSubtitle: "Đội tối đa 5 tân sinh viên K26 HCM-UTE. Đội trưởng đăng nhập bằng email trường và khai báo cho cả đội.",
+    teamTitle: "Đội của tôi",
+    teamSubtitleLeader: "Quản lý hồ sơ, thành viên và theo dõi trạng thái duyệt của đội.",
+    teamSubtitleMember: "Bạn đã được đội trưởng thêm vào đội. Theo dõi hồ sơ và lịch thi đấu tại đây.",
+    practiceTitle: "Đăng ký lịch chạy thử",
+    practiceSubtitle: "Chạy thử trên sa bàn thật trước ngày thi 1 tuần. Mỗi khung giờ chỉ dành cho 1 đội, đặt trước để không trùng lịch.",
+    staffTitle: "BTC / Trọng tài",
+    staffSubtitle: "Khu vực dành cho Ban tổ chức và trọng tài. Đăng nhập bằng tài khoản Google đã được BTC cấp quyền.",
+    staffNote: "Dùng được cả Gmail cá nhân, miễn là email đã được thêm vào danh sách nhân sự.",
+    privacyTitle: "Chính sách quyền riêng tư",
+    privacySubtitle: `Áp dụng cho website ${SITE.name} do ${SITE.organizer} vận hành.`,
+  },
+  rules_doc: {
+    sections: RULES_SECTIONS.map((s) => ({ ...s })),
+  },
+  privacy: {
+    body: PRIVACY_DOC,
+    footer: PRIVACY_FOOTER,
+  },
+  minutes: {
+    logo: "",
+    orgLine1: SITE.organizer,
+    orgLine2: `Ban tổ chức ${SITE.name}`,
+    rightHeader: "",
+    place: "",
+    title: "Biên bản chỉnh điểm số trận đấu",
+    intro: "",
+    s1: "I. Nội dung",
+    s2: "II. Các thay đổi điểm",
+    s3: "III. Kết quả sau chỉnh",
+    s4: "IV. Xác nhận của các bên",
+    closing: "",
+    footer: "",
+    showCreator: true,
+    showSignTime: true,
+    font: "sans",
+    fontSize: "13",
+    signColumns: "3",
+    accent: "#000000",
+    tableHead: "#F1F5F9",
+    labelHeadReferee: "Trọng tài chính",
+    labelSecretaryRed: "Thư ký phe Đỏ",
+    labelSecretaryBlue: "Thư ký phe Xanh",
+    labelTeamRed: "Đại diện đội Đỏ",
+    labelTeamBlue: "Đại diện đội Xanh",
+    labelBtc: "Đại diện Ban tổ chức",
+  },
   site: {
     name: SITE.name,
     theme: SITE.theme,
@@ -143,21 +282,71 @@ export function themeCss(theme: Content["theme"]) {
 }
 
 // ───────── Mô tả form cho trang sửa nội dung ─────────
-export type FieldType = "text" | "textarea" | "datetime" | "url" | "file" | "bool" | "select" | "color";
+export type FieldType = "text" | "textarea" | "doc" | "datetime" | "url" | "file" | "bool" | "select" | "color";
 export type Field = {
   k: string; label: string; type: FieldType; hint?: string;
   options?: { value: string; label: string }[];
   accept?: string;
 };
 export type ListField = { k: string; label: string; type: "list"; item: Field[]; hint?: string };
-export type Section = { key: ContentKey; title: string; desc: string; where: string; fields: (Field | ListField)[] };
+export type Group = "Chung" | "Trang chủ" | "Các trang" | "Biên bản";
+export type Section = { key: ContentKey; group: Group; title: string; desc: string; where: string; fields: (Field | ListField)[] };
+export const GROUPS: Group[] = ["Chung", "Trang chủ", "Các trang", "Biên bản"];
 
 const IMG = "image/png,image/jpeg,image/webp,image/gif";
 const RICH = "Bao chữ trong **hai dấu sao** để in đậm.";
 
 export const CONTENT_SECTIONS: Section[] = [
   {
-    key: "site", title: "Thông tin chung", where: "Mọi trang", desc: "Tên cuộc thi, đơn vị tổ chức và thời gian đăng ký (đồng hồ đếm ngược + hạn khóa đăng ký trong hệ thống).",
+    key: "brand", group: "Chung", title: "Logo & ấn phẩm nhận diện", where: "Mọi trang (web chung và khu BTC)", desc: "Logo, tên hiển thị cạnh logo, ảnh nền đầu trang, ảnh khi chia sẻ link lên mạng xã hội và biểu tượng tab trình duyệt.",
+    fields: [
+      { k: "logoMain", label: "Logo chính (thanh điều hướng, mọi trang)", type: "file", accept: IMG },
+      { k: "logoMainAlt", label: "Tên đơn vị của logo chính", type: "text" },
+      { k: "logoMainShort", label: "Tên viết tắt logo chính", type: "text" },
+      { k: "logoSecond", label: "Logo thứ hai (đầu trang chủ)", type: "file", accept: IMG, hint: "Để trống nếu chỉ dùng một logo." },
+      { k: "logoSecondAlt", label: "Tên đơn vị của logo thứ hai", type: "text" },
+      { k: "logoSecondShort", label: "Tên viết tắt logo thứ hai", type: "text" },
+      { k: "markTitle", label: "Chữ lớn cạnh logo", type: "text" },
+      { k: "markSubtitle", label: "Chữ nhỏ (vàng) cạnh logo", type: "text" },
+      { k: "logosText", label: "Chữ cạnh cụm logo ở đầu trang chủ", type: "textarea" },
+      { k: "heroBackground", label: "Ảnh nền đầu trang chủ", type: "file", accept: IMG, hint: "Để trống = nền lưới xanh navy. Ảnh được phủ lớp navy mờ để chữ dễ đọc." },
+      { k: "heroVisual", label: "Ảnh / poster bên phải đầu trang chủ", type: "file", accept: IMG, hint: "Để trống = hình sa bàn động có sẵn." },
+      { k: "headerBackground", label: "Ảnh nền đầu các trang con (Thể lệ, Lịch thi, Đăng ký…)", type: "file", accept: IMG },
+      { k: "metaTitle", label: "Tiêu đề trang khi tìm kiếm / chia sẻ link", type: "text" },
+      { k: "metaDescription", label: "Mô tả khi tìm kiếm / chia sẻ link", type: "textarea" },
+      { k: "shareImage", label: "Ảnh hiện khi chia sẻ link (Facebook, Zalo…)", type: "file", accept: IMG, hint: "Khuyên dùng 1200 × 630 px." },
+      { k: "favicon", label: "Biểu tượng tab trình duyệt", type: "file", accept: "image/png", hint: "Ảnh PNG vuông. Để trống = biểu tượng mặc định." },
+    ],
+  },
+  {
+    key: "nav", group: "Chung", title: "Menu & nút đăng nhập", where: "Thanh điều hướng trang chủ, các trang con", desc: "Các mục menu trên cùng trang chủ, menu đăng nhập và nút Đăng ký.",
+    fields: [
+      { k: "links", label: "Mục menu", type: "list", hint: "Đường dẫn bắt đầu bằng # để cuộn tới mục trên trang chủ (#gioi-thieu, #the-le, #sa-ban-3d, #giai-thuong, #lich-trinh) hoặc / để mở trang khác (/rules, /lich-thi…).", item: [{ k: "label", label: "Chữ", type: "text" }, { k: "href", label: "Đường dẫn", type: "url" }] },
+      { k: "loginLabel", label: "Nút đăng nhập", type: "text" },
+      { k: "studentLogin", label: "Dòng đăng nhập sinh viên", type: "text" },
+      { k: "studentHint", label: "Chú thích đăng nhập sinh viên", type: "text" },
+      { k: "staffLogin", label: "Dòng đăng nhập BTC / trọng tài", type: "text" },
+      { k: "staffHint", label: "Chú thích đăng nhập BTC / trọng tài", type: "text" },
+      { k: "registerButton", label: "Nút Đăng ký (góc phải)", type: "text" },
+      { k: "mobileCta", label: "Nút đăng ký nổi trên điện thoại", type: "text" },
+      { k: "backHome", label: "Nút quay về trang chủ (các trang con)", type: "text" },
+    ],
+  },
+  {
+    key: "footer", group: "Chung", title: "Chân trang", where: "Cuối trang chủ", desc: "Tiêu đề các cột, liên kết nhanh và dòng bản quyền. Thông tin liên hệ sửa ở mục Liên hệ & nhóm Zalo.",
+    fields: [
+      { k: "linksTitle", label: "Tiêu đề cột liên kết", type: "text" },
+      { k: "links", label: "Liên kết nhanh", type: "list", item: [{ k: "label", label: "Chữ", type: "text" }, { k: "href", label: "Đường dẫn", type: "url" }] },
+      { k: "facultyTitle", label: "Tiêu đề Đơn vị chỉ đạo", type: "text" },
+      { k: "organizerTitle", label: "Tiêu đề Đơn vị tổ chức", type: "text" },
+      { k: "contactTitle", label: "Tiêu đề cột liên hệ", type: "text" },
+      { k: "contactPrefix", label: "Câu dẫn trước người liên hệ", type: "text" },
+      { k: "copyright", label: "Dòng bản quyền", type: "text" },
+      { k: "privacyLabel", label: "Chữ liên kết chính sách riêng tư", type: "text" },
+    ],
+  },
+  {
+    key: "site", group: "Chung", title: "Thông tin chung", where: "Mọi trang", desc: "Tên cuộc thi, đơn vị tổ chức và thời gian đăng ký (đồng hồ đếm ngược + hạn khóa đăng ký trong hệ thống).",
     fields: [
       { k: "name", label: "Tên cuộc thi", type: "text" },
       { k: "theme", label: "Chủ đề", type: "text" },
@@ -169,7 +358,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "announce", title: "Thông báo nổi bật", where: "Trang chủ, trang sinh viên, khu BTC", desc: "Dải thông báo hiện trên cùng trang công khai, và dải riêng cho khu vực BTC / trọng tài.",
+    key: "announce", group: "Chung", title: "Thông báo nổi bật", where: "Trang chủ, trang sinh viên, khu BTC", desc: "Dải thông báo hiện trên cùng trang công khai, và dải riêng cho khu vực BTC / trọng tài.",
     fields: [
       { k: "publicOn", label: "Bật thông báo trên web công khai", type: "bool" },
       { k: "publicText", label: "Nội dung (web công khai)", type: "textarea", hint: RICH },
@@ -181,7 +370,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "hero", title: "Đầu trang chủ", where: "Trang chủ", desc: "Khối giới thiệu lớn trên cùng trang chủ.",
+    key: "hero", group: "Trang chủ", title: "Đầu trang chủ", where: "Trang chủ", desc: "Khối giới thiệu lớn trên cùng trang chủ.",
     fields: [
       { k: "kicker", label: "Dòng nhỏ phía trên", type: "text" },
       { k: "title1", label: "Tiêu đề dòng 1", type: "text" },
@@ -193,7 +382,38 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "intro", title: "Giới thiệu & cách tham gia", where: "Trang chủ", desc: "Mục Giới thiệu, các con số và các bước tham gia.",
+    key: "home", group: "Trang chủ", title: "Thể lệ tóm tắt & chữ khác", where: "Trang chủ", desc: "Các tab thể lệ tóm tắt, khối bảng điểm trực tiếp, đồng hồ đếm ngược và chữ trên các nút còn lại của trang chủ.",
+    fields: [
+      { k: "rulesKicker", label: "Nhãn mục Thể lệ", type: "text" },
+      { k: "rulesTitle", label: "Tiêu đề mục Thể lệ", type: "text" },
+      { k: "rulesTabs", label: "Các tab chặng thi", type: "list", item: [
+        { k: "label", label: "Tên tab", type: "text" },
+        { k: "title", label: "Tiêu đề", type: "text" },
+        { k: "body", label: "Nội dung", type: "doc", hint: DOC_HINT },
+        { k: "facts", label: "Ô điểm nổi bật (mỗi dòng: Nhãn | Giá trị)", type: "textarea" },
+      ] },
+      { k: "specsLabel", label: "Tên tab Quy chuẩn robot", type: "text" },
+      { k: "specsTitle", label: "Tiêu đề tab Quy chuẩn robot", type: "text" },
+      { k: "specsBody", label: "Nội dung tab Quy chuẩn robot", type: "doc", hint: "Các ô thông số lấy từ mục Thể lệ & tài liệu → Quy chuẩn robot. " + DOC_HINT },
+      { k: "rulesImageCaption", label: "Chú thích ảnh sơ đồ sa bàn", type: "text" },
+      { k: "rulesImageLink", label: "Chữ liên kết dưới ảnh", type: "text" },
+      { k: "liveOn", label: "Hiện khối Bảng điểm trực tiếp", type: "bool" },
+      { k: "liveTitle", label: "Tiêu đề khối bảng điểm", type: "text" },
+      { k: "liveText", label: "Mô tả khối bảng điểm", type: "textarea" },
+      { k: "liveButton", label: "Chữ trên nút", type: "text" },
+      { k: "liveHref", label: "Đường dẫn nút", type: "url" },
+      { k: "countdownBefore", label: "Đồng hồ: trước khi mở đăng ký", type: "text" },
+      { k: "countdownDuring", label: "Đồng hồ: đang mở đăng ký", type: "text" },
+      { k: "countdownAfter", label: "Đồng hồ: đã đóng đăng ký", type: "text" },
+      { k: "organizerPrefix", label: "Chữ trước tên đơn vị tổ chức (mục Giới thiệu)", type: "text" },
+      { k: "stepsButton", label: "Nút ở khối các bước tham gia", type: "text" },
+      { k: "arenaButton", label: "Nút ở mục Sa bàn", type: "text" },
+      { k: "timelineBadge", label: "Nhãn mốc đang diễn ra", type: "text" },
+      { k: "timelineLink", label: "Liên kết dưới Lịch trình", type: "text" },
+    ],
+  },
+  {
+    key: "intro", group: "Trang chủ", title: "Giới thiệu & cách tham gia", where: "Trang chủ", desc: "Mục Giới thiệu, các con số và các bước tham gia.",
     fields: [
       { k: "kicker", label: "Nhãn mục", type: "text" },
       { k: "title", label: "Tiêu đề", type: "text" },
@@ -205,7 +425,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "arena", title: "Sa bàn & video", where: "Trang chủ, trang Sa bàn 3D", desc: "Mục Sa bàn thi đấu: video mô phỏng, ảnh bìa video và mô tả từng chặng.",
+    key: "arena", group: "Trang chủ", title: "Sa bàn & video", where: "Trang chủ, trang Sa bàn 3D", desc: "Mục Sa bàn thi đấu: video mô phỏng, ảnh bìa video và mô tả từng chặng.",
     fields: [
       { k: "kicker", label: "Nhãn mục", type: "text" },
       { k: "title", label: "Tiêu đề", type: "text" },
@@ -217,7 +437,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "prizes", title: "Giải thưởng & tập huấn", where: "Trang chủ, trang Thể lệ", desc: "Cơ cấu giải thưởng, ghi chú và các buổi tập huấn.",
+    key: "prizes", group: "Trang chủ", title: "Giải thưởng & tập huấn", where: "Trang chủ, trang Thể lệ", desc: "Cơ cấu giải thưởng, ghi chú và các buổi tập huấn.",
     fields: [
       { k: "kicker", label: "Nhãn mục", type: "text" },
       { k: "title", label: "Tiêu đề", type: "text" },
@@ -227,7 +447,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "timeline", title: "Lịch trình", where: "Trang chủ, trang Lịch thi", desc: "Các mốc thời gian. Mốc “Đang diễn ra” được tô đỏ.",
+    key: "timeline", group: "Trang chủ", title: "Lịch trình", where: "Trang chủ, trang Lịch thi", desc: "Các mốc thời gian. Mốc “Đang diễn ra” được tô đỏ.",
     fields: [
       { k: "kicker", label: "Nhãn mục", type: "text" },
       { k: "title", label: "Tiêu đề", type: "text" },
@@ -244,7 +464,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "cta", title: "Kêu gọi đăng ký", where: "Trang chủ", desc: "Dải đỏ cuối trang chủ.",
+    key: "cta", group: "Trang chủ", title: "Kêu gọi đăng ký", where: "Trang chủ", desc: "Dải đỏ cuối trang chủ.",
     fields: [
       { k: "title", label: "Tiêu đề", type: "text" },
       { k: "text", label: "Nội dung", type: "textarea", hint: RICH },
@@ -252,7 +472,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "contact", title: "Liên hệ & nhóm Zalo", where: "Chân trang, trang đội thi, email gửi đội", desc: "Thông tin liên hệ. Mục để trống sẽ tự ẩn.",
+    key: "contact", group: "Chung", title: "Liên hệ & nhóm Zalo", where: "Chân trang, trang đội thi, email gửi đội", desc: "Thông tin liên hệ. Mục để trống sẽ tự ẩn.",
     fields: [
       { k: "person", label: "Người liên hệ", type: "text" },
       { k: "phone", label: "Số điện thoại", type: "text" },
@@ -263,7 +483,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "rules", title: "Thể lệ & tài liệu", where: "Trang Thể lệ, trang chủ", desc: "File thể lệ, bản vẽ sa bàn, sơ đồ sa bàn và bảng quy chuẩn robot.",
+    key: "rules", group: "Các trang", title: "Thể lệ & tài liệu", where: "Trang Thể lệ, trang chủ", desc: "File thể lệ, bản vẽ sa bàn, sơ đồ sa bàn và bảng quy chuẩn robot.",
     fields: [
       { k: "pdf", label: "File thể lệ chính thức (PDF)", type: "file", accept: "application/pdf" },
       { k: "drawingPdf", label: "Bản vẽ kỹ thuật sa bàn (PDF)", type: "file", accept: "application/pdf" },
@@ -272,14 +492,14 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "stage", title: "Màn hình chiếu", where: "Màn hình chiếu sân khấu", desc: "Chữ hiện trên màn hình chiếu khi chưa có trận nào diễn ra.",
+    key: "stage", group: "Các trang", title: "Màn hình chiếu", where: "Màn hình chiếu sân khấu", desc: "Chữ hiện trên màn hình chiếu khi chưa có trận nào diễn ra.",
     fields: [
       { k: "idleTitle", label: "Tiêu đề", type: "text" },
       { k: "idleText", label: "Dòng chữ phụ", type: "text" },
     ],
   },
   {
-    key: "theme", title: "Màu sắc giao diện", where: "Toàn bộ web công khai và web BTC", desc: "Bảng màu nhận diện. Đổi màu sẽ áp dụng cho mọi trang.",
+    key: "theme", group: "Chung", title: "Màu sắc giao diện", where: "Toàn bộ web công khai và web BTC", desc: "Bảng màu nhận diện. Đổi màu sẽ áp dụng cho mọi trang.",
     fields: [
       { k: "navy", label: "Xanh navy (nền chính)", type: "color" },
       { k: "navy600", label: "Xanh nhấn (nút, liên kết)", type: "color" },
@@ -290,6 +510,92 @@ export const CONTENT_SECTIONS: Section[] = [
       { k: "ice", label: "Nền sáng", type: "color" },
       { k: "teamRed", label: "Màu phe Đỏ", type: "color" },
       { k: "teamBlue", label: "Màu phe Xanh", type: "color" },
+    ],
+  },
+  {
+    key: "rules_doc", group: "Các trang", title: "Nội dung thể lệ chi tiết", where: "Trang Thể lệ (/rules)", desc: "Toàn bộ các mục của trang Thể lệ. Mục lục tự tạo theo tên các mục.",
+    fields: [
+      { k: "sections", label: "Các mục", type: "list", hint: "Chèn khối có sẵn bằng một dòng riêng: [[thong-so-robot]] ô thông số robot, [[so-do-sa-ban]] sơ đồ sa bàn + nút tải bản vẽ, [[bang-giai-thuong]] bảng giải thưởng, [[tap-huan]] danh sách buổi tập huấn.", item: [
+        { k: "title", label: "Tên mục", type: "text" },
+        { k: "id", label: "Mã neo (không dấu, để liên kết /rules#ma)", type: "text" },
+        { k: "body", label: "Nội dung", type: "doc", hint: DOC_HINT },
+      ] },
+    ],
+  },
+  {
+    key: "pages", group: "Các trang", title: "Tiêu đề & chữ các trang", where: "Thể lệ, Sa bàn 3D, Lịch thi, Bốc thăm, Bình chọn, Đăng ký, Đội của tôi, Đăng nhập BTC, Quyền riêng tư", desc: "Tiêu đề lớn, dòng giới thiệu và các chữ cố định trên từng trang con.",
+    fields: [
+      { k: "rulesTitle", label: "Thể lệ · Tiêu đề", type: "text" },
+      { k: "rulesSubtitle", label: "Thể lệ · Dòng giới thiệu", type: "textarea" },
+      { k: "rulesPdfTitle", label: "Thể lệ · Tiêu đề khung tải PDF", type: "text" },
+      { k: "rulesPdfText", label: "Thể lệ · Mô tả khung tải PDF", type: "text" },
+      { k: "rulesPdfButton", label: "Thể lệ · Nút tải PDF", type: "text" },
+      { k: "rulesPdfView", label: "Thể lệ · Nút xem trực tuyến", type: "text" },
+      { k: "rulesTocTitle", label: "Thể lệ · Tiêu đề mục lục", type: "text" },
+      { k: "arenaTitle", label: "Sa bàn 3D · Tiêu đề", type: "text" },
+      { k: "arenaSubtitle", label: "Sa bàn 3D · Dòng giới thiệu", type: "textarea" },
+      { k: "arenaNotes", label: "Sa bàn 3D · Ghi chú dưới mô hình", type: "doc", hint: DOC_HINT },
+      { k: "arenaPreview", label: "Sa bàn 3D · Ảnh xem trước mô hình", type: "file", accept: IMG },
+      { k: "arenaModel", label: "Sa bàn 3D · Đường dẫn file mô hình (.glb)", type: "url", hint: "File .glb cần đặt ở nơi công khai (ví dụ trong mã nguồn web) rồi dán đường dẫn." },
+      { k: "arenaVideoTitle", label: "Sa bàn 3D · Tiêu đề video", type: "text" },
+      { k: "arenaVideoText", label: "Sa bàn 3D · Mô tả video", type: "textarea" },
+      { k: "scheduleTitle", label: "Lịch thi · Tiêu đề", type: "text" },
+      { k: "scheduleSubtitle", label: "Lịch thi · Dòng giới thiệu", type: "textarea" },
+      { k: "drawTitle", label: "Bốc thăm · Tiêu đề", type: "text" },
+      { k: "drawSubtitle", label: "Bốc thăm · Dòng giới thiệu", type: "textarea" },
+      { k: "drawEmpty", label: "Bốc thăm · Khi chưa bốc thăm", type: "text" },
+      { k: "voteTitle", label: "Bình chọn · Tiêu đề", type: "text" },
+      { k: "voteSubtitle", label: "Bình chọn · Dòng giới thiệu", type: "textarea" },
+      { k: "registerTitle", label: "Đăng ký · Tiêu đề", type: "text" },
+      { k: "registerSubtitle", label: "Đăng ký · Dòng giới thiệu", type: "textarea" },
+      { k: "teamTitle", label: "Đội của tôi · Tiêu đề", type: "text" },
+      { k: "teamSubtitleLeader", label: "Đội của tôi · Giới thiệu (đội trưởng)", type: "textarea" },
+      { k: "teamSubtitleMember", label: "Đội của tôi · Giới thiệu (thành viên)", type: "textarea" },
+      { k: "practiceTitle", label: "Chạy thử sa bàn · Tiêu đề", type: "text" },
+      { k: "practiceSubtitle", label: "Chạy thử sa bàn · Dòng giới thiệu", type: "textarea" },
+      { k: "staffTitle", label: "Đăng nhập BTC · Tiêu đề", type: "text" },
+      { k: "staffSubtitle", label: "Đăng nhập BTC · Dòng giới thiệu", type: "textarea" },
+      { k: "staffNote", label: "Đăng nhập BTC · Ghi chú dưới nút", type: "text" },
+      { k: "privacyTitle", label: "Quyền riêng tư · Tiêu đề", type: "text" },
+      { k: "privacySubtitle", label: "Quyền riêng tư · Dòng giới thiệu", type: "textarea" },
+    ],
+  },
+  {
+    key: "privacy", group: "Các trang", title: "Chính sách quyền riêng tư", where: "Trang /privacy (bắt buộc cho đăng nhập Google)", desc: "Nội dung chính sách quyền riêng tư.",
+    fields: [
+      { k: "body", label: "Nội dung", type: "doc", hint: DOC_HINT },
+      { k: "footer", label: "Dòng cuối (ngày cập nhật)", type: "text" },
+    ],
+  },
+  {
+    key: "minutes", group: "Biên bản", title: "Mẫu biên bản chỉnh điểm", where: "Biên bản in (khu BTC → Biên bản)", desc: "Tiêu đề, quốc hiệu, logo, các đề mục, phông chữ, màu và tên các bên ký trên biên bản. Áp dụng cho mọi biên bản, kể cả biên bản đã lập. Bản xem trước bên dưới cập nhật ngay khi sửa.",
+    fields: [
+      { k: "logo", label: "Logo trên biên bản", type: "file", accept: IMG, hint: "Để trống nếu không cần logo." },
+      { k: "orgLine1", label: "Tên cơ quan (góc trái, in hoa)", type: "text" },
+      { k: "orgLine2", label: "Dòng dưới tên cơ quan", type: "text" },
+      { k: "rightHeader", label: "Góc phải (ví dụ quốc hiệu, tiêu ngữ)", type: "textarea", hint: "Mỗi dòng một dòng; dòng đầu in đậm. Ví dụ: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM ↵ Độc lập – Tự do – Hạnh phúc." },
+      { k: "place", label: "Địa danh trước ngày lập", type: "text", hint: "Ví dụ: TP. Hồ Chí Minh → “TP. Hồ Chí Minh, ngày 15 tháng 11 năm 2026”. Để trống = không hiện." },
+      { k: "title", label: "Tên biên bản", type: "text" },
+      { k: "intro", label: "Đoạn mở đầu", type: "textarea", hint: "Hiện trước mục nội dung. Để trống nếu không cần." },
+      { k: "s1", label: "Đề mục nội dung", type: "text" },
+      { k: "s2", label: "Đề mục bảng thay đổi", type: "text" },
+      { k: "s3", label: "Đề mục kết quả", type: "text" },
+      { k: "s4", label: "Đề mục chữ ký", type: "text" },
+      { k: "closing", label: "Đoạn kết (trước phần ký)", type: "textarea" },
+      { k: "footer", label: "Chú thích cuối trang", type: "text" },
+      { k: "showCreator", label: "Hiện tài khoản người lập trên hệ thống", type: "bool" },
+      { k: "showSignTime", label: "Hiện thời điểm ký dưới chữ ký", type: "bool" },
+      { k: "font", label: "Phông chữ", type: "select", options: [{ value: "sans", label: "Không chân (giống web)" }, { value: "serif", label: "Có chân – Times New Roman (văn bản hành chính)" }] },
+      { k: "fontSize", label: "Cỡ chữ", type: "select", options: [{ value: "12", label: "12 px" }, { value: "13", label: "13 px" }, { value: "14", label: "14 px" }, { value: "15", label: "15 px" }] },
+      { k: "signColumns", label: "Số cột chữ ký mỗi hàng", type: "select", options: [{ value: "2", label: "2 cột" }, { value: "3", label: "3 cột" }] },
+      { k: "accent", label: "Màu tên biên bản và đề mục", type: "color" },
+      { k: "tableHead", label: "Màu nền dòng tiêu đề bảng", type: "color" },
+      { k: "labelHeadReferee", label: "Tên bên ký: Trọng tài chính", type: "text" },
+      { k: "labelSecretaryRed", label: "Tên bên ký: Thư ký phe Đỏ", type: "text" },
+      { k: "labelSecretaryBlue", label: "Tên bên ký: Thư ký phe Xanh", type: "text" },
+      { k: "labelTeamRed", label: "Tên bên ký: Đại diện đội Đỏ", type: "text" },
+      { k: "labelTeamBlue", label: "Tên bên ký: Đại diện đội Xanh", type: "text" },
+      { k: "labelBtc", label: "Tên bên ký: Ban tổ chức", type: "text" },
     ],
   },
 ];

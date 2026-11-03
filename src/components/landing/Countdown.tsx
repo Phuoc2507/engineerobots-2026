@@ -13,25 +13,28 @@ function diff(target: number) {
 }
 
 // Trước giờ mở: đếm tới lúc mở cổng; đang mở: đếm tới hạn đóng; quá hạn: báo đã đóng
-function phase(start: number, end: number) {
+type Labels = { before: string; during: string; after: string };
+const LABELS: Labels = { before: "Cổng đăng ký mở sau", during: "Cổng đăng ký đóng sau", after: "Cổng đăng ký đã đóng" };
+
+function phase(start: number, end: number, l: Labels) {
   const now = Date.now();
-  if (now < start) return { label: "Cổng đăng ký mở sau", target: start };
-  if (now <= end) return { label: "Cổng đăng ký đóng sau", target: end };
-  return { label: "Cổng đăng ký đã đóng", target: end };
+  if (now < start) return { label: l.before, target: start };
+  if (now <= end) return { label: l.during, target: end };
+  return { label: l.after, target: end };
 }
 
-export default function Countdown({ start, deadline, note }: { start: string; deadline: string; note?: string }) {
+export default function Countdown({ start, deadline, note, labels = LABELS }: { start: string; deadline: string; note?: string; labels?: Labels }) {
   const s = new Date(start).getTime();
   const e = new Date(deadline).getTime();
   // null cho lần render server để tránh lệch hydration
   const [state, setState] = useState<{ label: string; left: ReturnType<typeof diff> } | null>(null);
 
   useEffect(() => {
-    const tick = () => { const p = phase(s, e); setState({ label: p.label, left: diff(p.target) }); };
+    const tick = () => { const p = phase(s, e, labels); setState({ label: p.label, left: diff(p.target) }); };
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [s, e]);
+  }, [s, e, labels]);
 
   const left = state?.left;
   const units = [
