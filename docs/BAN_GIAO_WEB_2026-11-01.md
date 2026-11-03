@@ -30,7 +30,7 @@ Tất cả nằm trên mây, nên máy mới chỉ cần clone repo là làm ti�
 | `1b3f077` | Nới ràng buộc bảng `team_members`: MSSV chỉ cần 8 số (luật K26 vẫn do `_validate_team` kiểm tra). |
 
 ### Tài khoản thử nghiệm
-- `25134107@student.hcmute.edu.vn` được đăng ký và quản lý đội dù không phải K26. Thành viên trong đội đó được dùng MSSV/email khóa khác.
+- `25134107@student.hcmute.edu.vn` và `23144173@student.hcmute.edu.vn` được đăng ký và quản lý đội dù không phải K26. Thành viên trong đội đó được dùng MSSV/email khóa khác.
 - Danh sách nằm ở **hai nơi, phải sửa cùng lúc**: `TEST_ACCOUNTS` trong `src/lib/site.ts` và hàm `public.is_test_account()` (migration `0029_test_account.sql`).
 - **Trước ngày thi:** xóa đội thử nghiệm ở `/admin`.
 
