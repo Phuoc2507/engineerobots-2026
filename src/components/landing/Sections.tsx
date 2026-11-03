@@ -2,36 +2,34 @@ import Link from "next/link";
 import ArenaVideo from "@/components/landing/ArenaVideo";
 import Reveal from "@/components/landing/Reveal";
 import { ArrowRight, Box, CalendarClock, Flag, Mail, Radio, ThumbsUp, Trophy, Users, Wallet } from "lucide-react";
-import { CONTACT, JOIN_STEPS, NAV_LINKS, PRIZES, SITE, TIMELINE, WORKSHOPS } from "@/lib/site";
+import { NAV_LINKS } from "@/lib/site";
+import type { Content } from "@/lib/content";
+import Rich from "@/components/content/Rich";
 
-export function Intro() {
-  const stats = [
-    { icon: Trophy, value: "32–64", label: "Đội thi dự kiến" },
-    { icon: Users, value: "≤ 5", label: "Thành viên / đội" },
-    { icon: Flag, value: "3", label: "Chặng thi đấu" },
-    { icon: Wallet, value: "0đ", label: "Lệ phí tham dự" },
-  ];
+const STAT_ICONS = [Trophy, Users, Flag, Wallet];
+
+export function Intro({ c }: { c: Content }) {
+  const it = c.intro;
+  const stats = it.stats.map((s, i) => ({ ...s, icon: STAT_ICONS[i % STAT_ICONS.length] }));
   return (
     <section id="gioi-thieu" className="bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
             <p className="section-kicker">
-              <span className="h-px w-8 bg-mech-red" /> Giới thiệu
+              <span className="h-px w-8 bg-mech-red" /> {it.kicker}
             </p>
-            <h2 className="section-title mt-3">Sân chơi đầu tiên của kỹ sư K26</h2>
+            <h2 className="section-title mt-3">{it.title}</h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-600">
-              FME JOURNEY 2026 là một đấu trường robot mô phỏng “Hành trình trưởng thành của một kỹ sư Cơ khí”. Nơi mỗi
-              thử thách là một cột mốc quan trọng, giúp những tân binh Cơ khí phát triển tư duy, kỹ năng và bản lĩnh để chinh
-              phục những giới hạn mới.
+              <Rich text={it.body} strongClass="text-navy" />
             </p>
             <p className="mt-4 text-slate-600">
-              Tổ chức bởi <strong className="text-navy">{SITE.organizer}</strong>.
+              Tổ chức bởi <strong className="text-navy">{c.site.organizer}</strong>.
             </p>
           </div>
           <dl className="grid grid-cols-2 gap-4">
             {stats.map((s) => (
-              <div key={s.label} className="rounded-xl border border-slate-200 bg-ice p-5 md:p-6">
+              <div key={`${s.label}${s.value}`} className="rounded-xl border border-slate-200 bg-ice p-5 md:p-6">
                 <s.icon className="h-6 w-6 text-mech-red" />
                 <dd className="mt-4 font-display text-4xl text-navy md:text-5xl">{s.value}</dd>
                 <dt className="mt-1 text-sm font-semibold uppercase tracking-wide text-slate-600">{s.label}</dt>
@@ -44,15 +42,15 @@ export function Intro() {
         <div className="mt-16 rounded-2xl bg-navy p-6 text-white md:p-10">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <h3 className="font-display text-2xl uppercase tracking-wide md:text-3xl">
-              Tham gia chỉ với <span className="text-mech-gold">3 bước</span>
+              {it.stepsTitle} <span className="text-mech-gold">{it.stepsHighlight}</span>
             </h3>
             <Link href="/register" className="btn-primary shrink-0">
               Bắt đầu đăng ký <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
           <ol className="mt-8 grid gap-4 md:grid-cols-3">
-            {JOIN_STEPS.map((s, i) => (
-              <li key={s.title} className="flex gap-4 rounded-xl bg-white/5 p-5 ring-1 ring-white/10">
+            {it.steps.map((s, i) => (
+              <li key={`${i}${s.title}`} className="flex gap-4 rounded-xl bg-white/5 p-5 ring-1 ring-white/10">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-mech-gold font-display text-lg text-navy">
                   {i + 1}
                 </span>
@@ -69,24 +67,19 @@ export function Intro() {
   );
 }
 
-export function ArenaShowcase() {
-  const zones = [
-    { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 900 mm dọc hai mép, line đen 20 mm: Đường Danh vọng thẳng 1800 mm tới Checkpoint, Đường Thách thức ziczac 45°, vạch đích chữ T." },
-    { tag: "Chặng 2", title: "Cấu kiện & Bục Cơ hội", desc: "4 bóng pickleball Kiến thức Ø74 mm (2 Đỏ, 2 Xanh), Bục Cơ hội 400 × 400 mm cao 50 mm mang bóng Cơ hội vàng, 2 Trạm thành tựu 300 × 300 mm có gờ chặn ở hai cánh sân." },
-    { tag: "Chặng 3", title: "Cầu Bản lĩnh & Bục Vinh Quang", desc: "Cầu gỗ 600 × 550 mm, 2 sân độc lập: Đường Thử thách 5 thanh gờ, Trạm Thực nghiệm, Dốc Kiên trì 10° lên Đài Bảo vệ 100 mm, Dốc Thăng hoa lên Đỉnh 200 mm có Đèn Vinh Quang." },
-  ];
+export function ArenaShowcase({ c }: { c: Content }) {
+  const a = c.arena;
+  const zones = a.zones;
   return (
     <section id="sa-ban-3d" className="bg-navy py-20 text-white md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="section-kicker !text-mech-gold">
-              <span className="h-px w-8 bg-mech-gold" /> Sa bàn thi đấu
+              <span className="h-px w-8 bg-mech-gold" /> {a.kicker}
             </p>
-            <h2 className="section-title mt-3 !text-white">Sa bàn 4800 × 4800 mm</h2>
-            <p className="mt-4 max-w-2xl text-white/75">
-              Một sa bàn chung, ba vùng thi đấu nối tiếp nhau. Xoay, phóng to mô hình 3D để xem kích thước từng chi tiết.
-            </p>
+            <h2 className="section-title mt-3 !text-white">{a.title}</h2>
+            <p className="mt-4 max-w-2xl text-white/75">{a.text}</p>
           </div>
           <Link href="/arena-3d" className="btn-primary shrink-0">
             <Box className="h-5 w-5" /> Khám phá sa bàn 3D
@@ -95,15 +88,15 @@ export function ArenaShowcase() {
         <div className="mt-12 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
           <Reveal>
             <div className="relative overflow-hidden rounded-xl border border-white/10 shadow-2xl shadow-black/30">
-              <ArenaVideo />
+              <ArenaVideo src={a.video} poster={a.poster} />
               <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-navy-900/70 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest backdrop-blur">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-mech-red" /> Mô phỏng trận đấu
+                <span className="h-2 w-2 animate-pulse rounded-full bg-mech-red" /> {a.videoLabel}
               </span>
             </div>
           </Reveal>
           <ul className="space-y-4">
             {zones.map((z, i) => (
-              <li key={z.tag}>
+              <li key={`${i}${z.tag}`}>
                 <Reveal delay={120 * (i + 1)}>
                   <div className="rounded-xl border border-white/10 bg-white/5 p-5 transition hover:-translate-y-0.5 hover:border-mech-gold/50 hover:bg-white/10">
                     <span className="text-xs font-bold uppercase tracking-widest text-mech-gold">{z.tag}</span>
@@ -120,17 +113,18 @@ export function ArenaShowcase() {
   );
 }
 
-export function Prizes() {
+export function Prizes({ c }: { c: Content }) {
+  const pz = c.prizes;
   return (
     <section id="giai-thuong" className="bg-ice py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <p className="section-kicker">
-          <span className="h-px w-8 bg-mech-red" /> Giải thưởng & hỗ trợ
+          <span className="h-px w-8 bg-mech-red" /> {pz.kicker}
         </p>
-        <h2 className="section-title mt-3">Giải thưởng hấp dẫn</h2>
+        <h2 className="section-title mt-3">{pz.title}</h2>
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {PRIZES.map((p, i) => (
-            <li key={p.rank} className={`flex flex-col rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>
+          {pz.items.map((p, i) => (
+            <li key={`${i}${p.rank}`} className={`flex flex-col rounded-xl p-5 ${i === 0 ? "bg-navy text-white shadow-lg" : "bg-white ring-1 ring-slate-200"}`}>
               <div className={`text-xs font-bold uppercase tracking-widest ${i === 0 ? "text-mech-gold" : "text-mech-red"}`}>{p.rank}</div>
               {/* "Hiện kim + Giấy chứng nhận": tách 2 dòng để chữ lớn không bị ngắt giữa cụm từ */}
               {p.reward.split(" + ").map((part, j) => (
@@ -145,12 +139,11 @@ export function Prizes() {
           ))}
         </ul>
         <div className="mt-4 space-y-1 text-sm text-slate-500">
-          <p>Tất cả thành viên của 16 đội lọt vào Chung kết xếp hạng được nhận Giấy chứng nhận.</p>
-          <p>Tất cả thành viên của đội thi tham gia từ vòng loại sẽ được cộng điểm rèn luyện theo quy định của nhà trường.</p>
+          {pz.notes.split("\n").filter((l) => l.trim()).map((l) => <p key={l}>{l}</p>)}
         </div>
         <div className="mt-12 grid gap-4 md:grid-cols-3">
-          {WORKSHOPS.map((w) => (
-            <div key={w.title} className="rounded-xl border-l-4 border-fmes bg-white p-5 shadow-sm">
+          {pz.workshops.map((w, i) => (
+            <div key={`${i}${w.title}`} className="rounded-xl border-l-4 border-fmes bg-white p-5 shadow-sm">
               <div className="font-display text-lg uppercase text-navy">{w.title}</div>
               <p className="mt-1 text-sm text-slate-600">{w.desc}</p>
             </div>
@@ -161,22 +154,24 @@ export function Prizes() {
   );
 }
 
-export function Timeline() {
+export function Timeline({ c }: { c: Content }) {
+  const tl = c.timeline;
   return (
     <section id="lich-trinh" className="bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <p className="section-kicker">
-          <span className="h-px w-8 bg-mech-red" /> Lịch trình
+          <span className="h-px w-8 bg-mech-red" /> {tl.kicker}
         </p>
-        <h2 className="section-title mt-3">Các mốc quan trọng</h2>
+        <h2 className="section-title mt-3">{tl.title}</h2>
         <ol className="relative mt-12 grid gap-4 border-l-2 border-slate-200 pl-6 md:grid-cols-5 md:gap-6 md:border-l-0 md:pl-0">
-          {TIMELINE.map((t, i) => {
+          {tl.items.map((t, i) => {
             const current = t.status === "current";
+            const done = t.status === "done";
             return (
               <li
-                key={t.title}
+                key={`${i}${t.title}`}
                 className={`relative rounded-xl border p-5 ${
-                  current ? "border-mech-red bg-white shadow-lg shadow-mech-red/10" : "border-slate-200 bg-ice"
+                  current ? "border-mech-red bg-white shadow-lg shadow-mech-red/10" : done ? "border-slate-200 bg-ice opacity-70" : "border-slate-200 bg-ice"
                 }`}
               >
                 <span
@@ -199,7 +194,7 @@ export function Timeline() {
                 </div>
                 <div className="mt-1 font-bold text-navy">{t.title}</div>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{t.desc}</p>
-                {"href" in t && (
+                {t.href && t.cta && (
                   <Link href={t.href} className="mt-3 inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-navy-600 px-2.5 py-2 text-xs font-bold text-white transition hover:bg-mech-red">
                     {t.cta} <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
@@ -243,28 +238,29 @@ export function Leaderboard() {
   );
 }
 
-export function RegisterCta() {
+export function RegisterCta({ c }: { c: Content }) {
   return (
     <section id="dang-ky" className="relative overflow-hidden bg-mech-red py-20 text-white">
       <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40 opacity-40" />
       <div className="relative mx-auto flex max-w-5xl flex-col items-center px-4 text-center md:px-6">
-        <h2 className="font-display text-4xl uppercase tracking-wide md:text-6xl">Sẵn sàng chế tạo robot?</h2>
+        <h2 className="font-display text-4xl uppercase tracking-wide md:text-6xl">{c.cta.title}</h2>
         <p className="mt-4 max-w-2xl text-lg text-white/90">
-          Đăng ký bằng tài khoản Google email trường <strong>@student.hcmute.edu.vn</strong>. 100% thành viên phải
-          là sinh viên K26 – hệ thống tự xác thực qua MSSV.
+          <Rich text={c.cta.text} />
         </p>
         <Link
           href="/register"
           className="mt-8 inline-flex items-center gap-2 rounded-md bg-white px-8 py-4 font-bold uppercase tracking-wide text-mech-red shadow-xl transition hover:-translate-y-0.5 hover:bg-mech-gold hover:text-navy"
         >
-          Đăng ký ngay <ArrowRight className="h-5 w-5" />
+          {c.cta.button} <ArrowRight className="h-5 w-5" />
         </Link>
       </div>
     </section>
   );
 }
 
-export function Footer() {
+export function Footer({ c }: { c: Content }) {
+  const SITE = c.site;
+  const CONTACT = c.contact;
   return (
     <footer className="bg-navy-900 pb-24 pt-12 text-white/75 sm:pb-12">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 md:grid-cols-4 md:px-6">
@@ -293,11 +289,13 @@ export function Footer() {
         </div>
         <div className="text-sm">
           <div className="font-bold uppercase tracking-wider text-white">Liên hệ</div>
-          {/* Điền thông tin trong CONTACT (src/lib/site.ts) — mục trống sẽ tự ẩn */}
-          <p className="mt-2">
-            Mọi thắc mắc xin liên hệ: {CONTACT.person} – SĐT:{" "}
-            <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="font-semibold text-white hover:text-mech-gold">{CONTACT.phone}</a>
-          </p>
+          {/* Sửa ở /admin/content → Liên hệ; mục trống sẽ tự ẩn */}
+          {(CONTACT.person || CONTACT.phone) && (
+            <p className="mt-2">
+              Mọi thắc mắc xin liên hệ: {CONTACT.person}{CONTACT.phone && <> – SĐT:{" "}
+              <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="font-semibold text-white hover:text-mech-gold">{CONTACT.phone}</a></>}
+            </p>
+          )}
           <ul className="mt-2 space-y-1.5">
             {CONTACT.email && <li><a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-2 hover:text-mech-gold"><Mail className="h-4 w-4 shrink-0" /> {CONTACT.email}</a></li>}
             {CONTACT.fanpage && <li><a href={CONTACT.fanpage} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-mech-gold"><ThumbsUp className="h-4 w-4 shrink-0" /> Fanpage</a></li>}

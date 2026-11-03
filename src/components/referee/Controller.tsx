@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Coins, Crown, Flag, Loader2, MonitorPlay, Pause, Play, RotateCcw, Wrench } from "lucide-react";
+import { ArrowLeft, Coins, Crown, FileSignature, Flag, Loader2, MonitorPlay, Pause, Play, RotateCcw, Wrench } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { countEv, evLabel, fmtClock, STAGE3_STEPS, useMatchLive, type Color } from "@/lib/match";
 import { MATCH_STATUS } from "@/lib/site";
@@ -54,7 +54,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
         <div className="mx-auto flex max-w-4xl items-center gap-3">
           <Link href="/referee" aria-label="Danh sách trận"><ArrowLeft className="h-5 w-5" /></Link>
           <p className="flex-1 font-display text-lg uppercase">Bàn điều khiển · {m.match_code} <span className="text-sm normal-case text-white/60">({m.stage})</span></p>
-          <Link href={`/stage/${matchId}`} target="_blank" className="inline-flex items-center gap-1 rounded-md bg-white/10 px-3 py-1.5 text-xs font-bold"><MonitorPlay className="h-4 w-4" /> Màn hình</Link>
+          <Link href={`/stage/${matchId}`} target="_blank" className="inline-flex items-center gap-1 rounded-md bg-white/10 px-3 py-1.5 text-xs font-bold"><MonitorPlay className="h-4 w-4" /> Màn hình chiếu</Link>
         </div>
       </header>
 
@@ -121,8 +121,14 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
         </section>
 
         <section className="rounded-2xl bg-white/5 p-5">
-          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/60"><Wrench className="h-4 w-4" /> Chỉnh điểm thủ công (khiếu nại được chấp nhận, lỗi ghi nhầm…)</h2>
-          <div className="mt-3 grid gap-2 sm:grid-cols-[auto_120px_1fr_auto]">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/60"><Wrench className="h-4 w-4" /> Chỉnh điểm</h2>
+            {m.status !== "SCHEDULED" && m.status !== "READY" && (
+              <Link href={`/referee/revise/${matchId}`} className="inline-flex items-center gap-2 rounded-md bg-mech-gold px-4 py-2 text-sm font-bold text-navy"><FileSignature className="h-4 w-4" /> Lập biên bản chỉnh điểm (có chữ ký)</Link>
+            )}
+          </div>
+          <p className="mt-2 text-xs text-white/50">Nhập sai, khiếu nại, phúc khảo: lập biên bản để xóa / thêm mục điểm và lấy chữ ký các bên. Ô dưới chỉ để điều chỉnh nhanh khi trận đang diễn ra.</p>
+          {(m.status === "RUNNING" || m.status === "PAUSED") && <div className="mt-3 grid gap-2 sm:grid-cols-[auto_120px_1fr_auto]">
             <select value={adj.color} onChange={(e) => setAdj({ ...adj, color: e.target.value as Color })} aria-label="Phe" className="h-11 rounded-md bg-white/10 px-3 text-sm">
               <option value="RED" className="text-navy">Đỏ</option><option value="BLUE" className="text-navy">Xanh</option>
             </select>
@@ -133,7 +139,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
               className="h-11 rounded-md bg-navy-600 px-4 text-sm font-bold disabled:opacity-40">
               {spin("adj") || "Áp dụng"}
             </button>
-          </div>
+          </div>}
         </section>
 
         <section className="grid gap-5 md:grid-cols-[auto_1fr]">

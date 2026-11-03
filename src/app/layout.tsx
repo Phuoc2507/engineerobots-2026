@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Anton, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
+import { getContent } from "@/lib/content-server";
+import { themeCss } from "@/lib/content";
 
 const display = Anton({
   subsets: ["latin", "vietnamese"],
@@ -19,13 +21,16 @@ export const metadata: Metadata = {
     "Cuộc thi chế tạo robot dành cho tân sinh viên khóa 2026 HCM-UTE: Chặng 1 dò line tự hành, Chặng 2 tích lũy cấu kiện, Chặng 3 bảo vệ Đồ án và nhấn sáng Đèn Vinh Quang.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Màu BTC đã đổi ở /admin/content (rỗng = dùng mặc định trong globals.css)
+  const css = themeCss((await getContent()).theme);
   return (
     <html lang="vi">
+      <head>{css ? <style id="theme-colors" dangerouslySetInnerHTML={{ __html: css }} /> : null}</head>
       <body className={`${display.variable} ${sans.variable}`}>{children}</body>
     </html>
   );

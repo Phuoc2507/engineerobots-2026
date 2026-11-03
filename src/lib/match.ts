@@ -79,6 +79,46 @@ export const STAGE3_STEPS = [
   { key: "STAGE3_LAMP", short: "Đèn" },
 ] as const;
 
+// Nhóm mục điểm theo chặng để thư ký bấm đúng chỗ trọng tài vừa báo
+export type ScoreGroup = "C1" | "C2" | "C3" | "CHUNG";
+export const SCORE_GROUPS: { key: ScoreGroup; label: string }[] = [
+  { key: "C1", label: "Chặng 1 · Thích nghi" },
+  { key: "C2", label: "Chặng 2 · Bứt phá" },
+  { key: "C3", label: "Chặng 3 · Thành công" },
+  { key: "CHUNG", label: "Chung · Retry · Cảnh cáo" },
+];
+const GROUP_OF: Record<string, ScoreGroup> = {
+  FOUL_BARRIER: "C1",
+  FOUL_KNOCK_OWN_BLOCK: "C2", FOUL_GATE_BLOCKING: "C2", FOUL_KNOCK_OUT_BLOCK: "C2", FOUL_HOLD_OPP_BLOCK: "C2",
+  FOUL_LEAVE_C2: "C2", FOUL_TOUCH_GOLDEN: "C2", FOUL_QUAL_CROSS: "C2", FOUL_INVADE_ZONE: "C2",
+  FOUL_DROP_PROJECT: "C3", FOUL_TERRAIN_LINE: "C3", FOUL_LEAVE_C3: "C3", FOUL_CROSS_SIDE: "C3", FOUL_BRIDGE_PARK: "C3",
+};
+export const scoreGroup = (ruleKey: string): ScoreGroup =>
+  GROUP_OF[ruleKey] ?? (ruleKey.startsWith("STAGE1_") ? "C1" : ruleKey.startsWith("STAGE2_") ? "C2" : ruleKey.startsWith("STAGE3_") ? "C3" : "CHUNG");
+
+// Vòng loại chỉ thi Chặng 1 + 2 Kiến thức; Chung kết không có lỗi "sang nửa sân" của vòng loại
+export const isQualifier = (stage: string) => stage.trim().toLowerCase() === "vòng loại";
+export const ruleApplies = (ruleKey: string, stage: string) =>
+  isQualifier(stage)
+    ? !(scoreGroup(ruleKey) === "C3" || ["STAGE2_GOLDEN_BLOCK", "FOUL_TOUCH_GOLDEN"].includes(ruleKey))
+    : ruleKey !== "FOUL_QUAL_CROSS";
+
+// Điểm theo từng chặng (phạt tính riêng) cho màn hình chiếu
+export const groupTotals = (events: LiveEvent[], color: Color) => {
+  const t = { C1: 0, C2: 0, C3: 0, PHAT: 0 };
+  for (const e of events) {
+    if (e.team_color !== color || e.event_type === "FLIP") continue;
+    if (e.point_value < 0) t.PHAT += e.point_value;
+    else if (e.point_value > 0) {
+      const g = scoreGroup(e.event_type);
+      if (g !== "CHUNG") t[g] += e.point_value;
+    }
+  }
+  return t;
+};
+
+export const SIDE_LABEL: Record<Color, string> = { RED: "Đỏ", BLUE: "Xanh" };
+
 const SPECIAL: Record<string, string> = {
   ADJUST: "Chỉnh điểm (trọng tài chính)", KNOCKOUT: "Chiến thắng tuyệt đối", COIN_TOSS: "Thắng tung đồng xu", FORFEIT: "Xử thắng (đối thủ bị loại)",
 };

@@ -1,10 +1,11 @@
-import { CONTACT, SITE } from "@/lib/site";
+import { getContent } from "@/lib/content-server";
 
 // Gửi email qua Resend (https://resend.com). Chưa đặt RESEND_API_KEY thì bỏ qua, không báo lỗi.
 // Cần thêm trên Vercel: RESEND_API_KEY, EMAIL_FROM (vd: "FME JOURNEY <noreply@ten-mien-da-xac-minh>")
 export async function sendEmail(to: string, subject: string, html: string): Promise<{ sent: boolean; error?: string }> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return { sent: false };
+  const { site: SITE } = await getContent();
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -20,7 +21,8 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-export function reviewEmail(teamName: string, status: string, note: string | null, dashboardUrl: string) {
+export async function reviewEmail(teamName: string, status: string, note: string | null, dashboardUrl: string) {
+  const { site: SITE, contact: CONTACT } = await getContent();
   const approved = status === "APPROVED";
   const subject = approved
     ? `[${SITE.name}] Đội ${teamName} đã được duyệt`

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Gamepad2, MonitorPlay } from "lucide-react";
+import { FileSignature, Gamepad2, MonitorPlay } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff, isHead } from "@/lib/staff";
 import { MATCH_STATUS } from "@/lib/site";
@@ -28,7 +28,8 @@ export default async function RefereeHome() {
     <AdminShell staff={staff} active="/referee" title="Trọng tài">
       <section className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7">
         <p className="text-sm text-slate-600">
-          Mỗi trận có 2 trọng tài biên (Đỏ / Xanh) chấm trên điện thoại và 1 trọng tài chính giữ đồng hồ. Mở đúng phe được phân công.
+          Mỗi trận có 2 thư ký nhập điểm (mỗi thư ký 1 phe Đỏ / Xanh, theo tín hiệu trọng tài tại sân) và 1 trọng tài chính giữ đồng hồ, quan sát việc nhập điểm.
+          Mở đúng phe được phân công. Điểm cập nhật liên tục lên <b>Màn hình chiếu</b>.
         </p>
         {sorted.length === 0 ? (
           <p className="mt-6 text-center text-sm text-slate-500">Chưa có trận nào. BTC tạo trận ở tab “Trận đấu”.</p>
@@ -44,12 +45,15 @@ export default async function RefereeHome() {
                   <span className="block text-xs text-slate-500">{m.stage} · {fmt(m.start_time)}</span>
                 </span>
                 <span className="flex flex-wrap gap-2">
-                  <Link href={`/referee/scoring/${m.id}?side=RED`} className="rounded-md bg-team-red px-3 py-1.5 text-xs font-bold text-white">Chấm Đỏ</Link>
-                  <Link href={`/referee/scoring/${m.id}?side=BLUE`} className="rounded-md bg-team-blue px-3 py-1.5 text-xs font-bold text-white">Chấm Xanh</Link>
+                  <Link href={`/referee/scoring/${m.id}?side=RED`} className="rounded-md bg-team-red px-3 py-1.5 text-xs font-bold text-white">Nhập điểm Đỏ</Link>
+                  <Link href={`/referee/scoring/${m.id}?side=BLUE`} className="rounded-md bg-team-blue px-3 py-1.5 text-xs font-bold text-white">Nhập điểm Xanh</Link>
                   {isHead(staff) && (
                     <Link href={`/referee/controller/${m.id}`} className="inline-flex items-center gap-1 rounded-md bg-navy px-3 py-1.5 text-xs font-bold text-white"><Gamepad2 className="h-3.5 w-3.5" /> Điều khiển</Link>
                   )}
-                  <Link href={`/stage/${m.id}`} target="_blank" className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-bold text-navy"><MonitorPlay className="h-3.5 w-3.5" /> Màn hình</Link>
+                  {isHead(staff) && m.status !== "SCHEDULED" && m.status !== "READY" && (
+                    <Link href={`/referee/revise/${m.id}`} className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-bold text-navy"><FileSignature className="h-3.5 w-3.5" /> Chỉnh điểm</Link>
+                  )}
+                  <Link href={`/stage/${m.id}`} target="_blank" className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-bold text-navy"><MonitorPlay className="h-3.5 w-3.5" /> Màn hình chiếu</Link>
                 </span>
               </li>
             ))}

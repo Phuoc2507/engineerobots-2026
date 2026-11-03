@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Boxes, Cpu, Crown, Route } from "lucide-react";
-import { ROBOT_SPECS } from "@/lib/site";
 
 const TABS = [
   { id: "stage1", label: "Chặng 1 · Thích nghi", icon: Route },
@@ -24,7 +23,7 @@ function Fact({ k, v }: { k: string; v: string }) {
   );
 }
 
-export default function RulesTabs() {
+export default function RulesTabs({ specs }: { specs: { label: string; value: string }[] }) {
   const [tab, setTab] = useState<TabId>("stage1");
 
   return (
@@ -142,8 +141,8 @@ export default function RulesTabs() {
                 <li><strong>Cơ cấu thu thập:</strong> tự do (càng đẩy, con lăn, tay gắp, ngàm kẹp…); bề mặt tiếp xúc bóng và nút đèn phải mềm.</li>
               </ul>
               <div className="mt-6 grid grid-cols-2 gap-3">
-                {ROBOT_SPECS.map((s) => (
-                  <Fact key={s.label} k={s.label} v={s.value} />
+                {specs.map((s, i) => (
+                  <Fact key={`${i}${s.label}`} k={s.label} v={s.value} />
                 ))}
               </div>
             </div>

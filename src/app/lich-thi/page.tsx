@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CalendarClock, Swords, Trophy } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { SITE, TIMELINE } from "@/lib/site";
+import { getContent } from "@/lib/content-server";
 import PortalShell from "@/components/register/PortalShell";
 
 export const metadata: Metadata = { title: "Lịch thi · FME JOURNEY 2026" };
@@ -57,21 +57,21 @@ type StandingRow = {
 
 export default async function SchedulePage() {
   const supabase = createClient();
-  const [{ data }, { data: st }] = await Promise.all([supabase.rpc("get_schedule"), supabase.rpc("get_standings")]);
+  const [{ data }, { data: st }, c] = await Promise.all([supabase.rpc("get_schedule"), supabase.rpc("get_standings"), getContent()]);
   const matches = (data ?? []) as MatchRow[];
   const standings = ((st ?? []) as StandingRow[]).filter((r) => r.played > 0);
   const standingStages = Array.from(new Set(standings.map((r) => r.stage)));
   const stages = Array.from(new Set(matches.map((m) => m.stage)));
 
   return (
-    <PortalShell title="Lịch thi" subtitle={`Các mốc của ${SITE.name} và lịch từng trận, cập nhật trực tiếp từ BTC.`}>
+    <PortalShell title="Lịch thi" subtitle={`Các mốc của ${c.site.name} và lịch từng trận, cập nhật trực tiếp từ BTC.`}>
       <section className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7">
         <h2 className="font-display text-xl uppercase tracking-wide text-navy">Các mốc của giải</h2>
         <ol className="mt-5 space-y-4 border-l-2 border-slate-200 pl-6">
-          {TIMELINE.map((t) => {
+          {c.timeline.items.map((t, i) => {
             const current = t.status === "current";
             return (
-              <li key={t.title} className="relative">
+              <li key={`${i}${t.title}`} className="relative">
                 <span className={`absolute -left-[33px] top-1 h-4 w-4 rounded-full border-4 border-white ${current ? "bg-mech-red" : "bg-slate-300"}`} />
                 <p className={`inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest ${current ? "text-mech-red" : "text-slate-400"}`}>
                   <CalendarClock className="h-3.5 w-3.5" /> {t.date}
@@ -92,7 +92,8 @@ export default async function SchedulePage() {
           <div className="mt-4 rounded-lg bg-ice p-6 text-center text-sm text-slate-500">
             <p className="font-semibold text-navy">Lịch trận sẽ công bố sau buổi bốc thăm chia bảng.</p>
             <p className="mt-1">
-              Đội đã được duyệt có thể <Link href="/team/dashboard" className="font-semibold text-navy-600 underline">đặt lịch thử sa bàn</Link> trong lúc chờ.
+              Đội đã được duyệt có thể <Link href="/team/dashboard" className="font-semibold text-navy-600 underline">đặt lịch thử sa bàn</Link> trong lúc chờ
+              {" · "}<Link href="/boc-tham" className="font-semibold text-navy-600 underline">xem kết quả bốc thăm</Link>.
             </p>
           </div>
         ) : (

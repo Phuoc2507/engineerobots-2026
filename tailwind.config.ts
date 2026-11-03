@@ -11,11 +11,12 @@ const config: Config = {
       colors: {
         // Nhận diện Khoa Cơ khí (FME) – lấy từ logo khoa và CLB FMES
         // navy-600 = xanh chữ/viền logo FME; mech.red = ngọn đuốc; fmes = xanh CLB FMES
-        navy: { DEFAULT: "#06305E", 600: "#0070B8", 900: "#031D3A" },
-        mech: { red: "#D7262F", gold: "#FFC20E" },
-        fmes: "#20A8E0",
-        ice: "#F2F7FC",
-        team: { red: "#E53935", blue: "#1E88E5" },
+        // Giá trị thật nằm ở biến CSS (globals.css) để BTC đổi màu ở /admin/content
+        navy: { DEFAULT: "rgb(var(--c-navy) / <alpha-value>)", 600: "rgb(var(--c-navy-600) / <alpha-value>)", 900: "rgb(var(--c-navy-900) / <alpha-value>)" },
+        mech: { red: "rgb(var(--c-red) / <alpha-value>)", gold: "rgb(var(--c-gold) / <alpha-value>)" },
+        fmes: "rgb(var(--c-fmes) / <alpha-value>)",
+        ice: "rgb(var(--c-ice) / <alpha-value>)",
+        team: { red: "rgb(var(--c-team-red) / <alpha-value>)", blue: "rgb(var(--c-team-blue) / <alpha-value>)" },
       },
       fontFamily: {
         display: ["var(--font-display)", "Impact", "sans-serif"],

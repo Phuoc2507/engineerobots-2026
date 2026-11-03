@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Box, Download, FileText } from "lucide-react";
-import { PRIZES, ROBOT_SPECS, WORKSHOPS } from "@/lib/site";
+import { getContent } from "@/lib/content-server";
 import PortalShell from "@/components/register/PortalShell";
 
 export const metadata: Metadata = {
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
   description: "Thể lệ chính thức cuộc thi FME JOURNEY 2026 – Hành trình Kỹ sư Cơ khí: chủ đề, quy chuẩn robot, sa bàn, vòng đấu, luật 3 chặng, retry, lỗi vi phạm, khiếu nại và tập huấn.",
 };
 
-const RULES_PDF = "/docs/the-le-fme-journey-2026.pdf";
 const card = "rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7";
 const h2 = "font-display text-2xl uppercase tracking-wide text-navy";
 const h3 = "mt-4 font-bold text-navy";
@@ -99,7 +97,10 @@ function Table({ head, rows }: { head: string[]; rows: React.ReactNode[][] }) {
   );
 }
 
-export default function RulesPage() {
+export default async function RulesPage() {
+  const c = await getContent();
+  const { robotSpecs: ROBOT_SPECS, pdf: RULES_PDF } = c.rules;
+  const { items: PRIZES, workshops: WORKSHOPS } = c.prizes;
   return (
     <PortalShell title="Thể lệ chính thức" subtitle="Cuộc thi “FME JOURNEY 2026” dành cho Tân sinh viên khóa 2026 · BCH Đoàn – Hội Khoa Cơ khí · tháng 11/2026.">
       <div className="space-y-6">
@@ -151,8 +152,8 @@ export default function RulesPage() {
         <section id="robot" className={card}>
           <h2 className={h2}>III. Quy chuẩn kỹ thuật robot</h2>
           <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {ROBOT_SPECS.map((s) => (
-              <div key={s.label} className="rounded-lg bg-ice p-3"><dt className="text-xs text-slate-500">{s.label}</dt><dd className="font-bold text-navy">{s.value}</dd></div>
+            {ROBOT_SPECS.map((s, i) => (
+              <div key={`${i}${s.label}`} className="rounded-lg bg-ice p-3"><dt className="text-xs text-slate-500">{s.label}</dt><dd className="font-bold text-navy">{s.value}</dd></div>
             ))}
           </dl>
           <h3 className={h3}>1. Kích thước</h3>
@@ -188,10 +189,11 @@ export default function RulesPage() {
         <section id="sa-ban" className={card}>
           <h2 className={h2}>IV. Sa bàn và chi tiết sân thi đấu</h2>
           <p className="mt-3 text-sm text-slate-700">Sa bàn 4800 × 4800 mm gia công theo bộ bản vẽ kỹ thuật 2D/3D chính thức của BTC, bao quanh bởi dây giăng cảnh báo. <b>Bản vẽ chi tiết sa bàn và đường line được công bố bên dưới</b> để các đội tự làm sa bàn tập luyện.</p>
-          <Image src="/images/sa-ban-2026.png" alt="Sơ đồ sa bàn FME JOURNEY 2026 theo thể lệ, đánh số 1.1–3.10" width={1319} height={1866} className="mt-4 h-auto w-full rounded-lg ring-1 ring-slate-200" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={c.rules.arenaImage} alt="Sơ đồ sa bàn FME JOURNEY 2026 theo thể lệ, đánh số 1.1–3.10" width={1319} height={1866} loading="lazy" className="mt-4 h-auto w-full rounded-lg ring-1 ring-slate-200" />
           <div className="mt-3 flex flex-wrap gap-2 text-sm">
             <Link href="/arena-3d" className="inline-flex h-10 items-center gap-2 rounded-md bg-navy px-4 font-bold text-white"><Box className="h-4 w-4" /> Xem sa bàn 3D</Link>
-            <a href="/models/ban-ve-sa-ban-2026.pdf" className="inline-flex h-10 items-center gap-2 rounded-md bg-ice px-4 font-bold text-navy"><Download className="h-4 w-4" /> Bản vẽ kỹ thuật (PDF)</a>
+            <a href={c.rules.drawingPdf} target="_blank" rel="noopener" className="inline-flex h-10 items-center gap-2 rounded-md bg-ice px-4 font-bold text-navy"><Download className="h-4 w-4" /> Bản vẽ kỹ thuật (PDF)</a>
           </div>
           <h3 className="mt-4 font-bold text-team-red">1. Chặng 1 · Thích nghi</h3>
           <ul className={ul}>
@@ -350,7 +352,7 @@ export default function RulesPage() {
           <h2 className={h2}>X. Tập huấn kỹ thuật</h2>
           <p className="mt-3 text-sm text-slate-700">Giúp Tân sinh viên chưa nhiều kinh nghiệm lập trình và chế tạo tự tin hoàn thiện robot đạt chuẩn. Đối tượng: <b>tất cả sinh viên đã đăng ký tham dự cuộc thi</b>.</p>
           <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            {WORKSHOPS.map((w) => <li key={w.title}><b>{w.title}:</b> {w.desc}</li>)}
+            {WORKSHOPS.map((w, i) => <li key={`${i}${w.title}`}><b>{w.title}:</b> {w.desc}</li>)}
           </ul>
           <p className="mt-3 text-sm font-bold text-navy">Quyền lợi khi tham gia</p>
           <ul className={ul}>

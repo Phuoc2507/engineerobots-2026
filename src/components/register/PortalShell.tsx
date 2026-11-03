@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { ArrowLeft, LogOut } from "lucide-react";
-import { SITE } from "@/lib/site";
+import { getContent } from "@/lib/content-server";
+import AnnounceBar from "@/components/content/AnnounceBar";
 import { BrandMark } from "@/components/brand/Logos";
 
 // Khung chung cho các trang cổng sinh viên (/register, /team/dashboard)
-export default function PortalShell({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
+export default async function PortalShell({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
+  const c = await getContent();
   return (
     <div className="min-h-screen">
+      <AnnounceBar a={c.announce} />
       <header className="relative overflow-hidden bg-navy pb-24 pt-6 text-white">
         <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40" />
         <div className="relative mx-auto flex max-w-3xl items-center justify-between px-4">
@@ -16,7 +19,7 @@ export default function PortalShell({ title, subtitle, children }: { title: stri
           </Link>
         </div>
         <div className="relative mx-auto mt-10 max-w-3xl px-4">
-          <p className="section-kicker text-mech-gold">{SITE.name}</p>
+          <p className="section-kicker text-mech-gold">{c.site.name}</p>
           <h1 className="mt-2 font-display text-4xl uppercase tracking-wide md:text-5xl">{title}</h1>
           <p className="mt-3 max-w-xl text-white/75">{subtitle}</p>
         </div>

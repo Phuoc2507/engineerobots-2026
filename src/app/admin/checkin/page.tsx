@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Check-in & Kiểm tra kỹ thuật" 
 export const dynamic = "force-dynamic";
 
 export default async function AdminCheckIn() {
-  const staff = await requireStaff();
+  const staff = await requireStaff(["BTC", "HEAD_REFEREE", "REFEREE"]);
   return (
     <AdminShell staff={staff} active="/admin/checkin" title="Check-in & Kiểm tra kỹ thuật">
       <CheckIn />

@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Bảng màu nhận diện (r g b). Mặc định = logo FME/FMES; BTC ghi đè ở /admin/content (layout chèn :root mới) */
+:root {
+  --c-navy: 6 48 94;
+  --c-navy-600: 0 112 184;
+  --c-navy-900: 3 29 58;
+  --c-red: 215 38 47;
+  --c-gold: 255 194 14;
+  --c-fmes: 32 168 224;
+  --c-ice: 242 247 252;
+  --c-team-red: 229 57 53;
+  --c-team-blue: 30 136 229;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;

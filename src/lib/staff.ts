@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export type StaffRole = "BTC" | "HEAD_REFEREE" | "REFEREE";
+export type StaffRole = "BTC" | "HEAD_REFEREE" | "REFEREE" | "SECRETARY";
 export type Staff = { email: string; full_name: string | null; role: StaffRole };
 
 // Đọc tài khoản BTC/trọng tài của người đang đăng nhập (null nếu không phải staff).

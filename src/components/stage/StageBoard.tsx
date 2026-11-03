@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { beep, countEv, evLabel, fmtClock, STAGE3_STEPS, useMatchLive } from "@/lib/match";
+import { beep, countEv, evLabel, fmtClock, groupTotals, STAGE3_STEPS, useMatchLive } from "@/lib/match";
 import { MATCH_STATUS, SITE } from "@/lib/site";
 
 // Bảng tỉ số trực tiếp: "stage" = màn hình LED/máy chiếu, "obs" = lớp phủ nền trong suốt cho livestream
-export default function StageBoard({ matchId, variant = "stage" }: { matchId: string | null; variant?: "stage" | "obs" }) {
+export type IdleText = { idleTitle: string; idleText: string };
+
+export default function StageBoard({ matchId, variant = "stage", idle }: { matchId: string | null; variant?: "stage" | "obs"; idle?: IdleText }) {
   const { data, missing, remaining } = useMatchLive(matchId);
   const [sound, setSound] = useState(false);
   const lastBeep = useRef(-1);
@@ -22,7 +24,7 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
     if (s === 0) beep(440, 900);
   }, [remaining, sound, data?.match.status]);
 
-  if (!matchId || missing) return <Idle obs={variant === "obs"} />;
+  if (!matchId || missing) return <Idle obs={variant === "obs"} idle={idle} />;
   if (!data) return null;
 
   const m = data.match;
@@ -61,7 +63,7 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
       </header>
 
       <main className="grid flex-1 grid-cols-[1fr_auto_1fr] items-center gap-8 px-8">
-        <Side name={data.red?.team_name} score={m.red_score} fouls={data.fouls.RED} tone="bg-team-red" win={m.status === "FINISHED" && m.winner === "RED"} />
+        <Side name={data.red?.team_name} score={m.red_score} fouls={data.fouls.RED} tone="bg-team-red" win={m.status === "FINISHED" && m.winner === "RED"} totals={groupTotals(data.events, "RED")} />
         <div className="flex flex-col items-center gap-6">
           <div className={`rounded-2xl px-10 py-4 text-center ${urgent ? "animate-pulse bg-mech-red" : "bg-black/30"}`}>
             <p className="font-display text-[9rem] leading-none tabular-nums">{fmtClock(remaining)}</p>
@@ -79,7 +81,7 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
             ))}
           </div>
         </div>
-        <Side name={data.blue?.team_name} score={m.blue_score} fouls={data.fouls.BLUE} tone="bg-team-blue" win={m.status === "FINISHED" && m.winner === "BLUE"} />
+        <Side name={data.blue?.team_name} score={m.blue_score} fouls={data.fouls.BLUE} tone="bg-team-blue" win={m.status === "FINISHED" && m.winner === "BLUE"} totals={groupTotals(data.events, "BLUE")} />
       </main>
 
       <footer className="px-8 pb-6">
@@ -98,28 +100,36 @@ export default function StageBoard({ matchId, variant = "stage" }: { matchId: st
   );
 }
 
-function Side({ name, score, fouls, tone, win }: { name?: string; score: number; fouls: number; tone: string; win: boolean }) {
+function Side({ name, score, fouls, tone, win, totals }: { name?: string; score: number; fouls: number; tone: string; win: boolean; totals: ReturnType<typeof groupTotals> }) {
   return (
     <div className={`flex flex-col items-center rounded-3xl ${tone} px-6 py-10 text-center shadow-2xl ${win ? "ring-8 ring-mech-gold" : ""}`}>
       <p className="line-clamp-2 font-display text-5xl uppercase leading-tight">{name ?? "—"}</p>
       <p className="mt-4 font-display text-[11rem] leading-none tabular-nums">{score}</p>
+      <dl className="mt-3 grid grid-cols-4 gap-2 text-center">
+        {([["C1", totals.C1], ["C2", totals.C2], ["C3", totals.C3], ["Phạt", totals.PHAT]] as const).map(([k, v]) => (
+          <div key={k} className="rounded-lg bg-black/20 px-3 py-1.5">
+            <dt className="text-xs font-bold uppercase text-white/70">{k}</dt>
+            <dd className="font-display text-2xl tabular-nums">{v}</dd>
+          </div>
+        ))}
+      </dl>
       <p className="mt-2 text-lg font-bold uppercase text-white/80">{fouls} lỗi</p>
     </div>
   );
 }
 
-function Idle({ obs }: { obs: boolean }) {
+function Idle({ obs, idle }: { obs: boolean; idle?: IdleText }) {
   if (obs) return null;
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-navy bg-tech-grid text-white">
-      <p className="font-display text-7xl uppercase">{SITE.name}</p>
-      <p className="mt-4 text-2xl text-white/70">Trận đấu sẽ bắt đầu trong ít phút</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-navy bg-tech-grid text-center text-white">
+      <p className="font-display text-7xl uppercase">{idle?.idleTitle ?? SITE.name}</p>
+      <p className="mt-4 text-2xl text-white/70">{idle?.idleText ?? "Trận đấu sẽ bắt đầu trong ít phút"}</p>
     </div>
   );
 }
 
 // Tự theo trận hiện tại (đang đấu → sẵn sàng → sắp tới)
-export function AutoStage({ variant = "stage" }: { variant?: "stage" | "obs" }) {
+export function AutoStage({ variant = "stage", idle }: { variant?: "stage" | "obs"; idle?: IdleText }) {
   const [id, setId] = useState<string | null>(null);
   useEffect(() => {
     const load = async () => {
@@ -130,5 +140,5 @@ export function AutoStage({ variant = "stage" }: { variant?: "stage" | "obs" }) 
     const t = setInterval(load, 5000);
     return () => clearInterval(t);
   }, []);
-  return <StageBoard matchId={id} variant={variant} />;
+  return <StageBoard matchId={id} variant={variant} idle={idle} />;
 }

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { AlertTriangle, CheckCircle2, Clock, Info, Laptop, ShieldCheck, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { SITE, STUDENT_DOMAIN, isTestAccount } from "@/lib/site";
+import { STUDENT_DOMAIN, isTestAccount } from "@/lib/site";
+import { getContent } from "@/lib/content-server";
 import GoogleSignIn from "@/components/register/GoogleSignIn";
 import RegisterForm from "@/components/register/RegisterForm";
 import PortalShell, { AccountBar, SignOutButton } from "@/components/register/PortalShell";
@@ -29,7 +30,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: { e
   }
 
   const error = searchParams.error ? ERRORS[searchParams.error] : null;
-  const closed = Date.now() > new Date(SITE.registrationDeadline).getTime();
+  const closed = Date.now() > new Date((await getContent()).site.registrationDeadline).getTime();
 
   return (
     <PortalShell title="Đăng ký đội thi" subtitle="Đội tối đa 5 tân sinh viên K26 HCM-UTE. Đội trưởng đăng nhập bằng email trường và khai báo cho cả đội.">

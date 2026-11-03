@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import TeamQrCard from "@/components/team/TeamQrCard";
 import { AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, Circle, Crown, Heart, Lock, MailCheck, MessageCircle, QrCode, Swords } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { CONTACT, SITE, STUDENT_DOMAIN } from "@/lib/site";
+import { STUDENT_DOMAIN } from "@/lib/site";
+import { getContent } from "@/lib/content-server";
 import PortalShell, { AccountBar } from "@/components/register/PortalShell";
 import TeamManager from "@/components/team/TeamManager";
 import PracticeBooking, { type PracticeSlot } from "@/components/team/PracticeBooking";
@@ -67,11 +68,12 @@ export default async function TeamDashboard() {
     : { data: [] };
   const photoUrl = new Map(photoPaths.map((p, i) => [p.email, signed?.[i]?.signedUrl ?? null]));
 
+  const { contact: CONTACT, site: live } = await getContent();
   const members = [...team.team_members].sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
   const me = members.find((m) => m.email.toLowerCase() === email);
   const isLeader = team.leader_email.toLowerCase() === email;
   const leader = members.find((m) => m.role === "LEADER");
-  const open = Date.now() <= new Date(SITE.registrationDeadline).getTime();
+  const open = Date.now() <= new Date(live.registrationDeadline).getTime();
   const editable = team.status !== "APPROVED" && open;
   const status = STATUS[team.status] ?? { label: team.status, tone: "bg-slate-100 text-slate-600" };
 

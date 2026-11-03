@@ -71,7 +71,7 @@ export const CONTACT = {
   zaloQr: "/images/zalo-group.png",
 };
 
-export const STAFF_ROLES: Record<string, string> = { BTC: "Ban tổ chức", HEAD_REFEREE: "Trọng tài chính", REFEREE: "Trọng tài" };
+export const STAFF_ROLES: Record<string, string> = { BTC: "Ban tổ chức", HEAD_REFEREE: "Trọng tài chính", REFEREE: "Trọng tài", SECRETARY: "Thư ký nhập điểm" };
 
 // Hạng mục bình chọn khán giả (khớp CHECK trong cast_vote)
 export const VOTE_CATEGORIES = [
