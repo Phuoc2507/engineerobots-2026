@@ -6,6 +6,7 @@ import { DOC_HINT } from "@/components/content/Doc";
 
 export const DEFAULT_CONTENT = {
   brand: {
+    markLogo: "/brand/bo-logo.png",
     logoMain: "/brand/fme.png",
     logoMainAlt: "Khoa Cơ khí – HCMUTE",
     logoMainShort: "FME",
@@ -300,7 +301,8 @@ export const CONTENT_SECTIONS: Section[] = [
   {
     key: "brand", group: "Chung", title: "Logo & ấn phẩm nhận diện", where: "Mọi trang (web chung và khu BTC)", desc: "Logo, tên hiển thị cạnh logo, ảnh nền đầu trang, ảnh khi chia sẻ link lên mạng xã hội và biểu tượng tab trình duyệt.",
     fields: [
-      { k: "logoMain", label: "Logo chính (thanh điều hướng, mọi trang)", type: "file", accept: IMG },
+      { k: "markLogo", label: "Bộ logo cạnh chữ tên giải (thanh trên cùng mọi trang)", type: "file", accept: IMG, hint: "Ảnh ngang ghép các logo (ĐTN – HSV – FME – FMES). Để trống = dùng logo chính dạng tròn." },
+      { k: "logoMain", label: "Logo chính", type: "file", accept: IMG },
       { k: "logoMainAlt", label: "Tên đơn vị của logo chính", type: "text" },
       { k: "logoMainShort", label: "Tên viết tắt logo chính", type: "text" },
       { k: "logoSecond", label: "Logo thứ hai (đầu trang chủ)", type: "file", accept: IMG, hint: "Để trống nếu chỉ dùng một logo." },

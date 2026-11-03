@@ -62,7 +62,7 @@ export default function Navbar({ nav, brand, siteName }: { nav: Content["nav"]; 
         scrolled || open ? "bg-navy/95 shadow-lg backdrop-blur" : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:gap-4 md:px-6">
         <Link href="/" className="text-white" aria-label={`${siteName} – Trang chủ`}>
           <BrandMark b={brand} />
         </Link>
@@ -114,7 +114,7 @@ export default function Navbar({ nav, brand, siteName }: { nav: Content["nav"]; 
           </div>
           <Link
             href="/register"
-            className="inline-flex h-10 items-center gap-1.5 rounded-md bg-mech-red px-4 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+            className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-md bg-mech-red px-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700 sm:px-4"
           >
             {nav.registerButton} <ArrowRight className="hidden h-4 w-4 sm:block" />
           </Link>
