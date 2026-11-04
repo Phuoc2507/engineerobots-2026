@@ -1,5 +1,13 @@
 import type { Config } from "tailwindcss";
 
+// Màu lấy từ biến CSS: --c-x = "r g b", --a-x = độ đậm (0–1) do BTC đặt; nhân với độ mờ của lớp Tailwind (bg-navy/95)
+const c = (name: string) => `rgb(var(--c-${name}) / calc(<alpha-value> * var(--a-${name}, 1)))`;
+// Màu từng phần: --p-x / --pa-x, để trống thì theo màu chung (fallback null = trắng)
+const p = (name: string, base: string | null) =>
+  base
+    ? `rgb(var(--p-${name}, var(--c-${base})) / calc(<alpha-value> * var(--pa-${name}, var(--a-${base}, 1))))`
+    : `rgb(var(--p-${name}, 255 255 255) / calc(<alpha-value> * var(--pa-${name}, 1)))`;
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,25 +20,25 @@ const config: Config = {
         // Nhận diện Khoa Cơ khí (FME) – lấy từ logo khoa và CLB FMES
         // navy-600 = xanh chữ/viền logo FME; mech.red = ngọn đuốc; fmes = xanh CLB FMES
         // Giá trị thật nằm ở biến CSS (globals.css) để BTC đổi màu ở /admin/content
-        navy: { DEFAULT: "rgb(var(--c-navy) / <alpha-value>)", 600: "rgb(var(--c-navy-600) / <alpha-value>)", 900: "rgb(var(--c-navy-900) / <alpha-value>)" },
-        mech: { red: "rgb(var(--c-red) / <alpha-value>)", gold: "rgb(var(--c-gold) / <alpha-value>)" },
-        fmes: "rgb(var(--c-fmes) / <alpha-value>)",
-        ice: "rgb(var(--c-ice) / <alpha-value>)",
-        team: { red: "rgb(var(--c-team-red) / <alpha-value>)", blue: "rgb(var(--c-team-blue) / <alpha-value>)" },
+        navy: { DEFAULT: c("navy"), 600: c("navy-600"), 900: c("navy-900") },
+        mech: { red: c("red"), gold: c("gold") },
+        fmes: c("fmes"),
+        ice: c("ice"),
+        team: { red: c("team-red"), blue: c("team-blue") },
         // Màu nền riêng từng phần (BTC đặt ở /admin/content → Màu sắc giao diện); để trống thì theo màu chung
         part: {
-          header: "rgb(var(--p-header, var(--c-navy)) / <alpha-value>)",
-          hero: "rgb(var(--p-hero, var(--c-navy)) / <alpha-value>)",
-          page: "rgb(var(--p-page, var(--c-navy)) / <alpha-value>)",
-          admin: "rgb(var(--p-admin, var(--c-navy)) / <alpha-value>)",
-          intro: "rgb(var(--p-intro, 255 255 255) / <alpha-value>)",
-          rules: "rgb(var(--p-rules, var(--c-ice)) / <alpha-value>)",
-          arena: "rgb(var(--p-arena, var(--c-navy)) / <alpha-value>)",
-          prizes: "rgb(var(--p-prizes, var(--c-ice)) / <alpha-value>)",
-          timeline: "rgb(var(--p-timeline, 255 255 255) / <alpha-value>)",
-          cta: "rgb(var(--p-cta, var(--c-red)) / <alpha-value>)",
-          footer: "rgb(var(--p-footer, var(--c-navy-900)) / <alpha-value>)",
-          stage: "rgb(var(--p-stage, var(--c-navy)) / <alpha-value>)",
+          header: p("header", "navy"),
+          hero: p("hero", "navy"),
+          page: p("page", "navy"),
+          admin: p("admin", "navy"),
+          intro: p("intro", null),
+          rules: p("rules", "ice"),
+          arena: p("arena", "navy"),
+          prizes: p("prizes", "ice"),
+          timeline: p("timeline", null),
+          cta: p("cta", "red"),
+          footer: p("footer", "navy-900"),
+          stage: p("stage", "navy"),
         },
       },
       fontFamily: {

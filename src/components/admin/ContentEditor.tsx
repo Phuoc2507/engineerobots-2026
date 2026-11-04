@@ -183,15 +183,38 @@ function FieldInput({ f, value, def, section, onChange, compact }: { f: Field; v
       ) : f.type === "datetime" ? (
         <input id={id} type="datetime-local" value={toLocal(str)} onChange={(e) => onChange(fromLocal(e.target.value))} className={`${input} mt-1 max-w-xs`} />
       ) : f.type === "color" ? (
-        <span className="mt-1 flex items-center gap-2">
-          <input type="color" value={/^#[0-9a-f]{6}$/i.test(str) ? str : "#000000"} onChange={(e) => onChange(e.target.value.toUpperCase())} aria-label={f.label} className="h-10 w-14 cursor-pointer rounded border border-slate-300" />
-          <input id={id} value={str} onChange={(e) => onChange(e.target.value)} maxLength={7} placeholder="Theo màu chung" className={`${input} w-40 font-mono uppercase placeholder:normal-case placeholder:font-sans`} />
-        </span>
+        <ColorInput id={id} label={f.label} value={str} onChange={onChange} />
       ) : (
         <input id={id} type="text" value={str} onChange={(e) => onChange(e.target.value)} className={`${input} mt-1`} />
       )}
       {hint}
     </label>
+  );
+}
+
+// Chọn màu + độ đậm (0–100%): lưu dạng #RRGGBB khi đặc, #RRGGBBAA khi có trong suốt
+function ColorInput({ id, label, value, onChange }: { id: string; label: string; value: string; onChange: (v: string) => void }) {
+  const m = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(value.trim());
+  const base = m ? `#${m[1].toUpperCase()}` : "";
+  const pct = m?.[2] ? Math.round((parseInt(m[2], 16) / 255) * 100) : 100;
+  const build = (hex: string, p: number) => (p >= 100 ? hex : `${hex}${Math.round((p / 100) * 255).toString(16).padStart(2, "0").toUpperCase()}`);
+  return (
+    <span className="mt-1 flex flex-wrap items-center gap-2">
+      <span className="relative h-10 w-14 overflow-hidden rounded border border-slate-300"
+        style={{ backgroundImage: "conic-gradient(#cbd5e1 25%, #fff 0 50%, #cbd5e1 0 75%, #fff 0)", backgroundSize: "12px 12px" }}>
+        <span className="absolute inset-0" style={{ backgroundColor: m ? value : "transparent" }} />
+        <input type="color" value={base || "#000000"} onChange={(e) => onChange(build(e.target.value.toUpperCase(), pct))} aria-label={label}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
+      </span>
+      <input id={id} value={value} onChange={(e) => onChange(e.target.value)} maxLength={9} placeholder="Theo màu chung"
+        className={`${input} w-40 font-mono uppercase placeholder:normal-case placeholder:font-sans`} />
+      <span className={`flex items-center gap-2 text-xs font-semibold text-slate-500 ${m ? "" : "pointer-events-none opacity-40"}`}>
+        Độ đậm
+        <input type="range" min={0} max={100} step={5} value={pct} disabled={!m} onChange={(e) => onChange(build(base, Number(e.target.value)))}
+          aria-label={`Độ đậm ${label}`} className="w-32 accent-navy-600" />
+        <span className="w-10 tabular-nums text-navy">{pct}%</span>
+      </span>
+    </span>
   );
 }
 

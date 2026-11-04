@@ -296,16 +296,24 @@ export const THEME_VARS: Record<keyof Content["theme"], string> = {
   fmes: "--c-fmes", ice: "--c-ice", teamRed: "--c-team-red", teamBlue: "--c-team-blue",
   partHeader: "--p-header", partHero: "--p-hero", partPage: "--p-page", partAdmin: "--p-admin", partIntro: "--p-intro", partRules: "--p-rules", partArena: "--p-arena", partPrizes: "--p-prizes", partTimeline: "--p-timeline", partCta: "--p-cta", partFooter: "--p-footer", partStage: "--p-stage",
 };
-const rgb = (hex: string) => {
-  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+// "#RRGGBB" hoặc "#RRGGBBAA" (AA = độ đậm, FF = đặc, 00 = trong suốt hẳn)
+export const parseColor = (hex: string) => {
+  const m = /^#?([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(hex.trim());
   if (!m) return null;
   const n = parseInt(m[1], 16);
-  return `${(n >> 16) & 255} ${(n >> 8) & 255} ${n & 255}`;
+  const a = m[2] ? parseInt(m[2], 16) / 255 : 1;
+  return { rgb: `${(n >> 16) & 255} ${(n >> 8) & 255} ${n & 255}`, alpha: Math.round(a * 1000) / 1000 };
 };
 export function themeCss(theme: Content["theme"]) {
   const vars = (Object.keys(THEME_VARS) as (keyof Content["theme"])[])
     .filter((k) => theme[k] !== DEFAULT_CONTENT.theme[k])
-    .map((k) => { const v = rgb(theme[k]); return v ? `${THEME_VARS[k]}:${v};` : ""; })
+    .map((k) => {
+      const v = parseColor(theme[k]);
+      if (!v) return "";
+      const name = THEME_VARS[k];
+      const alphaVar = name.startsWith("--p-") ? name.replace("--p-", "--pa-") : name.replace("--c-", "--a-");
+      return `${name}:${v.rgb};${v.alpha < 1 ? `${alphaVar}:${v.alpha};` : ""}`;
+    })
     .join("");
   return vars ? `:root{${vars}}` : "";
 }
