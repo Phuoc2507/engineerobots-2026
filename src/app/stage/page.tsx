@@ -4,11 +4,11 @@ import { getContent } from "@/lib/content-server";
 
 export const metadata: Metadata = { title: "Màn hình sân khấu" };
 
-const VIEWS: StageView[] = ["auto", "lich", "anpham"];
+const VIEWS: StageView[] = ["lich", "bangdiem", "anpham"];
 
-// ?view=lich: lịch thi đấu toàn màn hình · ?view=anpham: trình chiếu ấn phẩm · mặc định tự chuyển bảng điểm / màn chờ
+// Mặc định lịch thi đấu · ?view=bangdiem: bảng điểm trận đang đấu · ?view=anpham: trình chiếu ấn phẩm
 export default async function StagePage({ searchParams }: { searchParams: { view?: string } }) {
   const c = await getContent();
-  const view = VIEWS.find((v) => v === searchParams.view) ?? "auto";
-  return <StageScreen s={c.stage} siteName={c.site.name} view={view} />;
+  const view = VIEWS.find((v) => v === searchParams.view) ?? "lich";
+  return <StageScreen s={c.stage} brand={{ logo: c.brand.markLogo || c.brand.logoMain, siteName: c.site.name }} view={view} />;
 }

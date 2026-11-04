@@ -1,20 +1,21 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- ấn phẩm do BTC tải lên kho ấn phẩm */
+/* eslint-disable @next/next/no-img-element -- ấn phẩm, logo do BTC tải lên kho ấn phẩm */
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { CalendarClock, Expand, Images, Radio, Shrink } from "lucide-react";
+import { CalendarClock, CalendarX2, Expand, Images, Radio, Shrink, Trophy } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { MATCH_STATUS } from "@/lib/site";
 import type { Content } from "@/lib/content";
 import StageBoard from "@/components/stage/StageBoard";
 
 export type StageContent = Content["stage"];
-export type StageView = "auto" | "lich" | "anpham";
+export type StageView = "lich" | "bangdiem" | "anpham";
 export type SchedRow = {
   id: string; match_code: string | null; stage: string | null; status: string; start_time: string | null;
   red_team: string | null; blue_team: string | null; red_score: number; blue_score: number; winner: "RED" | "BLUE" | null;
 };
+type Brand = { logo: string; siteName: string };
 
 const TZ = "Asia/Ho_Chi_Minh";
 const dayKey = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: TZ });
@@ -46,20 +47,31 @@ export function useSchedule() {
   return { rows, upcoming, results };
 }
 
-// Màn hình chiếu sân khấu: tự chuyển giữa bảng điểm trận đang đấu và màn chờ (ấn phẩm + lịch thi đấu)
-export default function StageScreen({ s, siteName, view, matchId }: { s: StageContent; siteName: string; view: StageView; matchId?: string }) {
+// Màn hình chiếu sân khấu, 3 chế độ: Lịch thi đấu (mặc định) · Bảng điểm trận đang đấu · Ấn phẩm
+export default function StageScreen({ s, brand, view, matchId }: { s: StageContent; brand: Brand; view: StageView; matchId?: string }) {
   const { rows, upcoming, results } = useSchedule();
+  const slides = s.slides.map((x) => x.image).filter(Boolean);
+  return (
+    <>
+      {view === "lich" ? <ScheduleScreen s={s} brand={brand} upcoming={upcoming} results={results} />
+        : view === "anpham" ? <Slideshow images={slides.length ? slides : [s.poster]} seconds={Number(s.slideSeconds) || 10} full />
+        : <BoardScreen s={s} brand={brand} rows={rows} upcoming={upcoming} matchId={matchId} />}
+      <ControlBar view={view} matchId={matchId} />
+    </>
+  );
+}
+
+// Bảng điểm: theo trận được mở (/stage/[id]) hoặc trận hệ thống đang chọn; giữ kết quả trận vừa xong một lúc
+function BoardScreen({ s, brand, rows, upcoming, matchId }: { s: StageContent; brand: Brand; rows: SchedRow[]; upcoming: SchedRow[]; matchId?: string }) {
   const [autoId, setAutoId] = useState<string | null>(null);
-  // Trận vừa hiển thị trước đó: giữ bảng kết quả thêm một lúc dù hệ thống đã chuyển sang trận kế (chưa bắt đầu)
   const [prevId, setPrevId] = useState<string | null>(null);
   const shown = useRef<string | null>(null);
   useEffect(() => {
     if (autoId && shown.current && autoId !== shown.current) setPrevId(shown.current);
     shown.current = autoId;
   }, [autoId]);
-
   useEffect(() => {
-    if (matchId || view !== "auto") return;
+    if (matchId) return;
     const load = async () => {
       const { data } = await createClient().rpc("get_current_match_id");
       setAutoId((data as string | null) ?? null);
@@ -67,111 +79,113 @@ export default function StageScreen({ s, siteName, view, matchId }: { s: StageCo
     load();
     const t = setInterval(load, 5000);
     return () => clearInterval(t);
-  }, [matchId, view]);
+  }, [matchId]);
 
-  const slides = s.slides.map((x) => x.image).filter(Boolean);
-  const idle = <IdleScreen s={s} siteName={siteName} upcoming={upcoming} slides={slides} />;
   const autoLive = LIVE.includes(rows.find((r) => r.id === autoId)?.status ?? "");
   const id = matchId ?? (!autoLive && prevId ? prevId : autoId);
-
-  return (
-    <>
-      {view === "lich" ? <ScheduleScreen s={s} siteName={siteName} upcoming={upcoming} results={results} />
-        : view === "anpham" ? <Slideshow images={slides.length ? slides : [s.poster]} seconds={Number(s.slideSeconds) || 10} full />
-        : (
-          <StageBoard matchId={id} siteName={siteName} idleView={idle}
-            autoIdleSeconds={matchId ? undefined : Number(s.resultSeconds) || 120}
-            next={s.showNext ? nextInfo(upcoming.find((r) => r.id !== id && !LIVE.includes(r.status))) : null} nextLabel={s.nextLabel} />
+  const next = nextInfo(upcoming.find((r) => r.id !== id && !LIVE.includes(r.status)));
+  const waiting = (
+    <div className="flex h-screen flex-col overflow-hidden bg-part-stage bg-tech-grid bg-grid-40 text-white">
+      <TopBar brand={brand} />
+      <main className="flex flex-1 flex-col items-center justify-center px-10 pb-16 text-center">
+        <Radio className="h-16 w-16 text-mech-gold" />
+        {s.idleTitle && <p className="mt-6 font-display text-7xl uppercase leading-tight">{s.idleTitle}</p>}
+        {s.idleText && <p className="mt-3 text-3xl text-white/75">{s.idleText}</p>}
+        {next && (
+          <div className="mt-12 rounded-3xl bg-black/25 px-10 py-6 ring-1 ring-white/10">
+            <p className="text-lg font-bold uppercase tracking-[0.3em] text-mech-gold">{s.nextLabel}</p>
+            <p className="mt-3 font-display text-4xl tabular-nums">{next.time}{next.code && <span className="text-white/60"> · {next.code}</span>}</p>
+            <p className="mt-4 flex items-center justify-center gap-5 text-3xl font-bold">
+              <span className="rounded-xl bg-team-red px-5 py-2">{next.red}</span>
+              <span className="font-display text-white/70">VS</span>
+              <span className="rounded-xl bg-team-blue px-5 py-2">{next.blue}</span>
+            </p>
+          </div>
         )}
-      <ControlBar view={view} matchId={matchId} />
-    </>
+      </main>
+    </div>
+  );
+  return (
+    <StageBoard matchId={id} siteName={brand.siteName} logo={brand.logo} idleView={waiting}
+      autoIdleSeconds={matchId ? undefined : Number(s.resultSeconds) || 120}
+      next={s.showNext ? next : null} nextLabel={s.nextLabel} />
   );
 }
 
 function Clock() {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => { setNow(new Date()); const t = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(t); }, []);
-  return <span className="font-display text-3xl tabular-nums">{now?.toLocaleTimeString("vi-VN", { timeZone: TZ, hour: "2-digit", minute: "2-digit" }) ?? ""}</span>;
+  return <span className="font-display text-4xl tabular-nums">{now?.toLocaleTimeString("vi-VN", { timeZone: TZ, hour: "2-digit", minute: "2-digit" }) ?? ""}</span>;
 }
 
-function TopBar({ siteName, label }: { siteName: string; label?: string }) {
+// Thanh trên cùng: bộ logo + tên giải · tiêu đề giữa màn hình · đồng hồ
+function TopBar({ brand, title }: { brand: Brand; title?: string }) {
   return (
-    <header className="flex items-center justify-between gap-6 px-10 py-5">
-      <p className="font-display text-2xl uppercase tracking-wide">{siteName}</p>
-      {label && <p className="text-lg font-bold uppercase tracking-widest text-mech-gold">{label}</p>}
-      <Clock />
+    <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-6 px-10 pb-4 pt-6">
+      <div className="flex min-w-0 items-center gap-4">
+        {brand.logo && <img src={brand.logo} alt="Logo đơn vị tổ chức" className="h-14 w-auto shrink-0 object-contain" />}
+        <p className="truncate font-display text-3xl uppercase tracking-wide">{brand.siteName}</p>
+      </div>
+      {title ? (
+        <h1 className="flex items-center gap-4 font-display text-6xl uppercase tracking-wide text-mech-gold drop-shadow-[0_4px_16px_rgba(0,0,0,0.35)]">
+          <CalendarClock className="h-12 w-12" /> {title}
+        </h1>
+      ) : <span />}
+      <div className="flex justify-end"><Clock /></div>
     </header>
   );
 }
 
-export function IdleScreen({ s, siteName, upcoming, slides }: { s: StageContent; siteName: string; upcoming: SchedRow[]; slides: string[] }) {
-  const list = s.showSchedule ? upcoming.slice(0, Number(s.scheduleCount) || 6) : [];
-  return (
-    <div className="flex h-screen flex-col overflow-hidden bg-part-stage bg-tech-grid bg-grid-40 text-white">
-      <TopBar siteName={siteName} />
-      <main className={`grid min-h-0 flex-1 gap-8 px-10 pb-6 ${list.length ? "grid-cols-[3fr_2fr]" : ""}`}>
-        <div className="flex min-h-0 flex-col">
-          <div className="relative min-h-0 flex-1 overflow-hidden rounded-3xl shadow-2xl shadow-black/40 ring-1 ring-white/10">
-            <Slideshow images={slides.length ? slides : [s.poster]} seconds={Number(s.slideSeconds) || 10} />
-          </div>
-          {(s.idleTitle || s.idleText) && (
-            <div className="mt-5 text-center">
-              {s.idleTitle && <p className="font-display text-5xl uppercase leading-tight">{s.idleTitle}</p>}
-              {s.idleText && <p className="mt-1 text-2xl text-white/75">{s.idleText}</p>}
-            </div>
-          )}
-        </div>
-        {list.length > 0 && (
-          <section className="flex min-h-0 flex-col rounded-3xl bg-black/25 p-6 ring-1 ring-white/10">
-            <h2 className="flex items-center gap-3 font-display text-3xl uppercase tracking-wide text-mech-gold">
-              <CalendarClock className="h-8 w-8" /> {s.scheduleTitle}
-            </h2>
-            <ol className="mt-4 min-h-0 flex-1 space-y-3 overflow-hidden">
-              {list.map((r, i) => <MatchRow key={r.id} r={r} first={i === list.findIndex((x) => !LIVE.includes(x.status))} />)}
-            </ol>
-          </section>
-        )}
-      </main>
-    </div>
-  );
-}
-
-function MatchRow({ r, first, result }: { r: SchedRow; first?: boolean; result?: boolean }) {
+function MatchRow({ r, next, result }: { r: SchedRow; next?: boolean; result?: boolean }) {
   const live = LIVE.includes(r.status);
   return (
-    <li className={`rounded-2xl px-5 py-3 ${live ? "bg-mech-red/90" : first ? "bg-white/15 ring-2 ring-mech-gold" : "bg-white/5"}`}>
-      <div className="flex items-center justify-between gap-3 text-base font-bold uppercase tracking-wider">
-        <span className="tabular-nums text-mech-gold">{result ? "Kết quả" : fmtStart(r.start_time)}</span>
-        <span className="text-white/70">{r.match_code}{r.stage ? ` · ${r.stage}` : ""}</span>
-        {live && <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-0.5 text-xs text-mech-red"><Radio className="h-3.5 w-3.5" /> {MATCH_STATUS[r.status]}</span>}
+    <li className={`rounded-2xl px-6 py-4 ${live ? "bg-mech-red/90 shadow-lg shadow-mech-red/30" : next ? "bg-white/15 ring-2 ring-mech-gold" : "bg-white/[0.07] ring-1 ring-white/10"}`}>
+      <div className="flex items-center justify-between gap-3 text-lg font-bold uppercase tracking-wider">
+        <span className="font-display text-2xl tabular-nums text-mech-gold">{result ? r.match_code : fmtStart(r.start_time)}</span>
+        <span className="text-white/70">{result ? r.stage : `${r.match_code ?? ""}${r.stage ? ` · ${r.stage}` : ""}`}</span>
+        {live ? <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-0.5 text-sm text-mech-red"><Radio className="h-4 w-4" /> {MATCH_STATUS[r.status]}</span>
+          : next ? <span className="rounded-full bg-mech-gold px-3 py-0.5 text-sm text-navy">Tiếp theo</span> : null}
       </div>
-      <div className="mt-2 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-        <span className={`truncate rounded-lg bg-team-red px-3 py-1.5 text-center text-xl font-bold ${result && r.winner === "RED" ? "ring-4 ring-mech-gold" : ""}`}>{r.red_team ?? "Chờ xác định"}</span>
-        <span className="font-display text-2xl tabular-nums text-white/80">{result ? `${r.red_score} – ${r.blue_score}` : "VS"}</span>
-        <span className={`truncate rounded-lg bg-team-blue px-3 py-1.5 text-center text-xl font-bold ${result && r.winner === "BLUE" ? "ring-4 ring-mech-gold" : ""}`}>{r.blue_team ?? "Chờ xác định"}</span>
+      <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+        <span className={`truncate rounded-xl bg-team-red px-4 py-2 text-center text-2xl font-bold ${result && r.winner === "RED" ? "ring-4 ring-mech-gold" : ""}`}>{r.red_team ?? "Chờ xác định"}</span>
+        <span className="font-display text-3xl tabular-nums text-white/85">{result ? `${r.red_score} – ${r.blue_score}` : "VS"}</span>
+        <span className={`truncate rounded-xl bg-team-blue px-4 py-2 text-center text-2xl font-bold ${result && r.winner === "BLUE" ? "ring-4 ring-mech-gold" : ""}`}>{r.blue_team ?? "Chờ xác định"}</span>
       </div>
     </li>
   );
 }
 
-// Toàn màn hình lịch thi đấu: các trận sắp tới + kết quả gần nhất
-export function ScheduleScreen({ s, siteName, upcoming, results }: { s: StageContent; siteName: string; upcoming: SchedRow[]; results: SchedRow[] }) {
+// Lịch thi đấu toàn màn hình: các trận sắp tới + kết quả gần nhất; chưa có trận thì hiện ấn phẩm
+export function ScheduleScreen({ s, brand, upcoming, results }: { s: StageContent; brand: Brand; upcoming: SchedRow[]; results: SchedRow[] }) {
+  const nextIdx = upcoming.findIndex((x) => !LIVE.includes(x.status));
+  const list = upcoming.slice(0, Number(s.scheduleCount) || 8);
+  const empty = !upcoming.length && !results.length;
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-part-stage bg-tech-grid bg-grid-40 text-white">
-      <TopBar siteName={siteName} label={s.scheduleTitle} />
-      <main className={`grid min-h-0 flex-1 gap-8 px-10 pb-8 ${results.length ? "grid-cols-[3fr_2fr]" : ""}`}>
-        <section className="min-h-0 overflow-hidden">
-          {upcoming.length ? (
-            <ol className="grid gap-3 xl:grid-cols-2">{upcoming.slice(0, 12).map((r, i) => <MatchRow key={r.id} r={r} first={i === upcoming.findIndex((x) => !LIVE.includes(x.status))} />)}</ol>
-          ) : <p className="pt-20 text-center text-3xl text-white/60">Chưa có trận nào sắp diễn ra.</p>}
-        </section>
-        {results.length > 0 && (
-          <section className="min-h-0 overflow-hidden">
-            <h2 className="mb-3 font-display text-2xl uppercase tracking-wide text-white/80">Kết quả gần nhất</h2>
-            <ol className="space-y-3">{results.map((r) => <MatchRow key={r.id} r={r} result />)}</ol>
-          </section>
-        )}
-      </main>
+      <TopBar brand={brand} title={s.scheduleTitle} />
+      <div className="mx-10 h-px bg-gradient-to-r from-transparent via-mech-gold/70 to-transparent" />
+      {empty ? (
+        <main className="flex min-h-0 flex-1 flex-col items-center justify-center gap-6 px-10 pb-10 text-center">
+          {s.poster && <img src={s.poster} alt="" className="max-h-[52vh] w-auto rounded-3xl object-contain shadow-2xl shadow-black/40 ring-1 ring-white/10" />}
+          <p className="flex items-center gap-3 text-4xl font-bold text-white/85"><CalendarX2 className="h-10 w-10 text-mech-gold" /> {s.scheduleEmpty}</p>
+        </main>
+      ) : (
+        <main className={`grid min-h-0 flex-1 gap-10 px-10 pb-8 pt-6 ${results.length && upcoming.length ? "grid-cols-[3fr_2fr]" : ""}`}>
+          {upcoming.length > 0 && (
+            <section className="min-h-0 overflow-hidden">
+              <ol className={`grid gap-4 ${results.length ? "" : "xl:grid-cols-2"}`}>
+                {list.map((r, i) => <MatchRow key={r.id} r={r} next={i === nextIdx} />)}
+              </ol>
+            </section>
+          )}
+          {results.length > 0 && (
+            <section className="min-h-0 overflow-hidden">
+              <h2 className="mb-4 flex items-center gap-3 font-display text-3xl uppercase tracking-wide text-white/85"><Trophy className="h-8 w-8 text-mech-gold" /> {s.resultsTitle}</h2>
+              <ol className="space-y-4">{results.map((r) => <MatchRow key={r.id} r={r} result />)}</ol>
+            </section>
+          )}
+        </main>
+      )}
     </div>
   );
 }
@@ -196,7 +210,7 @@ export function Slideshow({ images, seconds, full }: { images: string[]; seconds
   );
 }
 
-// Thanh điều khiển cho người vận hành: hiện khi di chuột, tự ẩn sau 3 giây
+// Thanh điều khiển cho người vận hành (giữa cạnh dưới): hiện khi di chuột, tự ẩn sau 3 giây
 function ControlBar({ view, matchId }: { view: StageView; matchId?: string }) {
   const [show, setShow] = useState(false);
   const [fs, setFs] = useState(false);
@@ -209,16 +223,17 @@ function ControlBar({ view, matchId }: { view: StageView; matchId?: string }) {
     return () => { window.removeEventListener("mousemove", move); document.removeEventListener("fullscreenchange", onFs); clearTimeout(timer.current); };
   }, []);
   const base = matchId ? `/stage/${matchId}` : "/stage";
+  const def: StageView = matchId ? "bangdiem" : "lich";
   const items: { v: StageView; label: string; icon: typeof Radio }[] = [
-    { v: "auto", label: matchId ? "Bảng điểm" : "Tự động", icon: Radio },
     { v: "lich", label: "Lịch thi đấu", icon: CalendarClock },
+    { v: "bangdiem", label: "Bảng điểm", icon: Radio },
     { v: "anpham", label: "Ấn phẩm", icon: Images },
   ];
   return (
     <nav aria-label="Chế độ màn hình chiếu"
-      className={`fixed right-4 top-4 z-50 flex gap-1 rounded-xl bg-black/70 p-1 text-sm font-bold text-white shadow-xl backdrop-blur transition-opacity ${show ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+      className={`fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 gap-1 rounded-xl bg-black/75 p-1 text-sm font-bold text-white shadow-xl backdrop-blur transition-opacity ${show ? "opacity-100" : "pointer-events-none opacity-0"}`}>
       {items.map((x) => (
-        <Link key={x.v} href={x.v === "auto" ? base : `${base}?view=${x.v}`} aria-current={view === x.v ? "page" : undefined}
+        <Link key={x.v} href={x.v === def ? base : `${base}?view=${x.v}`} aria-current={view === x.v ? "page" : undefined}
           className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 ${view === x.v ? "bg-white text-navy" : "hover:bg-white/15"}`}>
           <x.icon className="h-4 w-4" /> {x.label}
         </Link>

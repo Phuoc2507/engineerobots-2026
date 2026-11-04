@@ -11,8 +11,8 @@ export type IdleText = { idleTitle: string; idleText: string };
 export type NextMatch = { time: string; code: string; red: string; blue: string };
 
 // idleView: màn chờ thay thế (ấn phẩm + lịch); autoIdleSeconds: chế độ tự động – trận chưa bắt đầu hoặc đã xong quá số giây này thì về màn chờ
-export default function StageBoard({ matchId, variant = "stage", idle, siteName, idleView, autoIdleSeconds, next, nextLabel = "Trận tiếp theo" }: {
-  matchId: string | null; variant?: "stage" | "obs"; idle?: IdleText; siteName?: string;
+export default function StageBoard({ matchId, variant = "stage", idle, siteName, logo, idleView, autoIdleSeconds, next, nextLabel = "Trận tiếp theo" }: {
+  matchId: string | null; variant?: "stage" | "obs"; idle?: IdleText; siteName?: string; logo?: string;
   idleView?: ReactNode; autoIdleSeconds?: number; next?: NextMatch | null; nextLabel?: string;
 }) {
   const { data, missing, remaining } = useMatchLive(matchId);
@@ -70,7 +70,11 @@ export default function StageBoard({ matchId, variant = "stage", idle, siteName,
   return (
     <div className="relative flex min-h-screen flex-col bg-part-stage bg-tech-grid text-white">
       <header className="flex items-center justify-between px-8 py-5">
-        <p className="font-display text-2xl uppercase tracking-wide">{siteName ?? SITE.name}</p>
+        <div className="flex items-center gap-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {logo && <img src={logo} alt="Logo đơn vị tổ chức" className="h-12 w-auto object-contain" />}
+          <p className="font-display text-2xl uppercase tracking-wide">{siteName ?? SITE.name}</p>
+        </div>
         <p className="text-lg font-bold uppercase text-white/70">{m.stage} · Trận {m.match_code}</p>
         <button onClick={() => { setSound(!sound); if (!sound) beep(660, 80); }} className="rounded-full bg-white/10 p-2 opacity-40 hover:opacity-100" aria-label={sound ? "Tắt âm thanh" : "Bật âm thanh"}>
           {sound ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
