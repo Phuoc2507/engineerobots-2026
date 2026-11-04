@@ -237,6 +237,15 @@ export const DEFAULT_CONTENT = {
   stage: {
     idleTitle: SITE.name,
     idleText: "Trận đấu sẽ bắt đầu trong ít phút",
+    poster: "/images/an-pham/kv-ngang.webp",
+    slides: [{ image: "/images/an-pham/kv-ngang.webp" }, { image: "/images/an-pham/kv-vuong.webp" }],
+    slideSeconds: "10",
+    showSchedule: true,
+    scheduleTitle: "Lịch thi đấu",
+    scheduleCount: "6",
+    showNext: true,
+    nextLabel: "Trận tiếp theo",
+    resultSeconds: "120",
   },
   theme: {
     navy: "#06305E",
@@ -248,6 +257,18 @@ export const DEFAULT_CONTENT = {
     ice: "#F2F7FC",
     teamRed: "#E53935",
     teamBlue: "#1E88E5",
+    partHeader: "",
+    partHero: "",
+    partPage: "",
+    partAdmin: "",
+    partIntro: "",
+    partRules: "",
+    partArena: "",
+    partPrizes: "",
+    partTimeline: "",
+    partCta: "",
+    partFooter: "",
+    partStage: "",
   },
 };
 
@@ -273,6 +294,7 @@ export function mergeContent(rows: { key: string; value: unknown }[]): Content {
 export const THEME_VARS: Record<keyof Content["theme"], string> = {
   navy: "--c-navy", navy600: "--c-navy-600", navy900: "--c-navy-900", red: "--c-red", gold: "--c-gold",
   fmes: "--c-fmes", ice: "--c-ice", teamRed: "--c-team-red", teamBlue: "--c-team-blue",
+  partHeader: "--p-header", partHero: "--p-hero", partPage: "--p-page", partAdmin: "--p-admin", partIntro: "--p-intro", partRules: "--p-rules", partArena: "--p-arena", partPrizes: "--p-prizes", partTimeline: "--p-timeline", partCta: "--p-cta", partFooter: "--p-footer", partStage: "--p-stage",
 };
 const rgb = (hex: string) => {
   const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
@@ -289,7 +311,7 @@ export function themeCss(theme: Content["theme"]) {
 }
 
 // ───────── Mô tả form cho trang sửa nội dung ─────────
-export type FieldType = "text" | "textarea" | "doc" | "datetime" | "url" | "file" | "bool" | "select" | "color";
+export type FieldType = "heading" | "text" | "textarea" | "doc" | "datetime" | "url" | "file" | "bool" | "select" | "color";
 export type Field = {
   k: string; label: string; type: FieldType; hint?: string;
   options?: { value: string; label: string }[];
@@ -499,14 +521,23 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "stage", group: "Các trang", title: "Màn hình chiếu", where: "Màn hình chiếu sân khấu", desc: "Chữ hiện trên màn hình chiếu khi chưa có trận nào diễn ra.",
+    key: "stage", group: "Các trang", title: "Màn hình chiếu", where: "Màn hình chiếu sân khấu", desc: "Màn chờ (bộ ấn phẩm trình chiếu + lịch thi đấu), dòng Trận tiếp theo dưới bảng điểm. Mở /stage trên máy chiếu; di chuột để hiện nút chuyển Tự động / Lịch thi đấu / Ấn phẩm / Toàn màn hình.",
     fields: [
-      { k: "idleTitle", label: "Tiêu đề", type: "text" },
-      { k: "idleText", label: "Dòng chữ phụ", type: "text" },
+      { k: "slides", label: "Bộ ấn phẩm trình chiếu", type: "list", hint: "Ảnh lần lượt chuyển trên màn chờ và chế độ Ấn phẩm. Ảnh ngang 16:9 hoặc 2:1 lấp đầy đẹp nhất; ảnh vuông / dọc tự có nền mờ hai bên.", item: [{ k: "image", label: "Ảnh", type: "file", accept: IMG }] },
+      { k: "slideSeconds", label: "Số giây mỗi ảnh", type: "select", options: ["5", "8", "10", "15", "20", "30"].map((v) => ({ value: v, label: `${v} giây` })) },
+      { k: "poster", label: "Ảnh dự phòng (khi bộ ấn phẩm trống)", type: "file", accept: IMG },
+      { k: "idleTitle", label: "Tiêu đề dưới ấn phẩm", type: "text", hint: "Để trống nếu ấn phẩm đã có tên giải." },
+      { k: "idleText", label: "Dòng chữ phụ dưới ấn phẩm", type: "text" },
+      { k: "showSchedule", label: "Hiện lịch thi đấu bên phải màn chờ", type: "bool" },
+      { k: "scheduleTitle", label: "Tiêu đề khung lịch thi đấu", type: "text" },
+      { k: "scheduleCount", label: "Số trận hiện trên màn chờ", type: "select", options: ["3", "4", "5", "6", "8"].map((v) => ({ value: v, label: `${v} trận` })) },
+      { k: "showNext", label: "Hiện dòng Trận tiếp theo dưới bảng điểm", type: "bool" },
+      { k: "nextLabel", label: "Nhãn dòng Trận tiếp theo", type: "text" },
+      { k: "resultSeconds", label: "Giữ kết quả trận vừa xong trên màn hình", type: "select", hint: "Hết thời gian này màn hình tự về màn chờ.", options: [["60", "1 phút"], ["120", "2 phút"], ["300", "5 phút"], ["600", "10 phút"], ["86400", "Đến khi trận sau bắt đầu"]].map(([value, label]) => ({ value, label })) },
     ],
   },
   {
-    key: "theme", group: "Chung", title: "Màu sắc giao diện", where: "Toàn bộ web công khai và web BTC", desc: "Bảng màu nhận diện. Đổi màu sẽ áp dụng cho mọi trang.",
+    key: "theme", group: "Chung", title: "Màu sắc giao diện", where: "Toàn bộ web công khai và web BTC", desc: "Phần trên: bảng màu chung, đổi sẽ áp dụng cho mọi trang. Phần dưới: màu nền riêng của từng phần (thanh menu, đầu trang, từng mục trang chủ, chân trang, màn hình chiếu) – để trống thì phần đó theo màu chung.",
     fields: [
       { k: "navy", label: "Xanh navy (nền chính)", type: "color" },
       { k: "navy600", label: "Xanh nhấn (nút, liên kết)", type: "color" },
@@ -517,6 +548,19 @@ export const CONTENT_SECTIONS: Section[] = [
       { k: "ice", label: "Nền sáng", type: "color" },
       { k: "teamRed", label: "Màu phe Đỏ", type: "color" },
       { k: "teamBlue", label: "Màu phe Xanh", type: "color" },
+      { k: "partsNote", label: "Màu nền từng phần", type: "heading", hint: "Để trống ô nào thì phần đó dùng màu chung ở trên." },
+      { k: "partHeader", label: "Thanh menu trên cùng (khi cuộn trang)", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
+      { k: "partHero", label: "Nền đầu trang chủ", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
+      { k: "partPage", label: "Nền đầu các trang con (Thể lệ, Lịch thi, Đăng ký…)", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
+      { k: "partAdmin", label: "Nền đầu khu BTC / trọng tài", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
+      { k: "partIntro", label: "Nền mục Giới thiệu", type: "color", hint: "Chữ trên phần này màu tối – nên chọn màu sáng. Để trống = theo màu chung." },
+      { k: "partRules", label: "Nền mục Thể lệ & bảng điểm trực tiếp", type: "color", hint: "Chữ trên phần này màu tối – nên chọn màu sáng. Để trống = theo màu chung." },
+      { k: "partArena", label: "Nền mục Sa bàn & video", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
+      { k: "partPrizes", label: "Nền mục Giải thưởng", type: "color", hint: "Chữ trên phần này màu tối – nên chọn màu sáng. Để trống = theo màu chung." },
+      { k: "partTimeline", label: "Nền mục Lịch trình", type: "color", hint: "Chữ trên phần này màu tối – nên chọn màu sáng. Để trống = theo màu chung." },
+      { k: "partCta", label: "Nền dải Kêu gọi đăng ký", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
+      { k: "partFooter", label: "Nền chân trang", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
+      { k: "partStage", label: "Nền màn hình chiếu", type: "color", hint: "Chữ trên phần này màu trắng – nên chọn màu đậm. Để trống = theo màu chung." },
     ],
   },
   {

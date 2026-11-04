@@ -29,7 +29,7 @@ export default async function AdminShell({ staff, active, title, children, actio
   const tabs = TABS.filter((t) => t.roles.includes(staff.role));
   return (
     <div className="min-h-screen bg-ice">
-      <header className="relative overflow-hidden bg-navy text-white">
+      <header className="relative overflow-hidden bg-part-admin text-white">
         <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40" />
         <div className="relative mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
           <Link href="/" aria-label={`${c.site.name} – Trang chủ`}><BrandMark b={c.brand} /></Link>

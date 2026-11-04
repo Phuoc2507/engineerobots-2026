@@ -21,7 +21,7 @@ export default function MobileCta({ label }: { label: string }) {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-navy/95 p-3 backdrop-blur transition-transform sm:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-part-header/95 p-3 backdrop-blur transition-transform sm:hidden ${
         show ? "translate-y-0" : "translate-y-full"
       }`}
       aria-hidden={!show}

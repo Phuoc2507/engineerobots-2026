@@ -59,7 +59,7 @@ export default function Navbar({ nav, brand, siteName }: { nav: Content["nav"]; 
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors ${
-        scrolled || open ? "bg-navy/95 shadow-lg backdrop-blur" : "bg-transparent"
+        scrolled || open ? "bg-part-header/95 shadow-lg backdrop-blur" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:gap-4 md:px-6">

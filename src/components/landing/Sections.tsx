@@ -11,7 +11,7 @@ export function Intro({ c }: { c: Content }) {
   const it = c.intro;
   const stats = it.stats.map((s, i) => ({ ...s, icon: STAT_ICONS[i % STAT_ICONS.length] }));
   return (
-    <section id="gioi-thieu" className="bg-white py-20 md:py-28">
+    <section id="gioi-thieu" className="bg-part-intro py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
@@ -70,7 +70,7 @@ export function ArenaShowcase({ c }: { c: Content }) {
   const a = c.arena;
   const zones = a.zones;
   return (
-    <section id="sa-ban-3d" className="bg-navy py-20 text-white md:py-28">
+    <section id="sa-ban-3d" className="bg-part-arena py-20 text-white md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
@@ -115,7 +115,7 @@ export function ArenaShowcase({ c }: { c: Content }) {
 export function Prizes({ c }: { c: Content }) {
   const pz = c.prizes;
   return (
-    <section id="giai-thuong" className="bg-ice py-20 md:py-28">
+    <section id="giai-thuong" className="bg-part-prizes py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <p className="section-kicker">
           <span className="h-px w-8 bg-mech-red" /> {pz.kicker}
@@ -156,7 +156,7 @@ export function Prizes({ c }: { c: Content }) {
 export function Timeline({ c }: { c: Content }) {
   const tl = c.timeline;
   return (
-    <section id="lich-trinh" className="bg-white py-20 md:py-28">
+    <section id="lich-trinh" className="bg-part-timeline py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <p className="section-kicker">
           <span className="h-px w-8 bg-mech-red" /> {tl.kicker}
@@ -214,7 +214,7 @@ export function Leaderboard({ c }: { c: Content }) {
   const h = c.home;
   if (!h.liveOn) return null;
   return (
-    <section id="bang-vang" className="bg-ice pb-20 md:pb-28">
+    <section id="bang-vang" className="bg-part-rules pb-20 md:pb-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="flex flex-col items-start gap-5 rounded-2xl border border-slate-200 bg-white p-6 md:flex-row md:items-center md:p-8">
           <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-navy text-mech-gold">
@@ -238,7 +238,7 @@ export function Leaderboard({ c }: { c: Content }) {
 
 export function RegisterCta({ c }: { c: Content }) {
   return (
-    <section id="dang-ky" className="relative overflow-hidden bg-mech-red py-20 text-white">
+    <section id="dang-ky" className="relative overflow-hidden bg-part-cta py-20 text-white">
       <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40 opacity-40" />
       <div className="relative mx-auto flex max-w-5xl flex-col items-center px-4 text-center md:px-6">
         <h2 className="font-display text-4xl uppercase tracking-wide md:text-6xl">{c.cta.title}</h2>
@@ -260,7 +260,7 @@ export function Footer({ c }: { c: Content }) {
   const SITE = c.site;
   const F = c.footer;
   return (
-    <footer className="bg-navy-900 pb-24 pt-12 text-white/75 sm:pb-12">
+    <footer className="bg-part-footer pb-24 pt-12 text-white/75 sm:pb-12">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 md:grid-cols-4 md:px-6">
         <div>
           <div className="font-display text-2xl tracking-wider text-white">{SITE.name}</div>

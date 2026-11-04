@@ -152,6 +152,14 @@ function FieldInput({ f, value, def, section, onChange, compact }: { f: Field; v
   const hint = f.hint && <span className="mt-1 block text-xs text-slate-500">{f.hint}</span>;
   const str = typeof value === "string" ? value : "";
 
+  if (f.type === "heading") {
+    return (
+      <div className="border-t border-slate-200 pt-5">
+        <p className="font-display text-xl uppercase text-navy">{f.label}</p>
+        {hint}
+      </div>
+    );
+  }
   if (f.type === "bool") {
     return (
       <label className="flex cursor-pointer items-center gap-3 rounded-lg bg-ice px-4 py-3">
@@ -177,7 +185,7 @@ function FieldInput({ f, value, def, section, onChange, compact }: { f: Field; v
       ) : f.type === "color" ? (
         <span className="mt-1 flex items-center gap-2">
           <input type="color" value={/^#[0-9a-f]{6}$/i.test(str) ? str : "#000000"} onChange={(e) => onChange(e.target.value.toUpperCase())} aria-label={f.label} className="h-10 w-14 cursor-pointer rounded border border-slate-300" />
-          <input id={id} value={str} onChange={(e) => onChange(e.target.value)} maxLength={7} className={`${input} w-28 font-mono uppercase`} />
+          <input id={id} value={str} onChange={(e) => onChange(e.target.value)} maxLength={7} placeholder="Theo màu chung" className={`${input} w-40 font-mono uppercase placeholder:normal-case placeholder:font-sans`} />
         </span>
       ) : (
         <input id={id} type="text" value={str} onChange={(e) => onChange(e.target.value)} className={`${input} mt-1`} />

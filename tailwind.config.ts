@@ -17,6 +17,21 @@ const config: Config = {
         fmes: "rgb(var(--c-fmes) / <alpha-value>)",
         ice: "rgb(var(--c-ice) / <alpha-value>)",
         team: { red: "rgb(var(--c-team-red) / <alpha-value>)", blue: "rgb(var(--c-team-blue) / <alpha-value>)" },
+        // Màu nền riêng từng phần (BTC đặt ở /admin/content → Màu sắc giao diện); để trống thì theo màu chung
+        part: {
+          header: "rgb(var(--p-header, var(--c-navy)) / <alpha-value>)",
+          hero: "rgb(var(--p-hero, var(--c-navy)) / <alpha-value>)",
+          page: "rgb(var(--p-page, var(--c-navy)) / <alpha-value>)",
+          admin: "rgb(var(--p-admin, var(--c-navy)) / <alpha-value>)",
+          intro: "rgb(var(--p-intro, 255 255 255) / <alpha-value>)",
+          rules: "rgb(var(--p-rules, var(--c-ice)) / <alpha-value>)",
+          arena: "rgb(var(--p-arena, var(--c-navy)) / <alpha-value>)",
+          prizes: "rgb(var(--p-prizes, var(--c-ice)) / <alpha-value>)",
+          timeline: "rgb(var(--p-timeline, 255 255 255) / <alpha-value>)",
+          cta: "rgb(var(--p-cta, var(--c-red)) / <alpha-value>)",
+          footer: "rgb(var(--p-footer, var(--c-navy-900)) / <alpha-value>)",
+          stage: "rgb(var(--p-stage, var(--c-navy)) / <alpha-value>)",
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "Impact", "sans-serif"],

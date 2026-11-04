@@ -10,7 +10,7 @@ export default async function PortalShell({ title, subtitle, children }: { title
   return (
     <div className="min-h-screen">
       <AnnounceBar a={c.announce} />
-      <header className="relative overflow-hidden bg-navy pb-24 pt-6 text-white">
+      <header className="relative overflow-hidden bg-part-page pb-24 pt-6 text-white">
         {c.brand.headerBackground ? <HeaderImage src={c.brand.headerBackground} /> : <div className="pointer-events-none absolute inset-0 bg-tech-grid bg-grid-40" />}
         <div className="relative mx-auto flex max-w-3xl items-center justify-between px-4">
           <Link href="/" aria-label={`${c.site.name} – Trang chủ`}><BrandMark b={c.brand} /></Link>
@@ -35,7 +35,7 @@ export function HeaderImage({ src }: { src: string }) {
     <div className="pointer-events-none absolute inset-0" aria-hidden>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt="" className="h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-navy/75" />
+      <div className="absolute inset-0 bg-part-page/75" />
     </div>
   );
 }

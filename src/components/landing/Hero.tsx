@@ -9,12 +9,12 @@ import DominationGrid from "./DominationGrid";
 export default function Hero({ c }: { c: Content }) {
   const h = c.hero;
   return (
-    <section className="relative overflow-hidden bg-navy bg-tech-grid bg-grid-40 pt-24 pb-20 text-white md:pt-28 md:pb-28">
+    <section className="relative overflow-hidden bg-part-hero bg-tech-grid bg-grid-40 pt-24 pb-20 text-white md:pt-28 md:pb-28">
       {c.brand.heroBackground && (
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={c.brand.heroBackground} alt="" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-navy/80" />
+          <div className="absolute inset-0 bg-part-hero/80" />
         </div>
       )}
       <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-mech-red/30 blur-[120px]" />

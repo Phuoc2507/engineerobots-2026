@@ -31,7 +31,7 @@ export default function RulesTabs({ h, specs, image }: { h: Content["home"]; spe
   const t = tabs[Math.min(tab, tabs.length - 1)];
 
   return (
-    <section id="the-le" className="bg-ice pb-12 pt-20 md:pt-28">
+    <section id="the-le" className="bg-part-rules pb-12 pt-20 md:pt-28">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <p className="section-kicker">
           <span className="h-px w-8 bg-mech-red" /> {h.rulesKicker}

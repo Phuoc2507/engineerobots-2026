@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { beep, countEv, evLabel, fmtClock, groupTotals, STAGE3_STEPS, useMatchLive } from "@/lib/match";
@@ -8,11 +8,22 @@ import { MATCH_STATUS, SITE } from "@/lib/site";
 
 // Bảng tỉ số trực tiếp: "stage" = màn hình LED/máy chiếu, "obs" = lớp phủ nền trong suốt cho livestream
 export type IdleText = { idleTitle: string; idleText: string };
+export type NextMatch = { time: string; code: string; red: string; blue: string };
 
-export default function StageBoard({ matchId, variant = "stage", idle }: { matchId: string | null; variant?: "stage" | "obs"; idle?: IdleText }) {
+// idleView: màn chờ thay thế (ấn phẩm + lịch); autoIdleSeconds: chế độ tự động – trận chưa bắt đầu hoặc đã xong quá số giây này thì về màn chờ
+export default function StageBoard({ matchId, variant = "stage", idle, siteName, idleView, autoIdleSeconds, next, nextLabel = "Trận tiếp theo" }: {
+  matchId: string | null; variant?: "stage" | "obs"; idle?: IdleText; siteName?: string;
+  idleView?: ReactNode; autoIdleSeconds?: number; next?: NextMatch | null; nextLabel?: string;
+}) {
   const { data, missing, remaining } = useMatchLive(matchId);
   const [sound, setSound] = useState(false);
   const lastBeep = useRef(-1);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (autoIdleSeconds === undefined) return;
+    const t = setInterval(() => setNow(Date.now()), 5000);
+    return () => clearInterval(t);
+  }, [autoIdleSeconds]);
 
   // Bíp mỗi giây trong 10 giây cuối, bíp dài khi hết giờ
   useEffect(() => {
@@ -24,10 +35,14 @@ export default function StageBoard({ matchId, variant = "stage", idle }: { match
     if (s === 0) beep(440, 900);
   }, [remaining, sound, data?.match.status]);
 
-  if (!matchId || missing) return <Idle obs={variant === "obs"} idle={idle} />;
-  if (!data) return null;
+  if (!matchId || missing) return variant === "stage" && idleView ? <>{idleView}</> : <Idle obs={variant === "obs"} idle={idle} />;
+  if (!data) return variant === "stage" && idleView ? <>{idleView}</> : null;
 
   const m = data.match;
+  if (variant === "stage" && idleView && autoIdleSeconds !== undefined
+    && (m.status === "SCHEDULED" || (m.status === "FINISHED" && m.finished_at && now - new Date(m.finished_at).getTime() > autoIdleSeconds * 1000))) {
+    return <>{idleView}</>;
+  }
   const urgent = m.status === "RUNNING" && remaining <= 30;
   const latest = data.events.find((e) => e.event_type !== "FLIP");
 
@@ -53,9 +68,9 @@ export default function StageBoard({ matchId, variant = "stage", idle }: { match
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-navy bg-tech-grid text-white">
+    <div className="relative flex min-h-screen flex-col bg-part-stage bg-tech-grid text-white">
       <header className="flex items-center justify-between px-8 py-5">
-        <p className="font-display text-2xl uppercase tracking-wide">{SITE.name}</p>
+        <p className="font-display text-2xl uppercase tracking-wide">{siteName ?? SITE.name}</p>
         <p className="text-lg font-bold uppercase text-white/70">{m.stage} · Trận {m.match_code}</p>
         <button onClick={() => { setSound(!sound); if (!sound) beep(660, 80); }} className="rounded-full bg-white/10 p-2 opacity-40 hover:opacity-100" aria-label={sound ? "Tắt âm thanh" : "Bật âm thanh"}>
           {sound ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
@@ -95,6 +110,14 @@ export default function StageBoard({ matchId, variant = "stage", idle }: { match
             {" · "}{evLabel(latest)} <b>{latest.point_value > 0 ? "+" : ""}{latest.point_value}</b>
           </p>
         ) : <div className="h-14" />}
+        {next && m.status !== "FINISHED" && (
+          <p className="mt-3 flex items-center justify-center gap-3 text-lg text-white/80">
+            <span className="rounded-md bg-mech-gold px-2.5 py-0.5 text-sm font-bold uppercase tracking-wider text-navy">{nextLabel}</span>
+            <span className="font-bold tabular-nums text-white">{next.time}</span>
+            {next.code && <span>· {next.code} ·</span>}
+            <span className="font-semibold text-red-300">{next.red}</span> <span className="text-white/50">vs</span> <span className="font-semibold text-sky-300">{next.blue}</span>
+          </p>
+        )}
       </footer>
     </div>
   );
@@ -121,7 +144,7 @@ function Side({ name, score, fouls, tone, win, totals }: { name?: string; score:
 function Idle({ obs, idle }: { obs: boolean; idle?: IdleText }) {
   if (obs) return null;
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-navy bg-tech-grid text-center text-white">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-part-stage bg-tech-grid text-center text-white">
       <p className="font-display text-7xl uppercase">{idle?.idleTitle ?? SITE.name}</p>
       <p className="mt-4 text-2xl text-white/70">{idle?.idleText ?? "Trận đấu sẽ bắt đầu trong ít phút"}</p>
     </div>
