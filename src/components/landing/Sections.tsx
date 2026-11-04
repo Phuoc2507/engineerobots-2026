@@ -258,7 +258,6 @@ export function RegisterCta({ c }: { c: Content }) {
 
 export function Footer({ c }: { c: Content }) {
   const SITE = c.site;
-  const CONTACT = c.contact;
   const F = c.footer;
   return (
     <footer className="bg-navy-900 pb-24 pt-12 text-white/75 sm:pb-12">
@@ -285,18 +284,10 @@ export function Footer({ c }: { c: Content }) {
         </div>
         <div className="text-sm">
           <div className="font-bold uppercase tracking-wider text-white">{F.contactTitle}</div>
-          {/* Sửa ở /admin/content → Liên hệ và Chân trang; mục trống sẽ tự ẩn */}
-          {(CONTACT.person || CONTACT.phone) && (
-            <p className="mt-2">
-              {F.contactPrefix} {CONTACT.person}{CONTACT.phone && <> – SĐT:{" "}
-              <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="font-semibold text-white hover:text-mech-gold">{CONTACT.phone}</a></>}
-            </p>
-          )}
-          <ul className="mt-2 space-y-1.5">
-            {CONTACT.email && <li><ContactLink url={CONTACT.email} label={CONTACT.email} /></li>}
-            {CONTACT.fanpage && <li><ContactLink url={CONTACT.fanpage} label="Fanpage" /></li>}
-            {F.contactLinks.filter((l) => l.url.trim()).map((l, i) => (
-              <li key={`${i}${l.url}`}><ContactLink url={l.url} label={l.label || l.url} /></li>
+          {/* Sửa ở /admin/content → Chân trang → Các dòng liên hệ */}
+          <ul className="mt-2 space-y-2">
+            {F.contactLinks.filter((l) => l.label.trim() || l.url.trim()).map((l, i) => (
+              <li key={`${i}${l.label}${l.url}`}><ContactLine label={l.label} value={l.url} /></li>
             ))}
           </ul>
         </div>
@@ -310,21 +301,39 @@ export function Footer({ c }: { c: Content }) {
 }
 
 // Link liên hệ: tự nhận email / số điện thoại / trang web để chọn biểu tượng và kiểu liên kết
+const EMAIL = /[^\s@:]+@[^\s@]+\.[^\s@]+/;
+const PHONE = /\+?\d[\d\s.]{7,}\d/;
 function contactHref(raw: string) {
   const v = raw.trim();
-  if (/^mailto:|^tel:/i.test(v)) return v;
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return `mailto:${v}`;
-  if (/^\+?[\d\s.]{8,}$/.test(v)) return `tel:${v.replace(/[\s.]/g, "")}`;
-  if (/^https?:\/\//i.test(v)) return v;
-  return `https://${v}`;
+  if (/^(mailto:|tel:|https?:\/\/)/i.test(v)) return v;
+  if (/^[\w-]+(\.[\w-]+)+(\/\S*)?$/.test(v) && /[a-z]/i.test(v) && !EMAIL.test(v)) return `https://${v}`;
+  const mail = v.match(EMAIL);
+  if (mail) return `mailto:${mail[0]}`;
+  const phone = v.match(PHONE);
+  if (phone) return `tel:${phone[0].replace(/[\s.]/g, "")}`;
+  return null;
+}
+
+// Một dòng ở cột Liên hệ: chữ thường; kèm SĐT / email thì hiện thêm dòng bấm được; kèm link thì cả dòng là nút
+function ContactLine({ label, value }: { label: string; value: string }) {
+  const href = contactHref(value);
+  const text = label.trim() ? <Rich text={label} strongClass="font-semibold text-white" /> : null;
+  if (!href) return <p>{text}{text && value.trim() ? " " : ""}{value.trim()}</p>;
+  if (/^https?:/i.test(href)) return <ContactLink url={href} label={label.trim() || value.trim()} />;
+  return (
+    <>
+      {text && <p>{text}</p>}
+      <ContactLink url={href} label={value.trim()} />
+    </>
+  );
 }
 
 function ContactLink({ url, label }: { url: string; label: string }) {
-  const href = contactHref(url);
+  const href = contactHref(url) ?? "#";
   const Icon = href.startsWith("mailto:") ? Mail : href.startsWith("tel:") ? Phone : /facebook\.com|fb\.com|fb\.me/i.test(href) ? ThumbsUp : Globe;
   const ext = /^https?:/i.test(href);
   return (
-    <a href={href} {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="inline-flex items-start gap-2 break-all hover:text-mech-gold">
+    <a href={href} {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="inline-flex items-start gap-2 break-words font-semibold text-white/90 hover:text-mech-gold">
       <Icon className="mt-0.5 h-4 w-4 shrink-0" /> {label}
     </a>
   );

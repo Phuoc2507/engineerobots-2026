@@ -70,8 +70,11 @@ export const DEFAULT_CONTENT = {
       { name: "CLB NCKH Cơ khí (FMES)", fanpage: "", email: "" },
     ],
     contactTitle: "Liên hệ",
-    contactLinks: [] as { label: string; url: string }[],
-    contactPrefix: "Mọi thắc mắc xin liên hệ:",
+    contactLinks: [
+      { label: `Mọi thắc mắc xin liên hệ: ${CONTACT.person}`, url: `SĐT: ${CONTACT.phone}` },
+      ...(CONTACT.email ? [{ label: "", url: CONTACT.email }] : []),
+      ...(CONTACT.fanpage ? [{ label: "Fanpage", url: CONTACT.fanpage }] : []),
+    ],
     copyright: `© 2026 ${SITE.name} · ${SITE.faculty}`,
     owner: "",
     privacyLabel: "Chính sách quyền riêng tư",
@@ -343,8 +346,7 @@ export const CONTENT_SECTIONS: Section[] = [
       { k: "organizerTitle", label: "Tiêu đề Đơn vị tổ chức", type: "text" },
       { k: "organizerUnits", label: "Các đơn vị tổ chức", type: "list", hint: "Ô fanpage và email để trống sẽ tự ẩn.", item: [{ k: "name", label: "Tên đơn vị", type: "text" }, { k: "fanpage", label: "Link fanpage", type: "url" }, { k: "email", label: "Gmail / email", type: "text" }] },
       { k: "contactTitle", label: "Tiêu đề cột liên hệ", type: "text" },
-      { k: "contactPrefix", label: "Câu dẫn trước người liên hệ", type: "text" },
-      { k: "contactLinks", label: "Liên kết liên hệ thêm (fanpage, Gmail, Zalo…)", type: "list", hint: "Hiện dưới cột Liên hệ, sau người liên hệ, email và fanpage ở mục Liên hệ & nhóm Zalo. Ô Đường dẫn nhập link (https://…) hoặc địa chỉ email; số điện thoại cũng được.", item: [{ k: "label", label: "Chữ hiện", type: "text" }, { k: "url", label: "Link / email / SĐT", type: "text" }] },
+      { k: "contactLinks", label: "Các dòng liên hệ", type: "list", hint: "Toàn bộ cột Liên hệ lấy từ danh sách này, xóa dòng nào là mất dòng đó. Ô Nội dung là chữ hiện ra (bao **hai dấu sao** để in đậm). Ô Liên hệ: để trống nếu chỉ là chữ; gõ SĐT (vd SĐT: 0822678499) hoặc email thì hiện bên dưới và bấm vào để gọi / gửi thư; dán link (fanpage, website, Zalo) thì cả dòng thành nút bấm.", item: [{ k: "label", label: "Nội dung", type: "text" }, { k: "url", label: "Liên hệ: SĐT / email / link (không bắt buộc)", type: "text" }] },
       { k: "copyright", label: "Dòng bản quyền", type: "text" },
       { k: "owner", label: "Dòng ghi đơn vị giữ bản quyền (không bắt buộc)", type: "text", hint: "Ví dụ: Bản quyền thuộc Đoàn – Hội Khoa Cơ khí & CLB NCKH CK (FMES)." },
       { k: "privacyLabel", label: "Chữ liên kết tới trang Chính sách quyền riêng tư", type: "text" },
@@ -477,7 +479,7 @@ export const CONTENT_SECTIONS: Section[] = [
     ],
   },
   {
-    key: "contact", group: "Chung", title: "Liên hệ & nhóm Zalo", where: "Chân trang, trang đội thi, email gửi đội", desc: "Thông tin liên hệ. Mục để trống sẽ tự ẩn.",
+    key: "contact", group: "Chung", title: "Liên hệ & nhóm Zalo", where: "Trang đội thi, email gửi đội, đăng nhập BTC", desc: "Người liên hệ, SĐT, email dùng ở trang đội thi và email gửi đội. Cột Liên hệ ở chân trang sửa riêng ở mục Chân trang.",
     fields: [
       { k: "person", label: "Người liên hệ", type: "text" },
       { k: "phone", label: "Số điện thoại", type: "text" },
