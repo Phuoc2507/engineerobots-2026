@@ -123,6 +123,19 @@ const SPECIAL: Record<string, string> = {
   ADJUST: "Chỉnh điểm (trọng tài chính)", KNOCKOUT: "Chiến thắng tuyệt đối", COIN_TOSS: "Thắng tung đồng xu", FORFEIT: "Xử thắng (đối thủ bị loại)",
 };
 
+// Các lỗi của một đội (mới nhất trước, gộp theo loại): mọi mục trừ điểm thư ký nhập + cảnh cáo; không tính điều chỉnh tay
+export const foulList = (events: LiveEvent[], color: Color) => {
+  const map = new Map<string, { key: string; name: string; count: number; points: number }>();
+  for (const e of events) {
+    if (e.team_color !== color || e.event_type === "ADJUST") continue;
+    if (e.point_value >= 0 && e.event_type !== "WARNING") continue;
+    const cur = map.get(e.event_type);
+    if (cur) { cur.count += 1; cur.points += e.point_value; }
+    else map.set(e.event_type, { key: e.event_type, name: e.rule_name ?? e.event_type, count: 1, points: e.point_value });
+  }
+  return Array.from(map.values());
+};
+
 export const evLabel = (e: LiveEvent) =>
   e.event_type === "FLIP" ? `Lật ${POINT_NAMES[e.target_point_index ?? 0] ?? `ô ${e.target_point_index}`}` : SPECIAL[e.event_type] ?? e.rule_name ?? e.event_type;
 

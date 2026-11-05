@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { beep, countEv, evLabel, fmtClock, groupTotals, STAGE3_STEPS, useMatchLive } from "@/lib/match";
+import { beep, evLabel, fmtClock, foulList, groupTotals, useMatchLive } from "@/lib/match";
 import { MATCH_STATUS, SITE } from "@/lib/site";
 
 // Bảng tỉ số trực tiếp: "stage" = màn hình LED/máy chiếu, "obs" = lớp phủ nền trong suốt cho livestream
@@ -69,41 +69,39 @@ export default function StageBoard({ matchId, variant = "stage", idle, siteName,
 
   return (
     <div className="relative flex min-h-screen flex-col bg-part-stage bg-tech-grid text-white">
-      <header className="flex items-center justify-between px-8 py-5">
-        <div className="flex items-center gap-4">
+      <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-6 px-8 py-4">
+        <div className="flex min-w-0 items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          {logo && <img src={logo} alt="Logo đơn vị tổ chức" className="h-12 w-auto object-contain" />}
-          <p className="font-display text-2xl uppercase tracking-wide">{siteName ?? SITE.name}</p>
+          {logo && <img src={logo} alt="Logo đơn vị tổ chức" className="h-16 w-auto object-contain" />}
         </div>
-        <p className="text-lg font-bold uppercase text-white/70">{m.stage} · Trận {m.match_code}</p>
-        <button onClick={() => { setSound(!sound); if (!sound) beep(660, 80); }} className="rounded-full bg-white/10 p-2 opacity-40 hover:opacity-100" aria-label={sound ? "Tắt âm thanh" : "Bật âm thanh"}>
-          {sound ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-        </button>
+        <div className="text-center">
+          <p className="font-display text-5xl uppercase leading-none tracking-wide">{siteName ?? SITE.name}</p>
+          <p className="mt-2 text-3xl font-bold uppercase leading-none tracking-wider text-mech-gold">{m.stage}</p>
+        </div>
+        <div className="flex justify-end">
+          {m.match_code && (
+            <p className="text-right leading-none">
+              <span className="block text-base font-bold uppercase tracking-[0.25em] text-white/70">Mã trận</span>
+              <span className="mt-1 block font-display text-5xl uppercase tracking-wide">{m.match_code}</span>
+            </p>
+          )}
+        </div>
       </header>
 
       <main className="grid flex-1 grid-cols-[1fr_auto_1fr] items-center gap-8 px-8">
-        <Side name={data.red?.team_name} score={m.red_score} fouls={data.fouls.RED} tone="bg-team-red" win={m.status === "FINISHED" && m.winner === "RED"} totals={groupTotals(data.events, "RED")} />
-        <div className="flex flex-col items-center gap-6">
-          <div className={`rounded-2xl px-10 py-4 text-center ${urgent ? "animate-pulse bg-mech-red" : "bg-black/30"}`}>
-            <p className="font-display text-[9rem] leading-none tabular-nums">{fmtClock(remaining)}</p>
-            <p className="mt-2 text-xl font-bold uppercase tracking-widest text-white/80">{MATCH_STATUS[m.status] ?? m.status}</p>
-          </div>
-          <div className="grid gap-2">
-            {(["RED", "BLUE"] as const).map((c) => (
-              <div key={c} className="grid grid-cols-4 gap-2">
-                {STAGE3_STEPS.map((st) => (
-                  <span key={st.key} className={`flex h-14 w-24 items-center justify-center rounded-xl text-base font-bold uppercase transition-colors duration-500 ${countEv(data.events, c, st.key) > 0 ? (st.key === "STAGE3_LAMP" ? "bg-mech-gold text-navy" : c === "RED" ? "bg-team-red" : "bg-team-blue") : "bg-white/10 text-white/40"}`}>
-                    {st.short}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
+        <Side name={data.red?.team_name} score={m.red_score} tone="bg-team-red" win={m.status === "FINISHED" && m.winner === "RED"} totals={groupTotals(data.events, "RED")} fouls={foulList(data.events, "RED")} />
+        <div className={`rounded-2xl px-10 py-5 text-center ${urgent ? "animate-pulse bg-mech-red" : "bg-black/30"}`}>
+          <p className="font-display text-[clamp(7rem,22vh,12rem)] leading-none tabular-nums">{fmtClock(remaining)}</p>
+          <p className="mt-2 text-2xl font-bold uppercase tracking-widest text-white/80">{MATCH_STATUS[m.status] ?? m.status}</p>
         </div>
-        <Side name={data.blue?.team_name} score={m.blue_score} fouls={data.fouls.BLUE} tone="bg-team-blue" win={m.status === "FINISHED" && m.winner === "BLUE"} totals={groupTotals(data.events, "BLUE")} />
+        <Side name={data.blue?.team_name} score={m.blue_score} tone="bg-team-blue" win={m.status === "FINISHED" && m.winner === "BLUE"} totals={groupTotals(data.events, "BLUE")} fouls={foulList(data.events, "BLUE")} />
       </main>
 
-      <footer className="px-8 pb-6">
+      <button onClick={() => { setSound(!sound); if (!sound) beep(660, 80); }} className="fixed bottom-4 left-4 z-40 rounded-full bg-white/10 p-2 opacity-40 hover:opacity-100" aria-label={sound ? "Tắt âm thanh" : "Bật âm thanh"}>
+        {sound ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+      </button>
+
+      <footer className="px-8 pb-5 pt-3">
         {m.status === "FINISHED" ? (
           <p className="rounded-xl bg-white py-4 text-center font-display text-3xl uppercase text-navy">
             {m.winner ? `Chiến thắng: ${m.winner === "RED" ? data.red?.team_name : data.blue?.team_name}` : "Hòa"}
@@ -127,11 +125,15 @@ export default function StageBoard({ matchId, variant = "stage", idle, siteName,
   );
 }
 
-function Side({ name, score, fouls, tone, win, totals }: { name?: string; score: number; fouls: number; tone: string; win: boolean; totals: ReturnType<typeof groupTotals> }) {
+const SHOW_FOULS = 4;
+
+export function Side({ name, score, tone, win, totals, fouls }: { name?: string; score: number; tone: string; win: boolean; totals: ReturnType<typeof groupTotals>; fouls: ReturnType<typeof foulList> }) {
+  const total = fouls.reduce((n, f) => n + f.count, 0);
+  const shown = fouls.slice(0, SHOW_FOULS);
   return (
-    <div className={`flex flex-col items-center rounded-3xl ${tone} px-6 py-10 text-center shadow-2xl ${win ? "ring-8 ring-mech-gold" : ""}`}>
+    <div className={`flex flex-col items-center rounded-3xl ${tone} px-6 py-6 text-center shadow-2xl ${win ? "ring-8 ring-mech-gold" : ""}`}>
       <p className="line-clamp-2 font-display text-5xl uppercase leading-tight">{name ?? "—"}</p>
-      <p className="mt-4 font-display text-[11rem] leading-none tabular-nums">{score}</p>
+      <p className="mt-2 font-display text-[clamp(6rem,19vh,11rem)] leading-none tabular-nums">{score}</p>
       <dl className="mt-3 grid grid-cols-4 gap-2 text-center">
         {([["C1", totals.C1], ["C2", totals.C2], ["C3", totals.C3], ["Phạt", totals.PHAT]] as const).map(([k, v]) => (
           <div key={k} className="rounded-lg bg-black/20 px-3 py-1.5">
@@ -140,7 +142,20 @@ function Side({ name, score, fouls, tone, win, totals }: { name?: string; score:
           </div>
         ))}
       </dl>
-      <p className="mt-2 text-lg font-bold uppercase text-white/80">{fouls} lỗi</p>
+      <div className="mt-3 min-h-[8.5rem] w-full rounded-xl bg-black/20 px-4 py-2.5 text-left">
+        <p className="text-sm font-bold uppercase tracking-widest text-white/75">Lỗi · {total}</p>
+        {total === 0 ? <p className="mt-1 text-lg text-white/60">Chưa có lỗi</p> : (
+          <ul className="mt-1 space-y-1">
+            {shown.map((f) => (
+              <li key={f.key} className="flex items-start justify-between gap-3 text-lg font-semibold leading-snug">
+                <span className="line-clamp-1">{f.name}{f.count > 1 && <span className="font-bold text-mech-gold"> ×{f.count}</span>}</span>
+                {f.points !== 0 && <span className="shrink-0 font-display text-xl tabular-nums">{f.points}</span>}
+              </li>
+            ))}
+            {fouls.length > SHOW_FOULS && <li className="text-sm font-semibold text-white/70">+ {fouls.length - SHOW_FOULS} loại lỗi khác</li>}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
