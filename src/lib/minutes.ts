@@ -1,6 +1,7 @@
-// Biên bản chỉnh điểm: loại biên bản và các bên ký (khớp head_revise_match trong 0033)
+// Biên bản trận đấu: loại biên bản và các bên ký (khớp head_revise_match trong 0037)
 
 export const REASON_TYPES: Record<string, string> = {
+  CONFIRM: "Xác nhận kết quả",
   INPUT_ERROR: "Nhập sai điểm",
   APPEAL: "Khiếu nại của đội thi",
   REVIEW: "Chấm phúc khảo",

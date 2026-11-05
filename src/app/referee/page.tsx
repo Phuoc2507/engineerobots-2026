@@ -51,7 +51,7 @@ export default async function RefereeHome() {
                     <Link href={`/referee/controller/${m.id}`} className="inline-flex items-center gap-1 rounded-md bg-navy px-3 py-1.5 text-xs font-bold text-white"><Gamepad2 className="h-3.5 w-3.5" /> Điều khiển</Link>
                   )}
                   {isHead(staff) && m.status !== "SCHEDULED" && m.status !== "READY" && (
-                    <Link href={`/referee/revise/${m.id}`} className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-bold text-navy"><FileSignature className="h-3.5 w-3.5" /> Chỉnh điểm</Link>
+                    <Link href={`/referee/revise/${m.id}`} className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-bold text-navy"><FileSignature className="h-3.5 w-3.5" /> Lập biên bản</Link>
                   )}
                   <Link href={`/stage/${m.id}`} target="_blank" className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-bold text-navy"><MonitorPlay className="h-3.5 w-3.5" /> Màn hình chiếu</Link>
                 </span>

@@ -16,10 +16,11 @@ type Signer = { role: string; label: string; name: string; image: string | null 
 
 const COLORS: Color[] = ["RED", "BLUE"];
 
-// Lập biên bản chỉnh điểm: chọn sự kiện cần xóa, thêm mục điểm / điều chỉnh tay, các bên ký trực tiếp trên màn hình
-export default function ReviseMatch({ match, events, rules, myName, labels = {} }: { match: ReviseInfo; events: MinutesEvent[]; rules: PadRule[]; myName: string; labels?: Record<string, string> }) {
+// Lập biên bản trận: có thể chỉnh điểm (xóa sự kiện, thêm mục, điều chỉnh tay) hoặc giữ nguyên điểm để lưu hồ sơ; các bên ký trực tiếp trên màn hình
+export default function ReviseMatch({ match, events, rules, myName, labels = {}, confirmReason = "" }: { match: ReviseInfo; events: MinutesEvent[]; rules: PadRule[]; myName: string; labels?: Record<string, string>; confirmReason?: string }) {
   const router = useRouter();
-  const [type, setType] = useState("INPUT_ERROR");
+  const finished = match.status === "FINISHED";
+  const [type, setType] = useState(finished ? "CONFIRM" : "INPUT_ERROR");
   const [reason, setReason] = useState("");
   const [removed, setRemoved] = useState<Set<string>>(new Set());
   const [adds, setAdds] = useState<Add[]>([]);
@@ -73,9 +74,11 @@ export default function ReviseMatch({ match, events, rules, myName, labels = {} 
 
   const signed = signers.filter((s) => s.name.trim() && s.image);
   const changes = removed.size + adds.length;
+  const confirming = type === "CONFIRM";
+  const reasonText = reason.trim() || (confirming ? confirmReason.trim() : "");
   const problems = [
-    !reason.trim() && "ghi nội dung / lý do",
-    changes === 0 && "chọn ít nhất 1 thay đổi điểm",
+    !reasonText && "ghi nội dung / lý do",
+    confirming && changes > 0 && "chọn lý do khác vì đã có thay đổi điểm (hoặc bỏ các thay đổi)",
     !signed.some((s) => s.role === "HEAD_REFEREE") && "chữ ký + họ tên Trọng tài chính",
     signed.length < 2 && "tối thiểu 2 chữ ký",
     signers.some((s) => s.image && !s.name.trim()) && "họ tên cho mọi chữ ký",
@@ -83,10 +86,13 @@ export default function ReviseMatch({ match, events, rules, myName, labels = {} 
 
   const submit = async () => {
     if (problems.length) return;
-    if (!window.confirm(`Lưu biên bản và cập nhật điểm: Đỏ ${match.red_score} → ${after.RED}, Xanh ${match.blue_score} → ${after.BLUE}?`)) return;
+    const ask = changes > 0
+      ? `Lưu biên bản và cập nhật điểm: Đỏ ${match.red_score} → ${after.RED}, Xanh ${match.blue_score} → ${after.BLUE}?`
+      : `Lưu biên bản, giữ nguyên điểm: Đỏ ${match.red_score}, Xanh ${match.blue_score}?`;
+    if (!window.confirm(ask)) return;
     setBusy(true); setError("");
     const { data, error: e } = await createClient().rpc("head_revise_match", {
-      p_match: match.id, p_reason_type: type, p_reason: reason.trim(), p_remove: Array.from(removed),
+      p_match: match.id, p_reason_type: type, p_reason: reasonText, p_remove: Array.from(removed),
       p_add: adds.map((a) => (a.delta != null ? { color: a.color, delta: a.delta, notes: a.notes } : { color: a.color, rule_key: a.rule_key, notes: a.notes })),
       p_signatures: signed.map((s) => ({ role: s.role, name: s.name.trim(), image: s.image })),
     });
@@ -101,19 +107,19 @@ export default function ReviseMatch({ match, events, rules, myName, labels = {} 
       <section className={card}>
         <h2 className="font-display text-xl uppercase text-navy">1. Lý do lập biên bản</h2>
         <div className="mt-3 flex flex-wrap gap-2">
-          {Object.entries(REASON_TYPES).map(([k, v]) => (
+          {Object.entries(REASON_TYPES).filter(([k]) => finished || k !== "CONFIRM").map(([k, v]) => (
             <button key={k} type="button" onClick={() => setType(k)} aria-pressed={type === k}
               className={`rounded-full px-4 py-2 text-sm font-bold ring-1 transition ${type === k ? "bg-navy text-white ring-navy" : "bg-white text-navy ring-slate-300 hover:ring-navy-600"}`}>{v}</button>
           ))}
         </div>
         <textarea value={reason} onChange={(e) => setReason(e.target.value)} rows={3} maxLength={2000}
-          placeholder="Nội dung: ai khiếu nại / phát hiện sai sót gì, trọng tài kết luận ra sao…" aria-label="Nội dung biên bản"
+          placeholder={confirming ? confirmReason : "Nội dung: ai khiếu nại / phát hiện sai sót gì, trọng tài kết luận ra sao…"} aria-label="Nội dung biên bản"
           className={`${input} mt-3 h-auto py-2`} />
       </section>
 
       <section className={card}>
         <h2 className="font-display text-xl uppercase text-navy">2. Thay đổi điểm</h2>
-        <p className="mt-1 text-sm text-slate-600">Đánh dấu sự kiện ghi nhầm để xóa, thêm mục bị bỏ sót hoặc điều chỉnh tay. Điểm cuối cùng do hệ thống tính lại khi lưu.</p>
+        <p className="mt-1 text-sm text-slate-600">Đánh dấu sự kiện ghi nhầm để xóa, thêm mục bị bỏ sót hoặc điều chỉnh tay. Điểm cuối cùng do hệ thống tính lại khi lưu. Không có thay đổi thì bỏ qua mục này, điểm được giữ nguyên.</p>
         <div className="mt-4 grid gap-5 lg:grid-cols-2">
           {COLORS.map((c) => {
             const mine = events.filter((e) => e.team_color === c);
@@ -203,11 +209,13 @@ export default function ReviseMatch({ match, events, rules, myName, labels = {} 
       <div className="sticky bottom-0 z-10 -mx-4 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur">
         <div className="flex flex-wrap items-center gap-3">
           <p className="flex-1 text-sm text-slate-600">
-            {problems.length ? <>Còn thiếu: {problems.join(", ")}.</> : <>Đỏ <b>{match.red_score} → {after.RED}</b> · Xanh <b>{match.blue_score} → {after.BLUE}</b> · {signed.length} chữ ký</>}
+            {problems.length ? <>Còn thiếu: {problems.join(", ")}.</>
+              : changes > 0 ? <>Đỏ <b>{match.red_score} → {after.RED}</b> · Xanh <b>{match.blue_score} → {after.BLUE}</b> · {signed.length} chữ ký</>
+              : <>Giữ nguyên điểm: Đỏ <b>{match.red_score}</b> · Xanh <b>{match.blue_score}</b> · {signed.length} chữ ký</>}
           </p>
           <button type="button" onClick={() => router.back()} className={btnGhost}><Trash2 className="h-4 w-4" /> Hủy</button>
           <button type="button" onClick={submit} disabled={busy || problems.length > 0} className={btnPrimary}>
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileSignature className="h-4 w-4" />} Lưu biên bản & cập nhật điểm
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileSignature className="h-4 w-4" />} {changes > 0 ? "Lưu biên bản & cập nhật điểm" : "Lưu biên bản"}
           </button>
         </div>
         <ErrorBox error={error} />

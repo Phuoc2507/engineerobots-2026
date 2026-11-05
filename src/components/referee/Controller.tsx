@@ -124,7 +124,7 @@ export default function Controller({ matchId, canReset }: { matchId: string; can
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/60"><Wrench className="h-4 w-4" /> Chỉnh điểm</h2>
             {m.status !== "SCHEDULED" && m.status !== "READY" && (
-              <Link href={`/referee/revise/${matchId}`} className="inline-flex items-center gap-2 rounded-md bg-mech-gold px-4 py-2 text-sm font-bold text-navy"><FileSignature className="h-4 w-4" /> Lập biên bản chỉnh điểm (có chữ ký)</Link>
+              <Link href={`/referee/revise/${matchId}`} className="inline-flex items-center gap-2 rounded-md bg-mech-gold px-4 py-2 text-sm font-bold text-navy"><FileSignature className="h-4 w-4" /> Lập biên bản (có chữ ký)</Link>
             )}
           </div>
           <p className="mt-2 text-xs text-white/50">Nhập sai, khiếu nại, phúc khảo: lập biên bản để xóa / thêm mục điểm và lấy chữ ký các bên. Ô dưới chỉ để điều chỉnh nhanh khi trận đang diễn ra.</p>

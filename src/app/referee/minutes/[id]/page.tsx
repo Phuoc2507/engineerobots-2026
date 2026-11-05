@@ -9,7 +9,7 @@ import { eventName, minutesCode, REASON_TYPES, type Minutes, type MinutesEvent }
 import PrintButton from "@/components/referee/PrintButton";
 import MinutesDoc from "@/components/referee/MinutesDoc";
 
-export const metadata: Metadata = { title: "Biên bản chỉnh điểm" };
+export const metadata: Metadata = { title: "Biên bản trận đấu" };
 export const dynamic = "force-dynamic";
 
 // Biên bản in được (A4): thông tin trận, nội dung, bảng thay đổi, điểm trước/sau và chữ ký các bên — trình bày theo mẫu BTC đặt

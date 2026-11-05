@@ -7,7 +7,7 @@ import { MATCH_STATUS } from "@/lib/site";
 import { minutesCode, REASON_TYPES } from "@/lib/minutes";
 import AdminShell from "@/components/admin/AdminShell";
 
-export const metadata: Metadata = { title: "Biên bản chỉnh điểm" };
+export const metadata: Metadata = { title: "Biên bản trận đấu" };
 export const dynamic = "force-dynamic";
 
 const TZ = "Asia/Ho_Chi_Minh";
@@ -23,12 +23,12 @@ export default async function MinutesList() {
   const code = (id: string) => matches?.find((m) => m.id === id)?.match_code ?? null;
 
   return (
-    <AdminShell staff={staff} active="/referee/minutes" title="Biên bản chỉnh điểm">
+    <AdminShell staff={staff} active="/referee/minutes" title="Biên bản trận đấu">
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <section className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7">
           <h2 className="font-display text-xl uppercase text-navy">Đã lập ({minutes?.length ?? 0})</h2>
           {!minutes?.length ? (
-            <p className="mt-4 text-sm text-slate-500">Chưa có biên bản nào. Chọn trận ở cột bên để lập biên bản khi cần chỉnh điểm.</p>
+            <p className="mt-4 text-sm text-slate-500">Chưa có biên bản nào. Chọn trận ở cột bên để lập biên bản.</p>
           ) : (
             <ul className="mt-4 divide-y divide-slate-100">
               {minutes.map((x) => (
@@ -45,7 +45,7 @@ export default async function MinutesList() {
         </section>
         <aside className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
           <h2 className="font-display text-xl uppercase text-navy">Lập biên bản mới</h2>
-          <p className="mt-1 text-xs text-slate-500">Chọn trận đã / đang đấu cần chỉnh điểm.</p>
+          <p className="mt-1 text-xs text-slate-500">Chọn trận đã / đang đấu. Không đổi điểm vẫn lập được để lưu hồ sơ.</p>
           <ul className="mt-3 space-y-1.5 text-sm">
             {!matches?.length && <li className="text-slate-500">Chưa có trận nào bắt đầu.</li>}
             {matches?.map((m) => (

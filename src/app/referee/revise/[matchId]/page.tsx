@@ -12,7 +12,7 @@ import { getContent } from "@/lib/content-server";
 import { signerName } from "@/components/referee/MinutesDoc";
 import type { PadRule } from "@/components/referee/ScoringPad";
 
-export const metadata: Metadata = { title: "Lập biên bản chỉnh điểm" };
+export const metadata: Metadata = { title: "Lập biên bản trận đấu" };
 export const dynamic = "force-dynamic";
 
 export default async function RevisePage({ params }: { params: { matchId: string } }) {
@@ -33,7 +33,7 @@ export default async function RevisePage({ params }: { params: { matchId: string
   const editable = ["RUNNING", "PAUSED", "FINISHED"].includes(m.status);
 
   return (
-    <AdminShell staff={staff} active="/referee/minutes" title={`Chỉnh điểm trận ${m.match_code ?? ""}`}
+    <AdminShell staff={staff} active="/referee/minutes" title={`Lập biên bản trận ${m.match_code ?? ""}`}
       actions={<Link href="/referee/minutes" className="inline-flex items-center gap-1 text-sm font-bold text-navy-600 hover:text-mech-red"><ArrowLeft className="h-4 w-4" /> Danh sách biên bản</Link>}>
       <p className="mb-4 text-sm text-slate-600">
         {m.stage} · {MATCH_STATUS[m.status] ?? m.status} · <b className="text-team-red">{team(m.red_team_id)}</b> {m.red_score}–{m.blue_score} <b className="text-team-blue">{team(m.blue_team_id)}</b>
@@ -56,9 +56,10 @@ export default async function RevisePage({ params }: { params: { matchId: string
           match={{ id: m.id, code: m.match_code ?? "", stage: m.stage, status: m.status, red_score: m.red_score, blue_score: m.blue_score, red_name: team(m.red_team_id), blue_name: team(m.blue_team_id) }}
           events={(events ?? []) as MinutesEvent[]} rules={(rules ?? []) as PadRule[]} myName={staff.full_name ?? ""}
           labels={Object.fromEntries(SIGNER_ROLES.map((s) => [s.role, signerName(minutesTpl, s.role)]))}
+          confirmReason={minutesTpl.confirmReason}
         />
       ) : (
-        <p className="rounded-xl bg-white p-6 text-center text-slate-600 ring-1 ring-slate-200">Trận chưa bắt đầu nên chưa có điểm để chỉnh.</p>
+        <p className="rounded-xl bg-white p-6 text-center text-slate-600 ring-1 ring-slate-200">Trận chưa bắt đầu nên chưa lập được biên bản.</p>
       )}
     </AdminShell>
   );

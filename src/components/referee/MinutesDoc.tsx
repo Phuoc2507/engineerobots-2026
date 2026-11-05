@@ -23,12 +23,13 @@ export const signerName = (t: Tpl, role: string) => ({
   TEAM_RED: t.labelTeamRed, TEAM_BLUE: t.labelTeamBlue, BTC: t.labelBtc,
 } as Record<string, string>)[role] ?? role;
 
-// Biên bản chỉnh điểm khổ A4 theo mẫu BTC đặt ở /admin/content → Mẫu biên bản (dùng cho trang in và bản xem trước)
+// Biên bản khổ A4 theo mẫu BTC đặt ở /admin/content → Mẫu biên bản (dùng cho trang in và bản xem trước)
 export default function MinutesDoc({ t, d }: { t: Tpl; d: MinutesData }) {
   const cell = "border border-slate-400 px-2 py-1.5 align-top";
   const head = { backgroundColor: t.tableHead };
   const accent = { color: t.accent };
   const [rh1, ...rhRest] = t.rightHeader.split("\n").filter((l) => l.trim());
+  const unchanged = d.rows.length === 0;
   return (
     <article
       className="mx-auto max-w-[210mm] bg-white px-[15mm] py-[12mm] leading-relaxed text-black shadow print:shadow-none"
@@ -46,7 +47,7 @@ export default function MinutesDoc({ t, d }: { t: Tpl; d: MinutesData }) {
         </div>
       </header>
       {t.place.trim() && <p className="mt-3 text-right italic">{dateLine(t.place.trim(), d.createdAt)}</p>}
-      <h1 className="mt-6 text-center text-[1.5em] font-bold uppercase" style={accent}>{t.title}</h1>
+      <h1 className="mt-6 text-center text-[1.5em] font-bold uppercase" style={accent}>{unchanged ? t.titleConfirm : t.title}</h1>
       <p className="text-center italic">Lý do: {d.reasonLabel}</p>
 
       {t.intro.trim() && <p className="mt-4 whitespace-pre-wrap">{t.intro}</p>}
@@ -64,7 +65,7 @@ export default function MinutesDoc({ t, d }: { t: Tpl; d: MinutesData }) {
 
       <section className="mt-4">
         <p className="font-bold" style={accent}>{t.s2}</p>
-        <table className="mt-2 w-full border-collapse">
+        {unchanged ? <p>{t.noChangeText}</p> : <table className="mt-2 w-full border-collapse">
           <thead><tr style={head}><th className={cell}>STT</th><th className={cell}>Thao tác</th><th className={cell}>Phe</th><th className={cell}>Mục điểm / lỗi</th><th className={cell}>Điểm</th></tr></thead>
           <tbody>
             {d.rows.map((e, i) => (
@@ -77,17 +78,17 @@ export default function MinutesDoc({ t, d }: { t: Tpl; d: MinutesData }) {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table>}
       </section>
 
       <section className="mt-4">
-        <p className="font-bold" style={accent}>{t.s3}</p>
+        <p className="font-bold" style={accent}>{unchanged ? t.s3Confirm : t.s3}</p>
         <table className="mt-2 w-full border-collapse">
-          <thead><tr style={head}><th className={cell}></th><th className={cell}>Trước</th><th className={cell}>Sau</th></tr></thead>
+          <thead><tr style={head}><th className={cell}></th>{!unchanged && <th className={cell}>Trước</th>}<th className={cell}>{unchanged ? "Kết quả" : "Sau"}</th></tr></thead>
           <tbody>
-            <tr><td className={cell}>Điểm phe Đỏ</td><td className={`${cell} text-center`}>{d.redBefore}</td><td className={`${cell} text-center font-bold`}>{d.redAfter}</td></tr>
-            <tr><td className={cell}>Điểm phe Xanh</td><td className={`${cell} text-center`}>{d.blueBefore}</td><td className={`${cell} text-center font-bold`}>{d.blueAfter}</td></tr>
-            <tr><td className={cell}>Đội thắng</td><td className={`${cell} text-center`}>{d.winnerBefore}</td><td className={`${cell} text-center font-bold`}>{d.winnerAfter}</td></tr>
+            <tr><td className={cell}>Điểm phe Đỏ</td>{!unchanged && <td className={`${cell} text-center`}>{d.redBefore}</td>}<td className={`${cell} text-center font-bold`}>{d.redAfter}</td></tr>
+            <tr><td className={cell}>Điểm phe Xanh</td>{!unchanged && <td className={`${cell} text-center`}>{d.blueBefore}</td>}<td className={`${cell} text-center font-bold`}>{d.blueAfter}</td></tr>
+            <tr><td className={cell}>Đội thắng</td>{!unchanged && <td className={`${cell} text-center`}>{d.winnerBefore}</td>}<td className={`${cell} text-center font-bold`}>{d.winnerAfter}</td></tr>
           </tbody>
         </table>
       </section>
