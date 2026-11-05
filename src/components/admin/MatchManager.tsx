@@ -45,8 +45,18 @@ export default function MatchManager({ matches, teams }: { matches: AdminMatch[]
     setSwap(null);
   };
 
+  // Trận đã kết thúc: xóa kéo theo điểm, biên bản, khiếu nại nên phải báo rõ trước khi xác nhận
+  const remove = (m: AdminMatch) => {
+    const code = m.match_code ?? "";
+    const confirm = m.status === "FINISHED"
+      ? `Xóa trận ${code} đã kết thúc (${m.red_score}–${m.blue_score})?\n\nToàn bộ điểm, lỗi, biên bản và khiếu nại của trận sẽ mất hẳn, không khôi phục được.`
+      : `Xóa trận ${code}?`;
+    return call(`del-${m.id}`, "admin_delete_match", { p_id: m.id }, { confirm });
+  };
+
   const stages = Array.from(new Set(matches.map((m) => m.stage)));
   const pending = (m: AdminMatch) => m.status === "SCHEDULED" || m.status === "READY";
+  const live = (m: AdminMatch) => m.status === "RUNNING" || m.status === "PAUSED";
 
   return (
     <div className="space-y-6">
@@ -128,9 +138,11 @@ export default function MatchManager({ matches, teams }: { matches: AdminMatch[]
                         <button onClick={() => setSwap(swap === m.id ? null : m.id)} className={`${btnGhost} h-9 px-3`} title="Đổi giờ với trận khác"><ArrowLeftRight className="h-4 w-4" /></button>
                       )}
                       <button onClick={() => setForm({ id: m.id, code: m.match_code ?? "", stage: m.stage, red: m.red_team_id ?? "", blue: m.blue_team_id ?? "", start: toLocal(m.start_time), duration: m.duration_seconds })} className={`${btnGhost} h-9 px-3`} aria-label="Sửa"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => call(`del-${m.id}`, "admin_delete_match", { p_id: m.id }, { confirm: `Xóa trận ${m.match_code ?? ""}?` })} disabled={busy !== null} className={`${btnDanger} h-9 px-3`} aria-label="Xóa"><Trash2 className="h-4 w-4" /></button>
                     </>
                   )}
+                  <button onClick={() => remove(m)} disabled={busy !== null || live(m)} className={`${btnDanger} h-9 px-3 disabled:opacity-40`} aria-label={`Xóa trận ${m.match_code ?? ""}`} title={live(m) ? "Trận đang đấu, hãy kết thúc trận trước khi xóa" : "Xóa trận"}>
+                    {busy === `del-${m.id}` ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                  </button>
                 </span>
               </li>
             ))}
