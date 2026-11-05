@@ -63,7 +63,7 @@ export default function MatchManager({ matches, teams }: { matches: AdminMatch[]
           </div>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             <label className="text-sm font-semibold text-navy">Mã trận
-              <input value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} placeholder="vd: A1, BK2" className={`${input} mt-1`} maxLength={20} />
+              <input value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} placeholder="Để trống: tự đặt VL01, BK02…" className={`${input} mt-1`} maxLength={20} />
             </label>
             <label className="text-sm font-semibold text-navy">Vòng
               <input list="stages" value={form.stage} onChange={(e) => setForm({ ...form, stage: e.target.value, ...(STAGES.includes(e.target.value) && { duration: durationFor(e.target.value) }) })} className={`${input} mt-1`} />
