@@ -202,7 +202,7 @@ export const DEFAULT_CONTENT = {
     poster: "/images/mo-phong-tran-dau.jpg",
     videoLabel: "Mô phỏng trận đấu",
     zones: [
-      { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 900 mm dọc hai mép, line đen 20 mm: Đường Danh vọng thẳng 1800 mm tới Checkpoint, Đường Thách thức ziczac 45°, vạch đích chữ T." },
+      { tag: "Chặng 1", title: "Hai làn dò line", desc: "Làn 900 mm dọc hai mép, line đen 20 mm: Đường Danh vọng thẳng 1400 mm tới Checkpoint, Đường Thách thức ziczac lệch 30° và 60°, vạch đích chữ T." },
       { tag: "Chặng 2", title: "Cấu kiện & Bục Cơ hội", desc: "4 bóng pickleball Kiến thức Ø74 mm (2 Đỏ, 2 Xanh), Bục Cơ hội 400 × 400 mm cao 50 mm mang bóng Cơ hội vàng, 2 Trạm thành tựu 300 × 300 mm có gờ chặn ở hai cánh sân." },
       { tag: "Chặng 3", title: "Cầu Bản lĩnh & Bục Vinh Quang", desc: "Cầu gỗ 600 × 550 mm, 2 sân độc lập: Đường Thử thách 5 thanh gờ, Trạm Thực nghiệm, Dốc Kiên trì 10° lên Đài Bảo vệ 100 mm, Dốc Thăng hoa lên Đỉnh 200 mm có Đèn Vinh Quang." },
     ],

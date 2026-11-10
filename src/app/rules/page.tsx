@@ -50,7 +50,7 @@ export default async function RulesPage() {
     "so-do-sa-ban": (
       <>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={c.rules.arenaImage} alt="Sơ đồ sa bàn FME JOURNEY 2026 theo thể lệ, đánh số 1.1–3.10" width={1319} height={1866} loading="lazy" className="mt-4 h-auto w-full rounded-lg ring-1 ring-slate-200" />
+        <img src={c.rules.arenaImage} alt="Sơ đồ sa bàn FME JOURNEY 2026 theo thể lệ, đánh số 1.1–3.10" width={1800} height={2363} loading="lazy" className="mt-4 h-auto w-full rounded-lg ring-1 ring-slate-200" />
         <div className="mt-3 flex flex-wrap gap-2 text-sm">
           <Link href="/arena-3d" className="inline-flex h-10 items-center gap-2 rounded-md bg-navy px-4 font-bold text-white"><Box className="h-4 w-4" /> Xem sa bàn 3D</Link>
           <a href={c.rules.drawingPdf} target="_blank" rel="noopener" className="inline-flex h-10 items-center gap-2 rounded-md bg-ice px-4 font-bold text-navy"><Download className="h-4 w-4" /> Bản vẽ kỹ thuật (PDF)</a>

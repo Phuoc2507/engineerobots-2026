@@ -55,31 +55,31 @@ Thực hiện và bảo vệ Đồ án tốt nghiệp. Hai robot thi đấu đ�
   },
   {
     id: "sa-ban", title: "IV. Sa bàn và chi tiết sân thi đấu",
-    body: `Sa bàn 4800 × 4800 mm gia công theo bộ bản vẽ kỹ thuật 2D/3D chính thức của BTC, bao quanh bởi dây giăng cảnh báo. **Bản vẽ chi tiết sa bàn và đường line được công bố bên dưới** để các đội tự làm sa bàn tập luyện.
+    body: `Sa bàn 4800 × 4800 mm gia công theo bộ bản vẽ kỹ thuật 2D/3D chính thức của BTC, bao quanh bởi hàng rào cao 100 mm. **Bản vẽ chi tiết sa bàn và đường line được công bố bên dưới** để các đội tự làm sa bàn tập luyện.
 
 [[so-do-sa-ban]]
 
 ## [đỏ] 1. Chặng 1 · Thích nghi
 - Nền trắng, line đen. 2 làn biên độc lập 4800 (Dài) × 900 (Rộng) mm: Đội Đỏ cánh trái, Đội Xanh cánh phải.
-- **Trạm khởi hành (1.1 – 1.2):** ô 310 × 260 mm ở góc trên cùng mỗi làn; ô màu Đỏ (1.1) cho đội Đỏ, ô màu Xanh (1.2) cho đội Xanh.
-- Vạch dẫn hướng màu đen rộng 20 mm. **Đường Danh vọng:** đoạn thẳng 1800 mm nối từ Trạm khởi hành. **Đường Thách thức:** ziczac dài 2040 mm, khúc cua 45°, kết thúc ở vạch ngang chữ T dài 300 mm.
-- **Checkpoint:** cuối Đường Danh vọng (mốc 1800 mm, trước khi vào Đường Thách thức).
+- **Trạm khởi hành (1.1 – 1.2):** ô vuông 400 × 400 mm (lõi màu 350 × 350 mm, viền trắng) ở đầu trên cùng mỗi làn; ô màu Đỏ (1.1) cho đội Đỏ, ô màu Xanh (1.2) cho đội Xanh.
+- Vạch dẫn hướng màu đen rộng 20 mm. **Đường Danh vọng:** đoạn thẳng 1400 mm nối từ Trạm khởi hành. **Đường Thách thức:** ziczac dài 2345 mm theo chiều dọc làn, 03 đoạn chéo (đoạn đầu lệch 30°, hai đoạn sau lệch 60°), kết thúc ở vạch ngang chữ T dài 350 mm, cách mép dưới sa bàn 640 mm.
+- **Checkpoint:** cuối Đường Danh vọng (mốc 1400 mm, trước khi vào Đường Thách thức).
 
 ## 2. Chặng 2 · Bứt phá
-- Khu vực rộng 3000 mm, dài 1850 mm.
-- **Khu vực retry (2.1 – 2.2):** 310 × 260 mm ở 2 góc dưới (2.1 trái cho Đỏ, 2.2 phải cho Xanh), họa tiết gạch chéo 45°.
-- **Trạm thành tựu (2.3 – 2.4):** 300 × 300 mm phía trên sân (Đỏ trái, Xanh phải), họa tiết lưới ô vuông màu đội; gờ chặn hãm bóng cao 10 mm quanh chu vi.
-- **Bục Cơ hội (2.5):** bục dốc nghiêng 4 mặt đối xứng ở tâm Chặng 2, đáy 400 × 400 mm, đỉnh phẳng 300 × 300 mm, cao 50 mm; trên tâm đặt 01 bóng pickleball Ø74 mm màu vàng (Cơ hội vàng). **Chỉ xuất hiện ở Vòng Chung kết xếp hạng.**
-- **Cấu kiện Kiến thức (2.6):** 04 bóng pickleball Ø74 mm (02 Đỏ ở cụm bên sân Đỏ, 02 Xanh ở cụm bên sân Xanh), ở hai bên phía dưới sân.
+- Khu vực rộng 3000 mm, dài 1600 mm. Cạnh dưới để trống lối vào rộng 1816 mm, thông với khoảng trống 800 mm ở cuối sa bàn, nơi robot đi từ cuối làn line vào Chặng 2.
+- **Khu vực retry (2.1 – 2.2):** ô vuông 400 × 400 mm (lõi màu 350 × 350 mm) ở 2 góc dưới (2.1 trái cho Đỏ, 2.2 phải cho Xanh), ký hiệu bằng ô màu đội.
+- **Trạm thành tựu (2.3 – 2.4):** 300 × 300 mm phía trên sân (Đỏ trái, Xanh phải), ký hiệu bằng ô màu đội; gờ chặn hãm bóng cao 10 mm quanh chu vi.
+- **Bục Cơ hội (2.5):** bục dốc nghiêng 4 mặt đối xứng ở tâm Chặng 2 (viền vàng in trên sàn), đáy 400 × 400 mm, đỉnh phẳng 200 × 200 mm, cao 50 mm; trên đế nhỏ ở tâm đặt 01 bóng pickleball Ø74 mm màu vàng (Cơ hội vàng). **Chỉ xuất hiện ở Vòng Chung kết xếp hạng.**
+- **Cấu kiện Kiến thức (2.6):** 04 bóng pickleball Ø74 mm (02 Đỏ ở cụm bên sân Đỏ, 02 Xanh ở cụm bên sân Xanh), ở hai bên phía dưới sân; mỗi quả đặt trên đế 75 × 75 mm (cao 25 mm) giữa ô màu 100 × 100 mm, hai quả cùng màu cách nhau 300 mm.
 
 ## [xanh] 3. Chặng 3 · Thành công
-- Khu vực rộng 3000 mm, dài 2400 mm, chia 2 sân độc lập đối xứng (Đỏ trái, Xanh phải) bởi **đường nét đứt màu xanh dương** ở giữa.
-- **Khu vực retry (3.1 – 3.2):** 310 × 260 mm sát hai mép vách biên ngoài, họa tiết gạch chéo 45°.
-- **Đường Thử thách (3.3 – 3.4):** mỗi khu 600 (Dài) × 400 (Rộng) mm, gồm 05 thanh gờ ống PVC cao 15 mm đặt ngang liên tiếp, **mỗi thanh cách nhau 100 mm**.
-- **Trạm Thực nghiệm (3.5 – 3.6):** ngay sau Đường Thử thách; tâm trạm đặt 01 bóng Đồ án Ø74 mm (Đỏ bên sân Đỏ, Xanh bên sân Xanh).
-- **Tổ hợp Bục Vinh Quang (3.7)**, 2 bậc liên hoàn: *Dốc Kiên trì* 550 × 450 mm, nghiêng 10°, thẳng hàng phía trên Trạm Thực nghiệm, lên *Đài Bảo vệ* (Bậc 1, cao 100 mm, sát mép trên sa bàn); 02 *Dốc Thăng hoa* 500 × 450 mm, nghiêng 10°, đặt ngang hai bên (Đỏ leo trái sang phải, Xanh leo phải sang trái) lên *Bục Vinh Quang* (Bậc 2) 400 × 450 mm, cao 200 mm ở trung tâm; vách ngăn giữa bục gắn 02 nút nhấn Đèn Vinh Quang độc lập, vuông góc với hướng robot leo tới.
+- Khu vực rộng 3000 mm, dài 2400 mm, chia 2 sân độc lập đối xứng (Đỏ trái, Xanh phải) bởi **hàng rào giữa dài 750 mm** nối từ Bục Vinh Quang về phía Cầu Bản lĩnh, phần còn lại tính theo trục giữa sa bàn.
+- **Khu vực retry (3.1 – 3.2):** ô vuông 400 × 400 mm (lõi màu 350 × 350 mm) hai bên đầu Cầu Bản lĩnh phía Chặng 3 (3.1 trái cho Đỏ, 3.2 phải cho Xanh).
+- **Đường Thử thách (3.3 – 3.4):** mỗi khu 600 (Dài) × 400 (Rộng) mm, gồm 05 thanh gờ ống PVC cao 15 mm đặt ngang liên tiếp, **mỗi thanh cách nhau 100 mm**; hai cạnh dọc có rào thấp màu đội cao 50 mm.
+- **Trạm Thực nghiệm (3.5 – 3.6):** ô màu 120 × 120 mm ngay sau Đường Thử thách; tâm trạm, trên đế 75 × 75 mm, đặt 01 bóng Đồ án Ø74 mm (Đỏ bên sân Đỏ, Xanh bên sân Xanh).
+- **Tổ hợp Bục Vinh Quang (3.7)**, 2 bậc liên hoàn: *Dốc Kiên trì* 550 × 450 mm, nghiêng 10°, phía trên Trạm Thực nghiệm sát hàng rào ngoài, lên *Đài Bảo vệ* (Bậc 1, hình chữ L cao 100 mm sát mép trên sa bàn, mỗi bên 1500 × 1040 mm); 02 *Dốc Thăng hoa* 500 × 450 mm, nghiêng khoảng 11°, đặt ngang hai bên (Đỏ leo trái sang phải, Xanh leo phải sang trái) lên *Bục Vinh Quang* (Bậc 2) 500 × 450 mm, cao 200 mm ở trung tâm; vách ngăn giữa bục gắn 02 nút nhấn Đèn Vinh Quang độc lập, vuông góc với hướng robot leo tới.
 - **Cầu Bản lĩnh (3.8):** cầu gỗ có dây treo nối Chặng 2 sang Chặng 3, 600 (Dài) × 550 (Rộng) × 100 (Cao) mm.
-- **Ô Bảo vệ Đồ án & Đế (3.9 – 3.10):** ô vuông 120 × 120 mm ở góc trên phía ngoài Đài Bảo vệ (3.9 Đỏ, 3.10 Xanh), **viền ô có gờ chặn hãm bóng cao 10 mm**; bên trong có 01 đế nhỏ để đặt cấu kiện Đồ án.
+- **Ô Bảo vệ Đồ án & Đế (3.9 – 3.10):** ô vuông 120 × 120 mm ở góc trên phía ngoài Đài Bảo vệ (3.9 Đỏ, 3.10 Xanh); bên trong có 01 đế nhỏ 75 × 75 mm (cao 25 mm) để đặt cấu kiện Đồ án.
 
 ## 4. Thuật ngữ và định nghĩa
 | STT | Thuật ngữ | Ký hiệu trên sa bàn | Định nghĩa |
@@ -87,8 +87,8 @@ Thực hiện và bảo vệ Đồ án tốt nghiệp. Hai robot thi đấu đ�
 | 2 | **Chặng 1** | Chặng 1 | Khu vực thực hiện nhiệm vụ “Thích nghi” |
 | 3 | **Chặng 2** | Chặng 2 | Khu vực thực hiện nhiệm vụ “Bứt phá” |
 | 4 | **Chặng 3** | Chặng 3 | Khu vực thực hiện nhiệm vụ “Thành công” |
-| 5 | **Vạch giới hạn** | Đường kẻ màu đen bao quanh các khu vực trong sân thi đấu | Vạch giới hạn phạm vi của robot hoạt động trong sân thi đấu |
-| 6 | **Vị trí Checkpoint** | Khung được ký hiệu “Checkpoint” | Vị trí đánh dấu trên đoạn đường dò line; robot đi qua vạch sẽ được lưu vị trí retry tại đó ở Chặng 1 |
+| 5 | **Vạch giới hạn** | Hàng rào bao quanh các khu vực trong sân thi đấu | Vạch giới hạn phạm vi của robot hoạt động trong sân thi đấu |
+| 6 | **Vị trí Checkpoint** | Mốc cuối Đường Danh vọng (cách Trạm khởi hành 1400 mm) | Vị trí đánh dấu trên đoạn đường dò line; robot đi qua vạch sẽ được lưu vị trí retry tại đó ở Chặng 1 |
 | 7 | **Khu vực retry** | 2.1 – 2.2 – 3.1 – 3.2 | Khu vực robot được đưa về khi đội thi yêu cầu quyền retry |
 | 8 | **Trạm thành tựu** | 2.3 – 2.4 | Khu vực ghi điểm bằng cấu kiện Kiến thức |
 | 9 | **Cấu kiện Cơ hội vàng** | 2.5 | Quả bóng pickleball (đường kính 74 mm) màu vàng đặt trên đỉnh Bục Cơ hội |
@@ -269,7 +269,7 @@ Tất cả thành viên của 16 đội lọt vào Chung kết xếp hạng đư
 export const HOME_RULE_TABS = [
   {
     label: "Chặng 1 · Thích nghi", title: "Thích nghi – Dò line tự hành",
-    body: `Mỗi đội một làn line riêng rộng 900 mm dọc hai mép sa bàn. Robot xuất phát từ Trạm khởi hành 310 × 260 mm, bám line đen rộng 20 mm qua Đường Danh vọng thẳng 1800 mm tới Checkpoint, rồi vượt Đường Thách thức ziczac 45° dài 2040 mm về vạch chữ T.
+    body: `Mỗi đội một làn line riêng rộng 900 mm dọc hai mép sa bàn. Robot xuất phát từ Trạm khởi hành 400 × 400 mm, bám line đen rộng 20 mm qua Đường Danh vọng thẳng 1400 mm tới Checkpoint, rồi vượt Đường Thách thức ziczac (lệch 30° và 60°) dài 2345 mm về vạch chữ T.
 
 - **Tự hành 100%:** chỉ ấn nút khởi động một lần, tay cầm đặt xuống đất suốt Chặng 1; về đích xong robot tự chuyển sang điều khiển từ xa.
 - **Mất line / chạm rào chắn:** −5đ mỗi lần. Xuất phát sớm: −5đ.
