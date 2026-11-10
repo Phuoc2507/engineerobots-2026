@@ -234,8 +234,8 @@ export const DEFAULT_CONTENT = {
   },
   rules: {
     pdf: "/docs/the-le-fme-journey-2026.pdf",
-    drawingPdf: "/models/ban-ve-sa-ban-2026.pdf",
-    arenaImage: "/images/sa-ban-2026.png",
+    drawingPdf: "/models/ban-ve-sa-ban-2026-v2.pdf",
+    arenaImage: "/images/sa-ban-2026-v2.png",
     robotSpecs: ROBOT_SPECS.map((s) => ({ ...s })),
   },
   stage: {

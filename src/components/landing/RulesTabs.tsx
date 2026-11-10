@@ -72,8 +72,8 @@ export default function RulesTabs({ h, specs, image }: { h: Content["home"]; spe
             <img
               src={image}
               alt="Sơ đồ sa bàn 4800 × 4800 mm: hai làn dò line hai bên, Chặng 2 cấu kiện và Bục Cơ hội phía dưới, Chặng 3 Cầu Bản lĩnh, Địa hình và Bục Vinh Quang phía trên"
-              width={1319}
-              height={1866}
+              width={1800}
+              height={2363}
               loading="lazy"
               className="h-auto w-full rounded-md"
             />
