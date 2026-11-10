@@ -2,52 +2,49 @@
 
 import { createElement, useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Pause, RotateCw } from "lucide-react";
 
 // Trình xem GLB dùng web component <model-viewer> (tải từ CDN, ghim phiên bản).
-// GLB xuất từ Blender có sẵn 1 animation: 2 robot chạy line, gom bóng pickleball, đặt Đồ án lên đế, leo Bục Vinh Quang bật đèn.
-// Toạ độ hotspot theo glTF (Y hướng lên): Blender (x, y, z) -> (x, z, -y), đơn vị m.
+// GLB chuyển từ bản vẽ SolidWorks "Sân tổng thể" (08/11/2026), không có animation.
+// Toạ độ glTF, đơn vị m, Y hướng lên: gốc ở tâm sân, y = 0 là đáy pallet, mặt sân y = 0,157;
+// −X là đội Đỏ, +X là đội Xanh, −Z là phía Chặng 3 (camera theta 0° đứng phía +Z nhìn về Chặng 3).
 
 type ModelViewerEl = HTMLElement & {
-  play: () => void;
-  pause: () => void;
-  paused: boolean;
-  currentTime: number;
   cameraOrbit: string;
   cameraTarget: string;
-  fieldOfView: string;
   autoRotate: boolean;
-  jumpCameraToGoal: () => void;
+  resetTurntableRotation?: (theta?: number) => void;
 };
 
 const VIEWS = [
-  { key: "all", label: "Toàn cảnh", orbit: "0deg 52deg 6.4m", target: "2.4m 0m -2.4m" },
-  { key: "c1", label: "Chặng 1", orbit: "0deg 22deg 6.6m", target: "2.4m 0m -2.5m" },
-  { key: "c2", label: "Chặng 2", orbit: "0deg 48deg 3.4m", target: "2.4m 0m -1.4m" },
-  { key: "c3", label: "Chặng 3", orbit: "180deg 50deg 3.6m", target: "2.4m 0m -3.6m" },
+  { key: "all", label: "Toàn cảnh", orbit: "0deg 52deg 6.6m", target: "0m 0.15m 0.25m" },
+  { key: "c1", label: "Chặng 1", orbit: "0deg 26deg 6.4m", target: "0m 0.15m -0.3m" },
+  { key: "c2", label: "Chặng 2", orbit: "0deg 48deg 3.4m", target: "0m 0.16m 0.85m" },
+  { key: "c3", label: "Chặng 3", orbit: "0deg 46deg 3.6m", target: "0m 0.25m -1.25m" },
 ] as const;
 
 const HOTSPOTS = [
-  { id: "start", pos: "0.45m 0.03m -4.65m", label: "Trạm khởi hành", tone: "bg-team-red" },
-  { id: "checkpoint", pos: "0.45m 0.03m -2.7m", label: "Checkpoint", tone: "bg-slate-900" },
-  { id: "gate", pos: "2.4m 0.03m -0.55m", label: "Cổng vào Chặng 2", tone: "bg-cyan-500" },
-  { id: "drop", pos: "1.47m 0.03m -1.37m", label: "Trạm kiến thức", tone: "bg-team-red" },
-  { id: "gold", pos: "2.4m 0.15m -1.4m", label: "Cơ hội vàng", tone: "bg-mech-gold" },
-  { id: "bridge", pos: "2.4m 0.12m -2.43m", label: "Cầu Bản lĩnh", tone: "bg-amber-700" },
-  { id: "terrain", pos: "1.45m 0.03m -3.02m", label: "Đường Thử thách", tone: "bg-slate-600" },
-  { id: "lab", pos: "1.45m 0.08m -3.58m", label: "Trạm thực nghiệm", tone: "bg-orange-500" },
-  { id: "kientri", pos: "1.275m 0.07m -3.98m", label: "Dốc Kiên trì", tone: "bg-team-blue" },
-  { id: "guard", pos: "1.04m 0.13m -4.66m", label: "Ô bảo vệ Đồ án", tone: "bg-cyan-500" },
-  { id: "thanghoa", pos: "1.775m 0.17m -4.525m", label: "Dốc Thăng hoa", tone: "bg-team-blue" },
-  { id: "lamp", pos: "2.4m 0.25m -4.52m", label: "Đèn Vinh quang", tone: "bg-navy-600" },
+  { id: "start", pos: "-1.95m 0.16m -2.185m", label: "Trạm khởi hành", tone: "bg-team-red" },
+  { id: "checkpoint", pos: "-1.95m 0.16m -0.585m", label: "Checkpoint", tone: "bg-slate-900" },
+  { id: "gate", pos: "0m 0.16m 1.6m", label: "Lối vào Chặng 2", tone: "bg-cyan-500" },
+  { id: "knowledge", pos: "-1.1m 0.25m 0.944m", label: "Cấu kiện Kiến thức", tone: "bg-team-red" },
+  { id: "drop", pos: "-0.903m 0.17m 0.25m", label: "Trạm thành tựu", tone: "bg-team-red" },
+  { id: "gold", pos: "0m 0.3m 0.794m", label: "Cơ hội vàng", tone: "bg-mech-gold" },
+  { id: "bridge", pos: "0m 0.26m 0m", label: "Cầu Bản lĩnh", tone: "bg-amber-700" },
+  { id: "terrain", pos: "-1.25m 0.21m -0.7m", label: "Đường Thử thách", tone: "bg-slate-600" },
+  { id: "lab", pos: "-1m 0.25m -1.225m", label: "Trạm Thực nghiệm", tone: "bg-orange-500" },
+  { id: "kientri", pos: "1.275m 0.26m -1.62m", label: "Dốc Kiên trì", tone: "bg-team-blue" },
+  { id: "guard", pos: "1.39m 0.29m -2.275m", label: "Ô Bảo vệ Đồ án", tone: "bg-cyan-500" },
+  { id: "thanghoa", pos: "0.5m 0.36m -1.57m", label: "Dốc Thăng hoa", tone: "bg-team-blue" },
+  { id: "lamp", pos: "0m 0.45m -1.57m", label: "Bục Vinh Quang", tone: "bg-navy-600" },
 ] as const;
 
-export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model = "/models/sa-ban-2026.glb" }: { preview?: string; model?: string }) {
+export default function ArenaViewer({ preview = "/images/sa-ban-3d-v2.webp", model = "/models/sa-ban-2026-v2.glb" }: { preview?: string; model?: string }) {
   const ref = useRef<ModelViewerEl | null>(null);
   const [ready, setReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [rotating, setRotating] = useState(true);
   const [view, setView] = useState<string>("all");
   const [labels, setLabels] = useState(true);
 
@@ -58,9 +55,8 @@ export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model 
     const onLoad = () => {
       setLoaded(true);
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        mv.pause();
         mv.autoRotate = false;
-        setPlaying(false);
+        setRotating(false);
       }
     };
     mv.addEventListener("progress", onProgress);
@@ -75,27 +71,19 @@ export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model 
     const mv = ref.current;
     const v = VIEWS.find((x) => x.key === key);
     if (!mv || !v) return;
-    mv.autoRotate = key === "all" && playing;
+    mv.autoRotate = key === "all" && rotating;
+    mv.resetTurntableRotation?.(0); // tự xoay quay cả mô hình, đưa về hướng gốc để góc nhìn đúng chặng
     mv.cameraTarget = v.target;
     mv.cameraOrbit = v.orbit;
     setView(key);
   }
 
-  function togglePlay() {
+  function toggleRotate() {
     const mv = ref.current;
     if (!mv) return;
-    if (mv.paused) mv.play();
-    else mv.pause();
-    mv.autoRotate = mv.paused ? false : view === "all";
-    setPlaying(!mv.paused);
-  }
-
-  function restart() {
-    const mv = ref.current;
-    if (!mv) return;
-    mv.currentTime = 0;
-    mv.play();
-    setPlaying(true);
+    const next = !rotating;
+    mv.autoRotate = next;
+    setRotating(next);
   }
 
   const hotspots = HOTSPOTS.map((h) =>
@@ -128,8 +116,7 @@ export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model 
           {
             ref,
             src: model,
-            alt: "Mô hình 3D sa bàn FME JOURNEY 2026 với hai robot mô phỏng",
-            autoplay: true,
+            alt: "Mô hình 3D sa bàn FME JOURNEY 2026 dựng theo bản vẽ SolidWorks",
             "camera-controls": true,
             "auto-rotate": true,
             "auto-rotate-delay": "4000",
@@ -142,7 +129,7 @@ export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model 
             "environment-image": "neutral",
             "camera-orbit": VIEWS[0].orbit,
             "camera-target": VIEWS[0].target,
-            "min-camera-orbit": "auto 10deg 1.2m",
+            "min-camera-orbit": "auto 10deg 0.8m",
             "max-camera-orbit": "auto 85deg 9m",
             style: { width: "100%", height: "100%", background: "transparent", opacity: loaded ? 1 : 0, transition: "opacity .7s" },
           },
@@ -158,7 +145,7 @@ export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model 
         )}
         {loaded && (
           <div className="pointer-events-none absolute bottom-3 left-3 rounded-md bg-navy-900/70 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest text-white backdrop-blur">
-            Mô phỏng trận đấu · 24 giây
+            Tỉ lệ 1:1 · 4,8 × 4,8 m
           </div>
         )}
       </div>
@@ -177,13 +164,9 @@ export default function ArenaViewer({ preview = "/images/sa-ban-3d.webp", model 
             className="h-9 rounded-md border border-slate-200 px-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-50">
             {labels ? "Ẩn nhãn" : "Hiện nhãn"}
           </button>
-          <button type="button" onClick={restart} disabled={!loaded} aria-label="Phát lại từ đầu"
-            className="grid h-9 w-9 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50">
-            <RotateCcw className="h-4 w-4" />
-          </button>
-          <button type="button" onClick={togglePlay} disabled={!loaded} aria-label={playing ? "Tạm dừng" : "Phát"}
+          <button type="button" onClick={toggleRotate} disabled={!loaded} aria-label={rotating ? "Dừng tự xoay" : "Tự xoay"} title={rotating ? "Dừng tự xoay" : "Tự xoay"}
             className="grid h-9 w-9 place-items-center rounded-md bg-mech-red text-white hover:brightness-110 disabled:opacity-50">
-            {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            {rotating ? <Pause className="h-4 w-4" /> : <RotateCw className="h-4 w-4" />}
           </button>
         </div>
       </div>
