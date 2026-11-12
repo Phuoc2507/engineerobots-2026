@@ -160,7 +160,7 @@ export const DEFAULT_CONTENT = {
     organizer: SITE.organizer,
     registrationStart: SITE.registrationStart,
     registrationDeadline: SITE.registrationDeadline,
-    countdownNote: "Thời gian đăng ký: 02/11 – hết ngày 11/11/2026",
+    countdownNote: "Thời gian đăng ký: 02/11 – hết ngày 22/11/2026",
   },
   announce: {
     publicOn: false,
