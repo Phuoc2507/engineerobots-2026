@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { reviewEmail, sendEmail } from "@/lib/email";
+import { publicOrigin } from "@/lib/publicOrigin";
 
 // BTC duyệt / yêu cầu bổ sung hồ sơ đội, rồi báo cho đội trưởng qua email (nếu đã cấu hình Resend)
 export async function POST(request: Request) {
@@ -12,7 +13,7 @@ export async function POST(request: Request) {
   const team = data as { team_name: string; leader_email: string; status: string; note: string | null };
   let email: { sent: boolean; error?: string } = { sent: false };
   if (team.leader_email && (team.status === "APPROVED" || team.status === "REJECTED")) {
-    const { subject, html } = await reviewEmail(team.team_name, team.status, team.note, `${new URL(request.url).origin}/team/dashboard`);
+    const { subject, html } = await reviewEmail(team.team_name, team.status, team.note, `${publicOrigin(request)}/team/dashboard`);
     email = await sendEmail(team.leader_email, subject, html);
   }
   return NextResponse.json({ ok: true, email });

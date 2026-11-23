@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { STUDENT_DOMAIN } from "@/lib/site";
+import { publicOrigin } from "@/lib/publicOrigin";
 
 // Google OAuth trả về đây với ?code=… — đổi code lấy session rồi chặn email ngoài domain trường (trừ BTC/trọng tài)
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
+  const origin = publicOrigin(request);
   const code = searchParams.get("code");
   const next = searchParams.get("next");
   const target = next?.startsWith("/") && !next.startsWith("//") ? next : "/register";
